@@ -113,30 +113,38 @@ const MONTHS_G = ["января","февраля","марта","апреля","�
 
 /* ---------- хранилище: Telegram CloudStorage (синхронизируется между устройствами), запасной вариант localStorage ---------- */
 const hasCloud = inTg && tg.CloudStorage && tg.isVersionAtLeast && tg.isVersionAtLeast("6.9");
+// Ключи CloudStorage: только A-Z a-z 0-9 _ - (до 128 символов), значение до 4096 символов.
 const Store = {
+  local(key) { try { const v = localStorage.getItem("ia_" + key); return v ? JSON.parse(v) : null; } catch (e) { return null; } },
   get(key) {
     return new Promise(res => {
-      let local = null;
-      try { local = localStorage.getItem("ia_" + key); } catch (e) {}
-      if (!hasCloud) return res(local ? JSON.parse(local) : null);
-      tg.CloudStorage.getItem(key + "#n", (err, n) => {
-        n = +n || 0;
-        if (err || !n) return res(local ? JSON.parse(local) : null);
-        const keys = Array.from({ length: n }, (_, i) => key + "#" + i);
-        tg.CloudStorage.getItems(keys, (err2, vals) => {
-          if (err2 || !vals) return res(local ? JSON.parse(local) : null);
-          try { res(JSON.parse(keys.map(k => vals[k] || "").join(""))); } catch (e) { res(local ? JSON.parse(local) : null); }
+      const local = this.local(key);
+      if (!hasCloud) return res(local);
+      let done = false;
+      const finish = v => { if (!done) { done = true; res(v); } };
+      setTimeout(() => finish(local), 2500); // если Telegram не ответил, работаем с локальной копией
+      try {
+        tg.CloudStorage.getItem(key + "_n", (err, n) => {
+          n = +n || 0;
+          if (err || !n) return finish(local);
+          const keys = Array.from({ length: n }, (_, i) => key + "_" + i);
+          tg.CloudStorage.getItems(keys, (err2, vals) => {
+            if (err2 || !vals) return finish(local);
+            try { finish(JSON.parse(keys.map(k => vals[k] || "").join(""))); } catch (e) { finish(local); }
+          });
         });
-      });
+      } catch (e) { finish(local); }
     });
   },
   set(key, obj) {
     const s = JSON.stringify(obj);
     try { localStorage.setItem("ia_" + key, s); } catch (e) {}
     if (!hasCloud) return;
-    const parts = s.match(/[\s\S]{1,3500}/g) || [""];
-    parts.forEach((p, i) => tg.CloudStorage.setItem(key + "#" + i, p));
-    tg.CloudStorage.setItem(key + "#n", String(parts.length));
+    try {
+      const parts = s.match(/[\s\S]{1,3500}/g) || [""];
+      parts.forEach((p, i) => tg.CloudStorage.setItem(key + "_" + i, p));
+      tg.CloudStorage.setItem(key + "_n", String(parts.length));
+    } catch (e) {}
   },
 };
 
@@ -192,10 +200,10 @@ let tab = "home";
 let month = new Date(); month.setDate(1);
 const monthCache = {};
 async function loadMonth(key) {
-  if (!monthCache[key]) monthCache[key] = (await Store.get("m" + key)) || [];
+  if (!monthCache[key]) monthCache[key] = (await Store.get("m" + key.replace("-", "_"))) || [];
   return monthCache[key];
 }
-function saveMonth(key) { Store.set("m" + key, monthCache[key]); }
+function saveMonth(key) { Store.set("m" + key.replace("-", "_"), monthCache[key]); }
 function saveSettings() { Store.set("settings", S); }
 
 /* ---------- навигация ---------- */
@@ -1094,7 +1102,8 @@ async function init() {
   drawNav(); go(TABS.some(t => t[0] === start) ? start : "home");
   if (!S.profile) openProfile(true);
 }
-init();
+init().catch(e => { document.getElementById("view").innerHTML = '<div class="card"><b>Ошибка запуска</b><div class="muted">' + esc(e && e.message || e) + '</div></div>'; });
+window.addEventListener("error", e => { const v = document.getElementById("view"); if (v && !v.innerHTML.trim()) v.innerHTML = '<div class="card"><b>Ошибка</b><div class="muted">' + esc(e.message) + '</div></div>'; });
 </script>
 </body>
 </html>
