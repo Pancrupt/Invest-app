@@ -705,6 +705,28 @@ function parsePdfStatement(lines) {
   if (!tx.length) throw new Error("Не нашёл операций в PDF. Попробуй выгрузить выписку в CSV.");
   return tx;
 }
+// Excel (.xlsx, .xls): библиотека SheetJS превращает первый лист в CSV, дальше общий разбор
+let xlsxReady = null;
+function loadXlsx() {
+  if (!xlsxReady) xlsxReady = new Promise((res, rej) => {
+    const sc = document.createElement("script");
+    sc.src = "https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js";
+    sc.onload = () => res(window.XLSX);
+    sc.onerror = () => { xlsxReady = null; rej(new Error("Не удалось загрузить модуль чтения Excel. Проверь интернет или загрузи CSV/PDF.")); };
+    document.head.appendChild(sc);
+  });
+  return xlsxReady;
+}
+async function excelToCsv(buf) {
+  const X = await loadXlsx();
+  const wb = X.read(buf, { type: "array", cellDates: true });
+  let last = null;
+  for (const name of wb.SheetNames) {
+    const csv = X.utils.sheet_to_csv(wb.Sheets[name], { FS: ";", dateNF: "yyyy-mm-dd", rawNumbers: true, blankrows: false });
+    try { parseCsvText(csv); return csv; } catch (e) { last = e; }
+  }
+  throw last || new Error("В файле Excel не нашлось операций.");
+}
 async function readFileText(file) {
   const buf = await file.arrayBuffer();
   try { return new TextDecoder("utf-8", { fatal: true }).decode(buf); } catch (e) { return new TextDecoder("windows-1250").decode(buf); }
@@ -718,8 +740,8 @@ function openImport() {
   const { sh, close } = openSheet(`<h3>📄 Загрузить выписку</h3>
     <p class="muted" style="margin-top:-6px">Файл читается прямо здесь, на телефоне, и никуда не отправляется. В приложении сохраняются только суммы, даты и короткие названия магазинов.</p>
     <div class="tip"><b>Какой файл подойдёт</b>
-      CSV из истории операций (Millennium, PKO, mBank, ING, Santander, Pekao, Revolut) или выписка банка в PDF (wyciąg). Можно сразу несколько файлов, например за разные месяцы. Подходит и выписка Trading 212 в CSV: из неё возьмутся траты по карте.</div>
-    <input type="file" id="iFile" accept=".csv,.txt,.pdf,text/csv,application/pdf" multiple style="display:none">
+      Выписка банка в PDF (wyciąg), Excel (.xlsx, .xls) или CSV: Millennium, PKO, mBank, ING, Santander, Pekao, Revolut и другие. Можно сразу несколько файлов, например за разные месяцы. Подходит и выписка Trading 212 в CSV: из неё возьмутся траты по карте.</div>
+    <input type="file" id="iFile" accept=".csv,.txt,.pdf,.xlsx,.xls,text/csv,application/pdf,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,application/vnd.ms-excel" multiple style="display:none">
     <button class="btn" id="iPick">Выбрать файл</button>
     <div id="iErr" class="minus" style="margin-top:10px"></div>`, () => go(tab));
   const inp = sh.querySelector("#iFile");
@@ -731,7 +753,10 @@ function openImport() {
       for (const f of inp.files) {
         const head = new Uint8Array(await f.slice(0, 5).arrayBuffer());
         const isPdf = head[0] === 0x25 && head[1] === 0x50 && head[2] === 0x44 && head[3] === 0x46;
-        all = all.concat(isPdf ? parsePdfStatement(await pdfLines(await f.arrayBuffer())) : parseCsvText(await readFileText(f)));
+        const isZip = head[0] === 0x50 && head[1] === 0x4b, isOle = head[0] === 0xd0 && head[1] === 0xcf;
+        if (isPdf) all = all.concat(parsePdfStatement(await pdfLines(await f.arrayBuffer())));
+        else if (isZip || isOle || /\.xlsx?$/i.test(f.name)) all = all.concat(parseCsvText(await excelToCsv(await f.arrayBuffer())));
+        else all = all.concat(parseCsvText(await readFileText(f)));
       }
       reviewImport(all);
     } catch (e) { sh.querySelector("#iErr").textContent = e.message; sh.querySelector("#iPick").textContent = "Выбрать файл"; haptic("error"); }
