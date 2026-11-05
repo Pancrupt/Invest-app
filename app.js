@@ -557,16 +557,16 @@ async function openLife() {
 /* ---------- выписка из банка (CSV), разбор прямо на устройстве ---------- */
 const KW = [
   ["_skip", ["przelew własny", "przelew wlasny", "przelew wewnętrzny", "przelew wewnetrzny", "między rachunkami", "miedzy rachunkami", "trading 212", "trading212", "xtb", "revolut**", "top-up", "doładowanie revolut", "spłata karty", "splata karty"]],
-  ["cafe", ["kebap", "kuchnia", "grill", "pierogarnia", "bakery", "uber eats", "ubereats", "wolt", "glovo", "pyszne", "bolt food", "mcdonald", "kfc", "burger", "starbucks", "costa coffee", "pizza", "sushi", "kebab", "restaur", "bistro", "kawiarnia", "cafe", "coffee", "bar mleczny", "pizzeria", "żabka cafe"]],
-  ["food", ["merkus", "smakołyk", "smakolyk", "carrefour express", "sklep spożywczy", "spozywczy", "biedronka", "lidl", "auchan", "carrefour", "kaufland", "żabka", "zabka", "netto", "dino", "stokrotka", "aldi", "lewiatan", "polomarket", "frisco", "piekarnia", "intermarche", "spar", "groszek", "delikatesy", "mięsny", "warzywa", "rynek"]],
-  ["transport", ["city-nav", "citynav", "parkometr", "uber", "bolt", "freenow", "free now", "traficar", "panek", "ztm", "skm", "pkp", "intercity", "polregio", "jakdojade", "mevo", "flixbus", "itaxi", "koleo", "zbiorkom"]],
+  ["cafe", ["kafferia", "five o clock", "kebap", "kuchnia", "grill", "pierogarnia", "bakery", "uber eats", "ubereats", "wolt", "glovo", "pyszne", "bolt food", "mcdonald", "kfc", "burger", "starbucks", "costa coffee", "pizza", "sushi", "kebab", "restaur", "bistro", "kawiarnia", "cafe", "coffee", "bar mleczny", "pizzeria", "żabka cafe"]],
+  ["food", ["duzy ben", "duży ben", "merkus", "smakołyk", "smakolyk", "carrefour express", "sklep spożywczy", "spozywczy", "biedronka", "lidl", "auchan", "carrefour", "kaufland", "żabka", "zabka", "netto", "dino", "stokrotka", "aldi", "lewiatan", "polomarket", "frisco", "piekarnia", "intermarche", "spar", "groszek", "delikatesy", "mięsny", "warzywa", "rynek"]],
+  ["transport", ["mobile-traffic", "mzkzg", "bilet", "city-nav", "citynav", "parkometr", "uber", "bolt", "freenow", "free now", "traficar", "panek", "ztm", "skm", "pkp", "intercity", "polregio", "jakdojade", "mevo", "flixbus", "itaxi", "koleo", "zbiorkom"]],
   ["car", ["orlen", "bp ", "shell", "circle k", "moya", "amic", "lotos", "parking", "parkowanie", "autostrada", "a1 ", "myjnia", "mechanik", "ubezpieczenie oc"]],
   ["health", ["apteka", "doz", "gemini", "super-pharm", "superpharm", "medicover", "luxmed", "lux med", "enel-med", "enelmed", "dentyst", "stomatolog", "lekarz", "przychodnia", "diagnostyka", "optyk"]],
   ["beauty", ["rossmann", "hebe", "sephora", "douglas", "notino", "fryzjer", "barber", "kosmetyk", "salon urody", "manicure", "zdrofit", "calypso", "fitness", "siłownia", "silownia", "multisport", "medicinet", "booksy"]],
   ["subs", ["yesim", "airalo", "netflix", "spotify", "apple.com", "apple com", "itunes", "google", "youtube", "hbo", "max.com", "disney", "canva", "capcut", "dramawave", "chatgpt", "openai", "anthropic", "claude.ai", "orange", "play ", "p4 ", "plus gsm", "polkomtel", "t-mobile", "tmobile", "heyah", "upc", "vectra", "netia", "icloud", "microsoft", "amazon prime", "player.pl", "audioteka", "storytel"]],
   ["kids", ["smyk", "przedszkol", "żłob", "zlob", "szkoła", "szkola", "toys", "lego", "empik junior"]],
   ["pets", ["zoolog", "zooplus", "maxi zoo", "kakadu", "weterynar", "vet ", "petshop", "zoo "]],
-  ["shop", ["tedi", "kik ", "sklep ", "allegro", "zalando", "amazon", "temu", "aliexpress", "shein", "ikea", "media markt", "mediamarkt", "rtv euro", "euro rtv", "x-kom", "decathlon", "pepco", "action", "h&m", "reserved", "sinsay", "cropp", "house ", "ccc", "deichmann", "empik", "jysk", "castorama", "leroy", "obi ", "tk maxx", "lpp", "vinted", "olx", "half price", "primark", "mohito", "medicine"]],
+  ["shop", ["jula", "tedi", "kik ", "sklep ", "allegro", "zalando", "amazon", "temu", "aliexpress", "shein", "ikea", "media markt", "mediamarkt", "rtv euro", "euro rtv", "x-kom", "decathlon", "pepco", "action", "h&m", "reserved", "sinsay", "cropp", "house ", "ccc", "deichmann", "empik", "jysk", "castorama", "leroy", "obi ", "tk maxx", "lpp", "vinted", "olx", "half price", "primark", "mohito", "medicine"]],
   ["fun", ["cinema city", "multikino", "helios", "booking", "airbnb", "ryanair", "wizz", "lot.com", "steam", "playstation", "xbox", "nintendo", "ebilet", "biletyna", "kupbilet", "going.", "bowling", "escape"]],
   ["home", ["culligan", "czynsz", "najem", "wynajem", "pge", "energa", "tauron", "enea", "pgnig", "e.on", "fortum", "gaz ", "wodociąg", "wodociag", "saur", "aquanet", "pod klucz", "wspólnota", "wspolnota", "spółdzielnia", "spoldzielnia", "media za", "opłaty za mieszkanie", "ubezpieczenie mieszkania"]],
   ["debt", ["rata ", "kredyt", "pożyczk", "pozyczk", "odsetki", "spłata", "splata", "provident", "wonga", "smartney"]],
@@ -678,13 +678,13 @@ async function pdfLines(buf) {
 }
 function parsePdfStatement(lines) {
   const reDate = /^(\d{1,2})[.\-/](\d{1,2})[.\-/](\d{4})|^(\d{4})-(\d{2})-(\d{2})/;
-  const reAmt = /(?:^|\s)(-?\d{1,3}(?:[ \u00a0.]\d{3})*,\d{2})(?=\s|$)/g;
+  const reAmt = /(?:^|\s)(-?\d{1,3}(?:[ \u00a0.]\d{3})*,\d{2}-?)(?=\s|$)/g; // Millennium пишет минус после суммы: 42,81-
   const toDate = m => m[4] ? new Date(+m[4], +m[5] - 1, +m[6]) : new Date(+m[3], +m[2] - 1, +m[1]);
-  const pn = s => parseFloat(s.replace(/[ \u00a0.]/g, "").replace(",", "."));
+  const pn = s => { const neg = /-$/.test(s); const v = parseFloat(s.replace(/-$/, "").replace(/[ \u00a0.]/g, "").replace(",", ".")); return neg ? -v : v; };
   const tx = []; let cur = null, extra = 0;
   for (const raw of lines) {
     const line = raw.replace(/\s+/g, " ").trim();
-    if (/saldo (początkowe|poczatkowe|końcowe|koncowe|otwarcia|zamknięcia)|strona \d+|numer (wyciągu|rachunku)|^data /i.test(line)) { cur = null; continue; }
+    if (/saldo (początkowe|poczatkowe|końcowe|koncowe|otwarcia|zamknięcia)|strona \d+|numer (wyciągu|rachunku)|^data |^księg|^ksieg/i.test(line)) { cur = null; continue; }
     const m = line.match(reDate);
     if (m) {
       let rest = line.slice(m[0].length).trim();
@@ -699,7 +699,7 @@ function parsePdfStatement(lines) {
       if (!a) { cur = null; continue; }
       cur = { date, a, desc }; tx.push(cur); extra = 0;
     } else if (cur && extra < 4 && line && !/^(wpływy|wydatki|saldo|opis|księgowania)/i.test(line)) {
-      cur.desc += " " + line; extra++;
+      cur.desc += " · " + line; extra++;
     }
   }
   if (!tx.length) throw new Error("Не нашёл операций в PDF. Попробуй выгрузить выписку в CSV.");
@@ -732,8 +732,12 @@ async function readFileText(file) {
   try { return new TextDecoder("utf-8", { fatal: true }).decode(buf); } catch (e) { return new TextDecoder("windows-1250").decode(buf); }
 }
 function shortName(desc) {
+  const odb = desc.match(/Odbiorca:\s*([^·]+?)\s+Tytu/i); if (odb) return odb[1].trim().slice(0, 30);
+  desc = desc.split(" · ").filter(p => !/^(karta:|dnia:|kwota transakcji|posiadacz|ref:|nr ref|data transakcji|data nadania|zleceniodawca|na r-k|z r-ku|na nr tel|tytuł:?$)/i.test(p.trim())).join(" · ");
+  if (/^(przelew|płatność blik|platnosc blik|obciążenie|obciazenie|zlecenie stałe|polecenie zapłaty)[^·]*( · |$)/i.test(desc)) { const rest = desc.split(" · ").slice(1).join(" "); if (rest) desc = rest; }
+  if (/^(płatność kartą|platnosc karta|wpłata|wplata)( · |$)/i.test(desc)) { const rest = desc.split(" · ").slice(1).join(" "); if (rest) return rest.replace(/\s+(POL|PL)$/, "").replace(/\s+(SP\.? Z\.? ?O\.? ?O\.?|SP K|SPÓŁKA).*$/i, "").replace(/\s+/g, " ").trim().slice(0, 30); }
   let m = desc.match(/KART[AĄ]\s+[\d.,]+\s+[A-Z]{3}\s+(.+)/i) || desc.match(/BLIK\s+(?:P2P\s+)?(.+)/i) || desc.match(/^(?:PRZELEW|ZLECENIE)[^ ]*\s+(?:NA RACHUNEK|DO|OD)?\s*(.+)/i);
-  if (m) return m[1].replace(/\s+\d{6,}.*$/, "").replace(/\s+(SPÓŁKA|SP\. Z O\.O|SP Z OO|S\.A\.).*$/i, "").replace(/\s+K\.\d+/, "").replace(/\s+/g, " ").trim().slice(0, 30);
+  if (m) return m[1].replace(/ · /g, " ").replace(/\s+\d{6,}.*$/, "").replace(/\s+(SPÓŁKA|SP\. Z O\.O|SP Z OO|S\.A\.).*$/i, "").replace(/\s+K\.\d+/, "").replace(/\s+/g, " ").trim().slice(0, 30);
   return desc.split(" · ").map(s => s.replace(/\b\d{4,}\b|\bpl\d+\b|\b[a-z]{2}\d{2}[\d ]{10,}\b/gi, "").trim()).filter(s => s && !/^(płatność kartą|platnosc karta|zakup|transakcja|card payment|przelew|blik|płatność|operacja kartą)/i.test(s))[0] || desc.slice(0, 30);
 }
 function openImport() {
@@ -765,6 +769,7 @@ function openImport() {
 function reviewImport(tx) {
   const exp = [], inc = [];
   tx.forEach(t => {
+    if (t.a > 0 && /zwrot|refund/i.test(t.desc)) { const c = guessCat(t.desc, -t.a); exp.push({ date: t.date, a: -t.a, desc: t.desc, n: shortName(t.desc).slice(0, 30), c: c && c !== "_skip" ? c : "other", skip: false, unk: false, refund: true }); return; }
     if (t.a > 0) { inc.push(t); return; }
     const c = guessCat(t.desc, t.a);
     exp.push({ date: t.date, a: -t.a, desc: t.desc, n: shortName(t.desc).slice(0, 30), c: c === "_skip" ? null : (c || "other"), skip: c === "_skip", unk: !c });
