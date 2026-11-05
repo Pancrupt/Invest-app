@@ -1,0 +1,1000 @@
+"use strict";
+const tg = window.Telegram && window.Telegram.WebApp;
+const inTg = !!(tg && tg.platform && tg.platform !== "unknown");
+const BOT_LIMITS = { IKE: 28260, IKZE: 11304, IKZE_JDG: 16956, year: 2026 };
+const MONTHS = ["январь","февраль","март","апрель","май","июнь","июль","август","сентябрь","октябрь","ноябрь","декабрь"];
+const MONTHS_G = ["января","февраля","марта","апреля","мая","июня","июля","августа","сентября","октября","ноября","декабря"];
+
+/* ---------- хранилище: Telegram CloudStorage (синхронизируется между устройствами), запасной вариант localStorage ---------- */
+const hasCloud = inTg && tg.CloudStorage && tg.isVersionAtLeast && tg.isVersionAtLeast("6.9");
+// Ключи CloudStorage: только A-Z a-z 0-9 _ - (до 128 символов), значение до 4096 символов.
+const Store = {
+  local(key) { try { const v = localStorage.getItem("ia_" + key); return v ? JSON.parse(v) : null; } catch (e) { return null; } },
+  get(key) {
+    return new Promise(res => {
+      const local = this.local(key);
+      if (!hasCloud) return res(local);
+      let done = false;
+      const finish = v => { if (!done) { done = true; res(v); } };
+      setTimeout(() => finish(local), 2500); // если Telegram не ответил, работаем с локальной копией
+      try {
+        tg.CloudStorage.getItem(key + "_n", (err, n) => {
+          n = +n || 0;
+          if (err || !n) return finish(local);
+          const keys = Array.from({ length: n }, (_, i) => key + "_" + i);
+          tg.CloudStorage.getItems(keys, (err2, vals) => {
+            if (err2 || !vals) return finish(local);
+            try { finish(JSON.parse(keys.map(k => vals[k] || "").join(""))); } catch (e) { finish(local); }
+          });
+        });
+      } catch (e) { finish(local); }
+    });
+  },
+  set(key, obj) {
+    const s = JSON.stringify(obj);
+    try { localStorage.setItem("ia_" + key, s); } catch (e) {}
+    if (!hasCloud) return;
+    try {
+      const parts = s.match(/[\s\S]{1,3500}/g) || [""];
+      parts.forEach((p, i) => tg.CloudStorage.setItem(key + "_" + i, p));
+      tg.CloudStorage.setItem(key + "_n", String(parts.length));
+    } catch (e) {}
+  },
+};
+
+/* ---------- форматирование ---------- */
+let S = null; // настройки
+function fmt(v) { return Math.round(v).toLocaleString("ru-RU").replace(/ /g, " "); }
+function money(v, cur) { cur = cur || S.cur; const s = (v < 0 ? "−" : "") + fmt(Math.abs(v)); return cur === "$" ? (v < 0 ? "−$" + fmt(-v) : "$" + s) : s + " " + cur; }
+function num(s) { const v = parseFloat(String(s).replace(/\s/g, "").replace(",", ".")); return isFinite(v) && v >= 0 ? v : 0; }
+function esc(s) { return String(s).replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c])); }
+function yWord(n) { n = Math.abs(n) % 100; const d = n % 10; if (n > 10 && n < 20) return "лет"; if (d === 1) return "год"; if (d >= 2 && d <= 4) return "года"; return "лет"; }
+function mWord(n) { n = Math.abs(n) % 100; const d = n % 10; if (n > 10 && n < 20) return "месяцев"; if (d === 1) return "месяц"; if (d >= 2 && d <= 4) return "месяца"; return "месяцев"; }
+function duration(m) { const y = Math.floor(m / 12), r = m % 12; return [y ? y + " " + yWord(y) : "", r ? r + " " + mWord(r) : ""].filter(Boolean).join(" ") || "0 месяцев"; }
+function haptic(t) { try { inTg && tg.HapticFeedback && (t ? tg.HapticFeedback.notificationOccurred(t) : tg.HapticFeedback.selectionChanged()); } catch (e) {} }
+function monthKey(d) { return d.getFullYear() + "-" + String(d.getMonth() + 1).padStart(2, "0"); }
+
+/* ---------- категории трат ---------- */
+// need: when — показывать, только если в анкете отмечено; split — делить план и траты по взрослым
+const ALL_CATS = [
+  { id: "home", ic: "🏠", name: "Жильё", hint: "аренда, коммуналка, интернет", subs: ["Аренда / ипотека", "Коммуналка", "Интернет и ТВ"] },
+  { id: "food", ic: "🛒", name: "Продукты", hint: "магазины, рынок", subs: ["Супермаркет", "Рынок", "Бытовая химия"] },
+  { id: "cafe", ic: "☕", name: "Кафе и доставка", hint: "рестораны, Wolt, Glovo", subs: ["Доставка", "Кафе", "Кофе с собой"] },
+  { id: "transport", ic: "🚌", name: "Транспорт", hint: "проезд, такси, каршеринг", subs: ["Проезд", "Такси", "Каршеринг", "Поезда"] },
+  { id: "car", ic: "🚗", name: "Машина", hint: "топливо, страховка, ремонт", subs: ["Топливо", "Страховка OC/AC", "Сервис и ремонт", "Парковки"], need: "car" },
+  { id: "health", ic: "💊", name: "Здоровье", hint: "аптеки, врачи", subs: ["Аптека", "Врачи", "Стоматолог"] },
+  { id: "beauty", ic: "💇", name: "Уход за собой", hint: "парикмахер, косметика, спорт", subs: ["Парикмахер / барбер", "Косметика", "Спорт"], split: true },
+  { id: "subs", ic: "📱", name: "Подписки и связь", hint: "телефон, Netflix, Apple", subs: ["Телефон", "Стриминг", "Сервисы"] },
+  { id: "shop", ic: "👕", name: "Одежда и покупки", hint: "одежда, техника, дом", subs: ["Одежда и обувь", "Техника", "Для дома"], split: true },
+  { id: "fun", ic: "🎬", name: "Отдых и развлечения", hint: "кино, поездки, хобби", subs: ["Развлечения", "Путешествия", "Хобби"] },
+  { id: "kids", ic: "🧸", name: "Дети", hint: "садик, кружки, одежда", subs: ["Садик / школа", "Кружки", "Одежда", "Игрушки"], need: "kids" },
+  { id: "pets", ic: "🐾", name: "Животные", hint: "корм, ветеринар", subs: ["Корм", "Ветеринар", "Груминг и аксессуары"], need: "pets" },
+  { id: "debt", ic: "💳", name: "Кредиты и долги", hint: "рассрочки, лимит", subs: ["Кредит", "Рассрочка", "Проценты"], need: "loans" },
+  { id: "gifts", ic: "🎁", name: "Подарки", hint: "дни рождения, праздники", subs: [] },
+  { id: "other", ic: "📦", name: "Прочее", hint: "всё остальное, наличные", subs: ["Наличные", "Комиссии банка"] },
+];
+const CAT = Object.fromEntries(ALL_CATS.map(c => [c.id, c]));
+let CATS = ALL_CATS;
+function rebuildCats() {
+  const p = S.profile || {};
+  CATS = ALL_CATS.filter(c => !c.need || (c.need === "kids" ? p.kids > 0 : p[c.need]));
+}
+function persons() { const p = S.profile || {}; return p.adults === 2 ? [p.n1 || "Я", p.n2 || "Партнёр"] : null; }
+function isSplit(id) { return !!(CAT[id].split && persons()); }
+function planOf(id) { if (isSplit(id)) { const a = S.plansP[id] || [0, 0]; return (a[0] || 0) + (a[1] || 0); } return S.plans[id] || 0; }
+
+const DEFAULT_SETTINGS = {
+  cur: "zł", income: 0, plans: {}, plansP: {}, city: "gdansk", rooms: "2", profile: null, rules: {},
+  calc: { mode: "target", start: 0, monthly: 1000, rate: 7, target: 100000, years: 15, cur: "$" },
+  budget: { amount: 0, pcts: null },
+};
+
+/* ---------- состояние ---------- */
+let tab = "home";
+let month = new Date(); month.setDate(1);
+const monthCache = {};
+async function loadMonth(key) {
+  if (!monthCache[key]) monthCache[key] = (await Store.get("m" + key.replace("-", "_"))) || [];
+  return monthCache[key];
+}
+function saveMonth(key) { Store.set("m" + key.replace("-", "_"), monthCache[key]); }
+function saveSettings() { Store.set("settings", S); }
+
+/* ---------- навигация ---------- */
+const TABS = [
+  ["home", "🏡", "Главная"], ["spend", "💸", "Траты"], ["budget", "💰", "Бюджет"], ["calc", "📈", "Накопления"], ["more", "☰", "Ещё"],
+];
+function drawNav() {
+  document.getElementById("nav").innerHTML = TABS.map(([id, ic, t]) => `<button data-tab="${id}" class="${tab === id ? "on" : ""}"><b>${ic}</b>${t}</button>`).join("");
+  document.querySelectorAll("nav button").forEach(b => b.onclick = () => go(b.dataset.tab));
+}
+function go(t) {
+  tab = t; haptic(); drawNav(); window.scrollTo(0, 0);
+  document.getElementById("fab").classList.toggle("hidden", !(t === "spend" || t === "home"));
+  if (inTg && tg.BackButton) tg.BackButton.hide();
+  ({ home: viewHome, spend: viewSpend, budget: viewBudget, calc: viewCalc, more: viewMore })[t]();
+}
+function setHead(title, sub) { document.getElementById("title").textContent = title; document.getElementById("subtitle").textContent = sub || ""; }
+const V = () => document.getElementById("view");
+
+/* ---------- траты: подсчёт ---------- */
+async function monthStats(d) {
+  const key = monthKey(d);
+  const items = await loadMonth(key);
+  const by = {}, byP = {}, bySub = {};
+  ALL_CATS.forEach(c => { by[c.id] = 0; byP[c.id] = [0, 0]; bySub[c.id] = {}; });
+  items.forEach(e => {
+    if (!by.hasOwnProperty(e.c)) e.c = "other";
+    by[e.c] += e.a;
+    if (e.p === 0 || e.p === 1) byP[e.c][e.p] += e.a;
+    const s = e.s || "—"; bySub[e.c][s] = (bySub[e.c][s] || 0) + e.a;
+  });
+  const spent = Object.values(by).reduce((a, b) => a + b, 0);
+  const plan = CATS.reduce((a, c) => a + planOf(c.id), 0);
+  return { key, items, by, byP, bySub, spent, plan };
+}
+async function avgByCat(n) { // средние траты за последние n полных месяцев с данными
+  const sums = {}; let cnt = 0;
+  for (let i = 1; i <= 12 && cnt < n; i++) {
+    const d = new Date(); d.setDate(1); d.setMonth(d.getMonth() - i);
+    const st = await monthStats(d);
+    if (!st.items.length) continue;
+    cnt++; ALL_CATS.forEach(c => sums[c.id] = (sums[c.id] || 0) + st.by[c.id]);
+  }
+  if (!cnt) return null;
+  ALL_CATS.forEach(c => sums[c.id] /= cnt);
+  sums._n = cnt; return sums;
+}
+function monthProgress(d) {
+  const now = new Date();
+  if (d.getFullYear() !== now.getFullYear() || d.getMonth() !== now.getMonth()) return 1;
+  const days = new Date(d.getFullYear(), d.getMonth() + 1, 0).getDate();
+  return now.getDate() / days;
+}
+function statusOf(spent, plan, prog) {
+  if (!plan) return { cls: "", txt: spent ? money(spent) : "—", sub: "план не задан" };
+  const left = plan - spent;
+  if (left < 0) return { cls: "minus", txt: "−" + money(-left), sub: "перерасход" };
+  const pace = spent / plan;
+  return { cls: pace > prog + 0.1 ? "" : "plus", txt: "+" + money(left), sub: pace > prog + 0.1 ? "тратится быстрее плана" : "осталось" };
+}
+function barHtml(spent, plan, prog) {
+  if (!plan) return "";
+  const p = Math.min(100, spent / plan * 100);
+  const cls = spent > plan ? "over" : spent / plan > prog + 0.1 ? "near" : "";
+  return `<div class="bar"><i class="${cls}" style="width:${p}%"></i></div>`;
+}
+
+/* ---------- Главная ---------- */
+async function viewHome() {
+  const now = new Date(); now.setDate(1);
+  const st = await monthStats(now);
+  const prog = monthProgress(now);
+  setHead("Главная", `${MONTHS[now.getMonth()]} ${now.getFullYear()}`);
+  const left = st.plan - st.spent;
+  const free = S.income ? S.income - st.plan : 0;
+  const worst = CATS.map(c => ({ c, over: st.by[c.id] - planOf(c.id) * prog })).filter(x => planOf(x.c.id) && x.over > 0).sort((a, b) => b.over - a.over).slice(0, 3);
+  let h = `<div class="card"><h2>Траты за месяц</h2>
+    <div class="row"><div><div class="big">${money(st.spent)}</div><div class="muted">${st.plan ? "из плана " + money(st.plan) : "план ещё не задан"}</div></div>
+    ${st.plan ? `<div class="st ${left < 0 ? "minus" : "plus"}">${left < 0 ? "перерасход<br>" + money(-left) : "осталось<br>" + money(left)}</div>` : ""}</div>
+    ${barHtml(st.spent, st.plan, prog)}</div>`;
+  if (!S.income || !st.plan) {
+    h += `<div class="card"><h2>С чего начать</h2>
+      <div class="tip"><b>1. Загрузи выписку из банка</b>Приложение само разложит траты по категориям и покажет, сколько уходит в месяц. Выписка читается на телефоне и никуда не отправляется.</div>
+      <button class="btn" id="goImport">📄 Загрузить выписку</button>
+      <div class="tip" style="margin-top:12px"><b>2. Или впиши доход и план вручную</b>Сколько приходит в месяц и сколько готов тратить по каждой категории.</div>
+      <button class="btn sec" id="goPlan">Задать доход и план</button></div>`;
+  } else {
+    h += `<div class="card"><h2>Доход и план</h2><div class="row"><span>Доход</span><b>${money(S.income)}</b></div>
+      <div class="row" style="margin-top:6px"><span>Запланировано трат</span><b>${money(st.plan)}</b></div>
+      <div class="row" style="margin-top:6px"><span>Остаётся на накопления</span><b class="${free < 0 ? "minus" : "plus"}">${money(free)}</b></div>
+      <button class="btn" id="goLife">🧭 Мой план по всем статьям</button></div>`;
+  }
+  if (worst.length) {
+    h += `<div class="card"><h2>Где подтянуться</h2>${worst.map(w => `<div class="cat" data-cat="${w.c.id}"><div class="ic">${w.c.ic}</div><div class="mid"><div class="nm">${w.c.name}</div><div class="muted">быстрее плана на ${money(w.over)}</div></div><div class="st">›</div></div>`).join("")}</div>`;
+  }
+  const inv = S.income && st.plan ? Math.max(0, S.income - st.plan) : 0;
+  if (inv > 0) {
+    const n = monthsToTarget(0, inv, 7, 100000 * (S.cur === "zł" ? 3.7 : S.cur === "₽" ? 85 : S.cur === "€" ? 0.9 : 1));
+    h += `<div class="card"><h2>Путь к $100 000</h2><div>Если откладывать ${money(inv)} в месяц под 7% годовых, $100 000 наберётся примерно через <b>${n === null ? "60+ лет" : duration(n)}</b>.</div>
+      <button class="btn sec" id="goCalc">Посчитать подробно</button></div>`;
+  }
+  V().innerHTML = h;
+  const b = (id, f) => { const el = document.getElementById(id); if (el) el.onclick = f; };
+  b("goPlan", () => openPlan()); b("goImport", () => openImport()); b("goLife", () => openLife());
+  b("goCalc", () => { S.calc.monthly = Math.round(inv); S.calc.cur = S.cur; saveSettings(); go("calc"); });
+  V().querySelectorAll("[data-cat]").forEach(el => el.onclick = () => { go("spend"); openCat(el.dataset.cat); });
+}
+
+/* ---------- Траты ---------- */
+async function viewSpend() {
+  const st = await monthStats(month);
+  const prog = monthProgress(month);
+  setHead("Траты", "");
+  const isNow = monthKey(month) === monthKey(new Date());
+  let h = `<div class="card"><div class="row"><button class="chip" id="prevM">‹</button><b>${MONTHS[month.getMonth()]} ${month.getFullYear()}</b><button class="chip" id="nextM" ${isNow ? "disabled style=opacity:.3" : ""}>›</button></div>
+    <div class="row" style="margin-top:12px"><div><div class="big">${money(st.spent)}</div><div class="muted">${st.plan ? "план " + money(st.plan) : "план не задан"}</div></div>
+    <div class="chips"><button class="chip" id="impBtn">📄 Выписка</button><button class="chip" id="editPlan">✏️ План</button></div></div>${barHtml(st.spent, st.plan, prog)}</div><div class="card">`;
+  let shown = 0;
+  CATS.forEach(c => {
+    const plan = planOf(c.id), spent = st.by[c.id] || 0;
+    shown++;
+    const s = statusOf(spent, plan, prog);
+    h += `<div class="cat" data-cat="${c.id}"><div class="ic">${c.ic}</div><div class="mid"><div class="nm">${c.name}</div>
+      <div class="muted">${money(spent)}${plan ? " из " + money(plan) : ""}</div>${barHtml(spent, plan, prog)}</div>
+      <div class="st ${s.cls}">${s.txt}<div class="muted" style="font-weight:400">${s.sub}</div></div></div>`;
+  });
+  h += `</div>`;
+  V().innerHTML = h;
+  document.getElementById("prevM").onclick = () => { month.setMonth(month.getMonth() - 1); viewSpend(); };
+  document.getElementById("nextM").onclick = () => { if (!isNow) { month.setMonth(month.getMonth() + 1); viewSpend(); } };
+  document.getElementById("editPlan").onclick = () => openPlan();
+  document.getElementById("impBtn").onclick = () => openImport();
+  V().querySelectorAll("[data-cat]").forEach(el => el.onclick = () => openCat(el.dataset.cat));
+}
+
+/* ---------- окно (bottom sheet) ---------- */
+function openSheet(html, onClose) {
+  const sh = document.getElementById("sheet"), bg = document.getElementById("sheetBg");
+  sh.innerHTML = '<button class="sx" aria-label="Закрыть">✕</button>' + html; sh.classList.add("open"); bg.classList.add("open"); sh.scrollTop = 0;
+  const close = () => { sh.classList.remove("open"); bg.classList.remove("open"); if (inTg && tg.BackButton) { tg.BackButton.offClick(close); tg.BackButton.hide(); } onClose && onClose(); };
+  bg.onclick = close; sh.querySelector(".sx").onclick = close;
+  if (inTg && tg.BackButton) { if (window.__bb) tg.BackButton.offClick(window.__bb); window.__bb = close; tg.BackButton.onClick(close); tg.BackButton.show(); }
+  return { sh, close };
+}
+function chipsHtml(id, opts, on) { return `<div class="chips" id="${id}">${opts.map(([v, t]) => `<button class="chip ${String(v) === String(on) ? "on" : ""}" data-v="${v}">${t}</button>`).join("")}</div>`; }
+function bindChips(root, id, cb) { root.querySelectorAll(`#${id} .chip`).forEach(b => b.onclick = () => { root.querySelectorAll(`#${id} .chip`).forEach(x => x.classList.toggle("on", x === b)); haptic(); cb(b.dataset.v); }); }
+
+/* ---------- анкета ---------- */
+function openProfile(first) {
+  const p = Object.assign({ adults: 1, kids: 0, pets: false, car: false, loans: false, n1: "Я", n2: "Партнёр" }, S.profile || {});
+  const { sh, close } = openSheet(`<h3>${first ? "👋 Давай познакомимся" : "Анкета"}</h3>
+    <p class="muted" style="margin-top:-6px">От ответов зависит список статей расходов. Поменять можно в любой момент в «Ещё».</p>
+    <div class="field"><span>Сколько взрослых в бюджете</span>${chipsHtml("pfA", [[1, "Только я"], [2, "Двое"]], p.adults)}</div>
+    <div class="grid2 ${p.adults === 2 ? "" : "hidden"}" id="pfNames"><label class="field"><span>Первый</span><input id="pfN1" value="${esc(p.n1)}" maxlength="12"></label><label class="field"><span>Второй</span><input id="pfN2" value="${esc(p.n2)}" maxlength="12"></label></div>
+    <div class="field"><span>Дети</span>${chipsHtml("pfK", [[0, "Нет"], [1, "1"], [2, "2"], [3, "3+"]], p.kids)}</div>
+    <div class="field"><span>Животные</span>${chipsHtml("pfP", [["0", "Нет"], ["1", "Есть"]], p.pets ? 1 : 0)}</div>
+    <div class="field"><span>Своя машина</span>${chipsHtml("pfC", [["0", "Нет"], ["1", "Есть"]], p.car ? 1 : 0)}</div>
+    <div class="field"><span>Кредиты, рассрочки, лимит в счёте</span>${chipsHtml("pfL", [["0", "Нет"], ["1", "Есть"]], p.loans ? 1 : 0)}</div>
+    <label class="field"><span>Доход семьи в месяц на руки, ${S.cur} (можно позже)</span><input id="pfInc" inputmode="decimal" value="${S.income || ""}" placeholder="0"></label>
+    <button class="btn" id="pfSave">${first ? "Дальше" : "Сохранить"}</button>`, () => go(tab));
+  bindChips(sh, "pfA", v => { p.adults = +v; sh.querySelector("#pfNames").classList.toggle("hidden", p.adults !== 2); });
+  bindChips(sh, "pfK", v => p.kids = +v);
+  bindChips(sh, "pfP", v => p.pets = v === "1");
+  bindChips(sh, "pfC", v => p.car = v === "1");
+  bindChips(sh, "pfL", v => p.loans = v === "1");
+  sh.querySelector("#pfSave").onclick = () => {
+    p.n1 = sh.querySelector("#pfN1").value.trim() || "Я"; p.n2 = sh.querySelector("#pfN2").value.trim() || "Партнёр";
+    S.profile = p; const inc = num(sh.querySelector("#pfInc").value); if (inc) S.income = inc;
+    rebuildCats(); saveSettings(); haptic("success"); close();
+  };
+}
+
+/* ---------- новая трата ---------- */
+function openAdd(catId, preset) {
+  const today = new Date();
+  let cat = catId || "food", sub = "", who = 0;
+  const pp = persons();
+  const { sh, close } = openSheet(`<h3>Новая трата</h3>
+    <label class="field"><span>Сумма, ${S.cur}</span><input id="aSum" inputmode="decimal" placeholder="0" value="${preset || ""}"></label>
+    <div class="field"><span>Категория</span><div class="chips" id="aCats">${CATS.map(c => `<button class="chip ${c.id === cat ? "on" : ""}" data-c="${c.id}">${c.ic} ${c.name}</button>`).join("")}</div></div>
+    <div class="field" id="aSubW"><span>Подкатегория</span><div id="aSub"></div></div>
+    <div class="field" id="aWhoW"><span>Чья трата</span><div id="aWho"></div></div>
+    <label class="field"><span>Комментарий (необязательно)</span><input id="aNote" maxlength="30" placeholder="например, наличными на рынке"></label>
+    <label class="field"><span>Дата</span><input id="aDate" type="date" value="${today.toISOString().slice(0, 10)}"></label>
+    <button class="btn" id="aSave">Сохранить</button>`, () => { if (tab === "spend") viewSpend(); else if (tab === "home") viewHome(); });
+  const drawSub = () => {
+    const c = CAT[cat];
+    sh.querySelector("#aSubW").classList.toggle("hidden", !c.subs.length);
+    sh.querySelector("#aSub").innerHTML = chipsHtml("aSubC", c.subs.map(s => [s, s]), sub);
+    bindChips(sh, "aSubC", v => sub = v);
+    sh.querySelector("#aWhoW").classList.toggle("hidden", !isSplit(cat));
+    if (pp) { sh.querySelector("#aWho").innerHTML = chipsHtml("aWhoC", pp.map((n, i) => [i, n]), who); bindChips(sh, "aWhoC", v => who = +v); }
+  };
+  drawSub();
+  sh.querySelectorAll("#aCats .chip").forEach(b => b.onclick = () => { cat = b.dataset.c; sub = ""; sh.querySelectorAll("#aCats .chip").forEach(x => x.classList.toggle("on", x === b)); haptic(); drawSub(); });
+  setTimeout(() => sh.querySelector("#aSum").focus(), 250);
+  sh.querySelector("#aSave").onclick = async () => {
+    const a = num(sh.querySelector("#aSum").value);
+    if (!a) { sh.querySelector("#aSum").focus(); haptic("error"); return; }
+    const d = new Date(sh.querySelector("#aDate").value || today);
+    const key = monthKey(d);
+    const items = await loadMonth(key);
+    const e = { d: d.getDate(), c: cat, a: Math.round(a * 100) / 100, n: sh.querySelector("#aNote").value.trim().slice(0, 30) };
+    if (sub) e.s = sub; if (isSplit(cat)) e.p = who;
+    items.push(e); saveMonth(key); haptic("success"); close();
+  };
+}
+
+/* ---------- доход и план ---------- */
+function openPlan() {
+  const pp = persons();
+  const row = c => isSplit(c.id)
+    ? `<div class="field"><span>${c.ic} ${c.name} · <i>${c.hint}</i></span><div class="grid2">${pp.map((n, i) => `<label><span class="muted">${esc(n)}</span><input inputmode="decimal" data-pp="${c.id}" data-i="${i}" value="${(S.plansP[c.id] || [])[i] || ""}" placeholder="0" style="width:100%;border:1px solid var(--line);background:var(--bg);border-radius:12px;padding:11px 12px;font-size:17px"></label>`).join("")}</div></div>`
+    : `<label class="field"><span>${c.ic} ${c.name} · <i>${c.hint}</i></span><input inputmode="decimal" data-p="${c.id}" value="${S.plans[c.id] || ""}" placeholder="0"></label>`;
+  const { sh, close } = openSheet(`<h3>Доход и план на месяц</h3>
+    <label class="field"><span>Доход в месяц на руки, ${S.cur}</span><input id="pInc" inputmode="decimal" value="${S.income || ""}" placeholder="например 9200"></label>
+    <div class="muted" style="margin:-4px 0 10px">Сколько готов тратить в месяц по каждой статье:</div>
+    ${CATS.map(row).join("")}
+    <div class="row" style="margin:6px 0"><span>Итого план</span><b id="pSum"></b></div>
+    <div class="row"><span>Остаётся на накопления</span><b id="pFree"></b></div>
+    <label class="field" style="margin-top:12px"><span>Валюта</span><select id="pCur">${["zł", "$", "€", "₽"].map(c => `<option ${c === S.cur ? "selected" : ""}>${c}</option>`).join("")}</select></label>
+    <button class="btn" id="pSave">Сохранить</button>`, () => go(tab));
+  const recalc = () => {
+    const sum = [...sh.querySelectorAll("[data-p],[data-pp]")].reduce((a, i) => a + num(i.value), 0);
+    const inc = num(sh.querySelector("#pInc").value);
+    sh.querySelector("#pSum").textContent = money(sum);
+    const f = sh.querySelector("#pFree"); f.textContent = inc ? money(inc - sum) : "—"; f.className = inc - sum < 0 ? "minus" : "plus";
+  };
+  sh.querySelectorAll("input").forEach(i => i.oninput = recalc); recalc();
+  sh.querySelector("#pSave").onclick = () => {
+    S.income = num(sh.querySelector("#pInc").value);
+    sh.querySelectorAll("[data-p]").forEach(i => { S.plans[i.dataset.p] = num(i.value); });
+    sh.querySelectorAll("[data-pp]").forEach(i => { const a = S.plansP[i.dataset.pp] = S.plansP[i.dataset.pp] || [0, 0]; a[+i.dataset.i] = num(i.value); });
+    S.cur = sh.querySelector("#pCur").value;
+    saveSettings(); haptic("success"); close();
+  };
+}
+
+/* ---------- категория: детали и советы ---------- */
+async function openCat(id) {
+  const c = CAT[id];
+  const st = await monthStats(month);
+  const prog = monthProgress(month);
+  const plan = planOf(id), spent = st.by[id] || 0;
+  const hist = [];
+  for (let i = 5; i >= 0; i--) { const d = new Date(month.getFullYear(), month.getMonth() - i, 1); const s = await monthStats(d); hist.push({ d, v: s.by[id] || 0, n: s.items.length }); }
+  const prev = hist.slice(0, 5).filter(h => h.n);
+  const avg = prev.length ? prev.reduce((a, h) => a + h.v, 0) / prev.length : 0;
+  const items = st.items.map((e, i) => ({ ...e, i })).filter(e => e.c === id).sort((a, b) => b.d - a.d);
+  const s = statusOf(spent, plan, prog);
+  const pp = persons();
+  let split = "";
+  if (isSplit(id)) {
+    const pl = S.plansP[id] || [0, 0];
+    split = `<div class="grid2" style="margin-top:10px">${pp.map((n, i) => `<div class="tip"><b>${esc(n)}</b>${money(st.byP[id][i])}${pl[i] ? " из " + money(pl[i]) : ""}${barHtml(st.byP[id][i], pl[i], prog)}</div>`).join("")}</div>`;
+  }
+  const subs = Object.entries(st.bySub[id]).filter(([k, v]) => v).sort((a, b) => b[1] - a[1]);
+  const subHtml = subs.length > 1 || (subs.length === 1 && subs[0][0] !== "—") ? `<div class="list" style="margin-top:8px">${subs.map(([k, v]) => `<div class="it"><span>${k === "—" ? "Без подкатегории" : esc(k)}</span><b>${money(v)}</b></div>`).join("")}</div>` : "";
+  let h = `<h3>${c.ic} ${c.name}</h3>
+    <div class="row"><div><div class="big">${money(spent)}</div><div class="muted">${plan ? "план " + money(plan) : "план не задан"}${avg ? " · в среднем " + money(avg) : ""}</div></div><div class="st ${s.cls}">${s.txt}<div class="muted" style="font-weight:400">${s.sub}</div></div></div>
+    ${barHtml(spent, plan, prog)}${split}${subHtml}
+    <div style="margin:14px 0 4px">${barsSvg(hist, plan)}</div>
+    <h3 style="margin-top:14px">Как уложиться</h3>${tipsFor(id, plan, spent, avg, prog)}
+    <button class="btn" id="cAdd">+ Добавить трату</button>
+    <h3 style="margin-top:16px">Траты за ${MONTHS[month.getMonth()]}</h3>
+    <div class="list">${items.length ? items.map(e => `<div class="it" data-ed="${e.i}"><span>${e.d} ${MONTHS_G[month.getMonth()]}${e.s ? " · " + esc(e.s) : ""}${e.p !== undefined && pp ? " · " + esc(pp[e.p]) : ""}${e.n ? "<br><span class=muted>" + esc(e.n) + "</span>" : ""}</span><span><b>${money(e.a)}</b><button class="x" data-del="${e.i}">✕</button></span></div>`).join("") : '<div class="muted">Пока нет трат.</div>'}</div>`;
+  const { sh, close } = openSheet(h, () => go(tab));
+  sh.querySelector("#cAdd").onclick = () => { close(); openAdd(id); };
+  sh.querySelectorAll("[data-del]").forEach(b => b.onclick = ev => { ev.stopPropagation(); st.items.splice(+b.dataset.del, 1); saveMonth(st.key); haptic(); openCat(id); });
+  sh.querySelectorAll("[data-ed]").forEach(el => el.onclick = () => moveItem(st, +el.dataset.ed, id));
+  sh.querySelectorAll("[data-plan]").forEach(b => b.onclick = () => { if (isSplit(id)) { const v = +b.dataset.plan / 2; S.plansP[id] = [v, v]; } else S.plans[id] = +b.dataset.plan; saveSettings(); haptic("success"); openCat(id); });
+}
+function moveItem(st, idx, back) {
+  const e = st.items[idx];
+  const { sh } = openSheet(`<h3>Поправить трату</h3><p class="muted">${money(e.a)}${e.n ? " · " + esc(e.n) : ""}</p>
+    ${isSplit(e.c) ? `<div class="field"><span>Чья трата</span>${chipsHtml("mvP", persons().map((n, i) => [i, n]), e.p || 0)}</div>` : ""}
+    <div class="chips">${CATS.map(c => `<button class="chip ${c.id === e.c ? "on" : ""}" data-c="${c.id}">${c.ic} ${c.name}</button>`).join("")}</div>`, () => go(tab));
+  if (isSplit(e.c)) bindChips(sh, "mvP", v => { e.p = +v; saveMonth(st.key); haptic("success"); openCat(back); });
+  sh.querySelectorAll("[data-c]").forEach(b => b.onclick = () => {
+    e.c = b.dataset.c; delete e.s; delete e.p; saveMonth(st.key);
+    if (e.n) { S.rules[e.n.toLowerCase().slice(0, 18)] = e.c; saveSettings(); }
+    haptic("success"); openCat(back);
+  });
+}
+
+function barsSvg(hist, plan) {
+  const W = 320, H = 110, pad = 18, bw = 34;
+  const max = Math.max(plan, ...hist.map(h => h.v), 1);
+  const gap = (W - hist.length * bw) / (hist.length + 1);
+  let g = "";
+  hist.forEach((h, i) => {
+    const x = gap + i * (bw + gap), bh = (H - pad - 14) * h.v / max, y = H - pad - bh;
+    const col = plan && h.v > plan ? "var(--bad)" : "var(--c1)";
+    g += `<rect x="${x}" y="${y}" width="${bw}" height="${Math.max(bh, 1)}" rx="5" fill="${col}" opacity="${i === hist.length - 1 ? 1 : .55}"/>`;
+    g += `<text x="${x + bw / 2}" y="${H - 4}" text-anchor="middle">${MONTHS[h.d.getMonth()].slice(0, 3)}</text>`;
+    if (h.v) g += `<text x="${x + bw / 2}" y="${y - 3}" text-anchor="middle">${h.v >= 1000 ? (h.v / 1000).toFixed(1).replace(".0", "") + "k" : Math.round(h.v)}</text>`;
+  });
+  if (plan) { const y = H - pad - (H - pad - 14) * plan / max; g += `<line x1="0" x2="${W}" y1="${y}" y2="${y}" stroke="var(--warn)" stroke-dasharray="4 4"/><text x="2" y="${y - 3}">план</text>`; }
+  return `<svg viewBox="0 0 ${W} ${H}" width="100%" role="img" aria-label="Траты за 6 месяцев">${g}</svg>`;
+}
+
+/* ---------- советы ---------- */
+function tip(title, text) { return `<div class="tip"><b>${title}</b>${text}</div>`; }
+// Рекомендуемая доля дохода по статьям (ориентир для «сколько стоит тратить»)
+const NORM = { home: .30, food: .15, cafe: .04, transport: .05, car: .08, health: .04, beauty: .03, subs: .02, shop: .05, fun: .05, kids: .08, pets: .03, debt: .10, gifts: .02, other: .03 };
+function defaultShare(id) { // доля дохода в %, с поправкой на семью
+  let k = NORM[id] || 0; const p = S.profile || {};
+  if (id === "food") k *= (p.adults === 2 ? 1 : .7) + (p.kids || 0) * .25;
+  if (id === "kids") k *= Math.max(1, p.kids || 1) * .7;
+  return Math.round(k * 1000) / 10;
+}
+function shareOf(id) { return S.shares && S.shares[id] !== undefined ? S.shares[id] : defaultShare(id); }
+function normFor(id) {
+  if (!S.income) return 0;
+  return Math.round(S.income * shareOf(id) / 100 / 10) * 10;
+}
+
+/* ---------- перераспределить: забрать у одной статьи и отдать другой ---------- */
+// items: [{id, label, val}] — val в %; base — сумма в деньгах для 100% (для подписи); apply(from, to, amt)
+function openTransfer(title, items, base, apply, back) {
+  let from = items.slice().sort((a, b) => b.val - a.val)[0].id, to = items.find(i => i.id !== from).id, amt = 1;
+  const { sh } = openSheet(`<h3>⇄ ${title}</h3>
+    <p class="muted" style="margin-top:-6px">Забери часть у одной статьи и отдай другой. Общая сумма не меняется.</p>
+    <div class="field"><span>Забрать у</span><div id="tF"></div></div>
+    <div class="field"><span>Отдать</span><div id="tT"></div></div>
+    <div class="field"><span>Сколько, % дохода</span>
+      <div class="row" style="justify-content:flex-start;gap:8px"><button class="chip" id="tM">−</button><input id="tA" inputmode="decimal" style="width:80px;text-align:center;border:1px solid var(--line);background:var(--bg);border-radius:12px;padding:9px;font-size:18px;font-weight:700"><button class="chip" id="tP">+</button><span class="muted" id="tMoney"></span></div>
+      <div class="chips" style="margin-top:8px">${[0.5, 1, 2, 5].map(v => `<button class="chip" data-q="${v}">${String(v).replace(".", ",")}%</button>`).join("")}</div></div>
+    <div class="card" style="background:var(--bg)" id="tRes"></div>
+    <button class="btn" id="tGo">Перераспределить</button>
+    <button class="btn sec" id="tBack">Назад</button>`, () => go(tab));
+  const it = id => items.find(i => i.id === id);
+  const draw = () => {
+    const f = it(from); amt = Math.max(0, Math.min(amt, f.val));
+    sh.querySelector("#tF").innerHTML = chipsHtml("tFc", items.map(i => [i.id, `${i.label} ${String(+i.val.toFixed(1)).replace(".", ",")}%`]), from);
+    sh.querySelector("#tT").innerHTML = chipsHtml("tTc", items.filter(i => i.id !== from).map(i => [i.id, `${i.label} ${String(+i.val.toFixed(1)).replace(".", ",")}%`]), to);
+    bindChips(sh, "tFc", v => { from = v; if (to === from) to = items.find(i => i.id !== from).id; draw(); });
+    bindChips(sh, "tTc", v => { to = v; draw(); });
+    const a = sh.querySelector("#tA"); if (document.activeElement !== a) a.value = String(+amt.toFixed(1)).replace(".", ",");
+    sh.querySelector("#tMoney").textContent = base ? "≈ " + money(base * amt / 100) + " в месяц" : "";
+    const t = it(to), r = v => String(+v.toFixed(1)).replace(".", ",");
+    sh.querySelector("#tRes").innerHTML = `<div class="row"><span>${f.label}</span><b>${r(f.val)}% → <span class="minus">${r(f.val - amt)}%</span>${base ? " · " + money(base * (f.val - amt) / 100) : ""}</b></div>
+      <div class="row" style="margin-top:6px"><span>${t.label}</span><b>${r(t.val)}% → <span class="plus">${r(t.val + amt)}%</span>${base ? " · " + money(base * (t.val + amt) / 100) : ""}</b></div>`;
+  };
+  sh.querySelector("#tA").oninput = e => { amt = num(e.target.value); draw(); };
+  sh.querySelector("#tM").onclick = () => { amt = Math.max(0, amt - 0.5); haptic(); draw(); };
+  sh.querySelector("#tP").onclick = () => { amt += 0.5; haptic(); draw(); };
+  sh.querySelectorAll("[data-q]").forEach(b => b.onclick = () => { amt = +b.dataset.q; haptic(); draw(); });
+  sh.querySelector("#tBack").onclick = back;
+  sh.querySelector("#tGo").onclick = () => { if (!amt) return; apply(from, to, Math.round(amt * 10) / 10); haptic("success"); back(); };
+  draw();
+}
+function openShares() {
+  const items = CATS.map(c => ({ id: c.id, label: c.ic + " " + c.name, val: shareOf(c.id) }));
+  openTransfer("Ориентиры по статьям", items, S.income, (f, t, a) => {
+    S.shares = S.shares || {};
+    S.shares[f] = Math.round((shareOf(f) - a) * 10) / 10; S.shares[t] = Math.round((shareOf(t) + a) * 10) / 10;
+    // план тоже сдвигаем на ту же сумму
+    if (S.income) {
+      const d = Math.round(S.income * a / 100 / 10) * 10;
+      const add = (id, v) => { if (isSplit(id)) { const p = S.plansP[id] = S.plansP[id] || [0, 0]; p[0] = Math.max(0, p[0] + v / 2); p[1] = Math.max(0, p[1] + v / 2); } else S.plans[id] = Math.max(0, (S.plans[id] || 0) + v); };
+      const moved = Math.min(d, planOf(f));
+      if (moved > 0) { add(f, -moved); add(t, moved); }
+    }
+    saveSettings();
+  }, () => openLife());
+}
+function tipsFor(id, plan, spent, avg, prog) {
+  const inc = S.income || 0, out = [], p = S.profile || {};
+  const over = plan && spent > plan * prog + 1 ? spent - plan * prog : 0;
+  const norm = normFor(id);
+  if (over) {
+    const daysLeft = Math.max(1, Math.round((1 - prog) * 30));
+    out.push(tip("Сейчас ты быстрее плана", `на ${money(over)}. Чтобы уложиться, до конца месяца тратить на это не больше ${money(Math.max(0, plan - spent) / daysLeft)} в день.`));
+  }
+  if (norm) out.push(tip("Ориентир", `Для твоего дохода на эту статью обычно уходит около ${money(norm)} в месяц.${avg && avg > norm * 1.15 ? ` У тебя в среднем ${money(avg)}, на ${money(avg - norm)} больше.` : ""} <button class="chip" data-plan="${norm}">Поставить план ${money(norm)}</button>`));
+  else if (!plan && avg) out.push(tip("Поставить план", `В среднем уходит ${money(avg)}. Попробуй план на 10% меньше: <button class="chip" data-plan="${Math.round(avg * 0.9 / 10) * 10}">${money(Math.round(avg * 0.9 / 10) * 10)}</button>`));
+  if (id === "home") {
+    const max = inc * 0.35;
+    if (inc && plan > max) out.push(tip("Жильё дороже нормы", `План ${money(plan)}, это ${Math.round(plan / inc * 100)}% дохода. Обычно советуют не больше 30–35%.`));
+    const cap = Math.round((plan || max || 3500) / 50) * 50;
+    const city = S.city || "gdansk";
+    const rooms = { "1": "ONE", "2": "TWO", "3": "THREE" }[S.rooms] || "TWO";
+    out.push(tip("Найти квартиру в бюджет", `Объявления с потолком ${money(cap, "zł")} (коммуналка обычно ещё +300–600 zł):
+      <a class="btn sec" target="_blank" href="https://www.otodom.pl/pl/wyniki/wynajem/mieszkanie/pomorskie/${city}/${city}/${city}?priceMax=${cap}&roomsNumber=%5B${rooms}%5D">Otodom: ${S.rooms}-комн., до ${fmt(cap)} zł</a>
+      <a class="btn sec" target="_blank" href="https://www.olx.pl/nieruchomosci/mieszkania/wynajem/${city}/?search%5Bfilter_float_price:to%5D=${cap}">OLX: до ${fmt(cap)} zł</a>`));
+    out.push(tip("Коммуналка", "Сравни тариф на электричество (G11 или G12), интернет у Orange, Play и UPC, и попроси у арендодателя расчёт czynsz: там часто бывает переплата за прошлый год."));
+  } else if (id === "food") {
+    const v = plan || avg || norm;
+    if (v) out.push(tip("Лимит на неделю", `${money(v / 4.35)} в неделю, ${money(v / 30.4)} в день. Удобнее всего одна большая закупка в неделю по списку.`));
+    out.push(tip("Как экономить на продуктах", "Меню на неделю, потом список, потом одна закупка в Lidl, Biedronka или Auchan. Собственные марки сетей дешевле на 20–40%. Акции есть в Lidl Plus и Moja Biedronka. Готовь сразу на 2 дня."));
+  } else if (id === "cafe") {
+    out.push(tip("Доставка и кафе", "Самая гибкая статья. Поставь лимит на неделю. Кофе с собой каждый день стоит 300–400 zł в месяц, доставка обычно в 2–3 раза дороже той же еды из магазина."));
+  } else if (id === "transport") {
+    out.push(tip("Проезд", "Месячный проездной обычно дешевле, чем 5–6 поездок на Uber или Bolt. Каршеринг считай по минутам: на короткие поездки дешевле автобус или велосипед."));
+    const v = plan || avg; if (v) out.push(tip("Если сократить на 30%", `освободится ${money(v * 0.3)} в месяц, это ${money(v * 0.3 * 12)} в год.`));
+  } else if (id === "car") {
+    out.push(tip("Машина", "Сравни OC/AC на rankomat.pl перед продлением, заправляйся по акциям в приложениях Orlen и Circle K, считай стоимость километра: иногда каршеринг выходит дешевле своей машины."));
+  } else if (id === "beauty") {
+    out.push(tip("Уход за собой", `${persons() ? "Раздели план на двоих, чтобы каждый видел свой лимит. " : ""}Абонемент в зал дешевле разовых посещений, если ходишь чаще 4 раз в месяц. Косметика: Rossmann и Hebe дают −49% в акциях, закупайся в эти дни.`));
+  } else if (id === "subs") {
+    out.push(tip("Почисти подписки", "Выпиши все подписки и оставь одну стриминговую. Чаще всего находятся две копии одного сервиса и пробные подписки, которые продлились сами."));
+  } else if (id === "kids") {
+    out.push(tip("Дети", "Одежду на вырост выгодно брать на Vinted и OLX. Проверь, положены ли вам 800+, becikowe и ulga na dzieci в PIT, это до 1 112 zł в год на ребёнка."));
+  } else if (id === "pets") {
+    out.push(tip("Животные", "Корм выгоднее брать большими упаковками с подпиской (Zooplus, Kakadu). Ежегодная прививка и осмотр обходятся дешевле, чем лечение запущенных проблем."));
+  } else if (id === "debt") {
+    out.push(tip("Сначала долги под высокий процент", "Лимит в счёте или кредитка под 15–20% годовых дороже ожидаемой доходности любого ETF. Выгоднее сначала гасить их, начиная с самого дорогого, а потом инвестировать."));
+  } else if (id === "shop" || id === "fun" || id === "gifts") {
+    out.push(tip("Правило 48 часов", "Хочешь купить что-то дороже 200 zł: подожди 2 дня. Половина желаний за это время проходит."));
+  } else if (id === "health") {
+    out.push(tip("Здоровье", "Здесь не стоит резать. Проверь только, есть ли у лекарств дешёвые замены (zamiennik), и что даёт NFZ бесплатно."));
+  } else if (id === "other") {
+    out.push(tip("Наличные", "Снятые наличные попадают сюда. Если помнишь, на что они ушли, перенеси их в нужную категорию: нажми на трату в списке."));
+  }
+  return out.join("");
+}
+
+/* ---------- Мой план (все статьи разом) ---------- */
+async function openLife() {
+  const avg = await avgByCat(3);
+  const now = new Date(); now.setDate(1);
+  const st = await monthStats(now);
+  let tot = { now: 0, plan: 0, norm: 0 };
+  const rows = CATS.map(c => {
+    const a = avg ? avg[c.id] : st.by[c.id], pl = planOf(c.id), nm = normFor(c.id);
+    tot.now += a; tot.plan += pl; tot.norm += nm;
+    const diff = pl ? a - pl : 0;
+    return `<tr data-cat="${c.id}"><td>${c.ic} ${c.name}</td><td>${money(a)}</td><td class="${diff > 0 ? "minus" : ""}">${pl ? money(pl) : "—"}</td><td><span class="muted">${String(shareOf(c.id)).replace(".", ",")}%</span>${nm ? "<br>" + money(nm) : ""}</td></tr>`;
+  }).join("");
+  const free = S.income - tot.plan;
+  const { sh, close } = openSheet(`<h3>🧭 Мой план</h3>
+    <p class="muted" style="margin-top:-6px">${avg ? `«Сейчас» — среднее за ${avg._n} ${mWord(avg._n)} по выписке и записям.` : "«Сейчас» — траты этого месяца. Загрузи выписку, чтобы видеть средние."} Нажми на статью, чтобы увидеть, как уложиться.</p>
+    <table><tr><th>Статья</th><th>Сейчас</th><th>План</th><th>Ориентир</th></tr>${rows}
+    <tr><td><b>Итого</b></td><td><b>${money(tot.now)}</b></td><td><b>${money(tot.plan)}</b></td><td><b>${money(tot.norm)}</b></td></tr></table>
+    <p class="muted">Красным план, который ниже текущих трат. «Ориентир» — доля дохода на статью, её можно перераспределить.</p>
+    <div class="card" style="background:var(--bg);margin-top:12px">
+      <div class="row"><span>Доход</span><b>${money(S.income)}</b></div>
+      <div class="row" style="margin-top:6px"><span>Траты по плану</span><b>${money(tot.plan)}</b></div>
+      <div class="row" style="margin-top:6px"><span>Остаётся на накопления</span><b class="${free < 0 ? "minus" : "plus"}">${money(free)} (${S.income ? Math.round(free / S.income * 100) : 0}%)</b></div>
+      ${avg && tot.now > tot.plan ? `<div class="muted" style="margin-top:8px">Чтобы жить по плану, нужно сократить траты на ${money(tot.now - tot.plan)} в месяц.</div>` : ""}
+    </div>
+    <button class="btn sec" id="lShift">⇄ Перераспределить между статьями</button>
+    <button class="btn sec" id="lNorm">Заполнить план по ориентирам</button>
+    ${S.shares ? '<button class="btn sec" id="lReset">Вернуть ориентиры по умолчанию</button>' : ""}
+    <button class="btn" id="lEdit">Изменить план</button>`, () => go(tab));
+  sh.querySelectorAll("[data-cat]").forEach(r => r.onclick = () => { month = new Date(); month.setDate(1); openCat(r.dataset.cat); });
+  sh.querySelector("#lEdit").onclick = () => openPlan();
+  sh.querySelector("#lShift").onclick = () => openShares();
+  const lr = sh.querySelector("#lReset"); if (lr) lr.onclick = () => { delete S.shares; saveSettings(); haptic(); openLife(); };
+  sh.querySelector("#lNorm").onclick = () => {
+    CATS.forEach(c => { const n = normFor(c.id); const a = avg ? avg[c.id] : 0; const v = a ? Math.min(a, n || a) : n; if (isSplit(c.id)) S.plansP[c.id] = [Math.round(v / 2), Math.round(v / 2)]; else S.plans[c.id] = Math.round(v / 10) * 10; });
+    saveSettings(); haptic("success"); openLife();
+  };
+}
+
+/* ---------- выписка из банка (CSV), разбор прямо на устройстве ---------- */
+const KW = [
+  ["_skip", ["przelew własny", "przelew wlasny", "przelew wewnętrzny", "przelew wewnetrzny", "między rachunkami", "miedzy rachunkami", "trading 212", "trading212", "xtb", "revolut**", "top-up", "doładowanie revolut", "spłata karty", "splata karty"]],
+  ["cafe", ["kebap", "kuchnia", "grill", "pierogarnia", "bakery", "uber eats", "ubereats", "wolt", "glovo", "pyszne", "bolt food", "mcdonald", "kfc", "burger", "starbucks", "costa coffee", "pizza", "sushi", "kebab", "restaur", "bistro", "kawiarnia", "cafe", "coffee", "bar mleczny", "pizzeria", "żabka cafe"]],
+  ["food", ["merkus", "smakołyk", "smakolyk", "carrefour express", "sklep spożywczy", "spozywczy", "biedronka", "lidl", "auchan", "carrefour", "kaufland", "żabka", "zabka", "netto", "dino", "stokrotka", "aldi", "lewiatan", "polomarket", "frisco", "piekarnia", "intermarche", "spar", "groszek", "delikatesy", "mięsny", "warzywa", "rynek"]],
+  ["transport", ["city-nav", "citynav", "parkometr", "uber", "bolt", "freenow", "free now", "traficar", "panek", "ztm", "skm", "pkp", "intercity", "polregio", "jakdojade", "mevo", "flixbus", "itaxi", "koleo", "zbiorkom"]],
+  ["car", ["orlen", "bp ", "shell", "circle k", "moya", "amic", "lotos", "parking", "parkowanie", "autostrada", "a1 ", "myjnia", "mechanik", "ubezpieczenie oc"]],
+  ["health", ["apteka", "doz", "gemini", "super-pharm", "superpharm", "medicover", "luxmed", "lux med", "enel-med", "enelmed", "dentyst", "stomatolog", "lekarz", "przychodnia", "diagnostyka", "optyk"]],
+  ["beauty", ["rossmann", "hebe", "sephora", "douglas", "notino", "fryzjer", "barber", "kosmetyk", "salon urody", "manicure", "zdrofit", "calypso", "fitness", "siłownia", "silownia", "multisport", "medicinet", "booksy"]],
+  ["subs", ["yesim", "airalo", "netflix", "spotify", "apple.com", "apple com", "itunes", "google", "youtube", "hbo", "max.com", "disney", "canva", "capcut", "dramawave", "chatgpt", "openai", "anthropic", "claude.ai", "orange", "play ", "p4 ", "plus gsm", "polkomtel", "t-mobile", "tmobile", "heyah", "upc", "vectra", "netia", "icloud", "microsoft", "amazon prime", "player.pl", "audioteka", "storytel"]],
+  ["kids", ["smyk", "przedszkol", "żłob", "zlob", "szkoła", "szkola", "toys", "lego", "empik junior"]],
+  ["pets", ["zoolog", "zooplus", "maxi zoo", "kakadu", "weterynar", "vet ", "petshop", "zoo "]],
+  ["shop", ["tedi", "kik ", "sklep ", "allegro", "zalando", "amazon", "temu", "aliexpress", "shein", "ikea", "media markt", "mediamarkt", "rtv euro", "euro rtv", "x-kom", "decathlon", "pepco", "action", "h&m", "reserved", "sinsay", "cropp", "house ", "ccc", "deichmann", "empik", "jysk", "castorama", "leroy", "obi ", "tk maxx", "lpp", "vinted", "olx", "half price", "primark", "mohito", "medicine"]],
+  ["fun", ["cinema city", "multikino", "helios", "booking", "airbnb", "ryanair", "wizz", "lot.com", "steam", "playstation", "xbox", "nintendo", "ebilet", "biletyna", "kupbilet", "going.", "bowling", "escape"]],
+  ["home", ["culligan", "czynsz", "najem", "wynajem", "pge", "energa", "tauron", "enea", "pgnig", "e.on", "fortum", "gaz ", "wodociąg", "wodociag", "saur", "aquanet", "pod klucz", "wspólnota", "wspolnota", "spółdzielnia", "spoldzielnia", "media za", "opłaty za mieszkanie", "ubezpieczenie mieszkania"]],
+  ["debt", ["rata ", "kredyt", "pożyczk", "pozyczk", "odsetki", "spłata", "splata", "provident", "wonga", "smartney"]],
+  ["gifts", ["prezent", "kwiaty", "kwiaciarnia", "flowers"]],
+  ["other", ["bankomat", "wypłata gotówki", "wyplata gotowki", "atm", "euronet", "planet cash", "prowizja", "opłata za", "oplata za"]],
+];
+function guessCat(desc, amount) {
+  const d = " " + desc.toLowerCase() + " ";
+  for (const k in S.rules) if (d.includes(k)) return S.rules[k];
+  for (const [c, words] of KW) for (const w of words) if (d.includes(w)) {
+    if (c === "car" && !(S.profile || {}).car) return "transport";
+    if ((c === "kids" && !((S.profile || {}).kids > 0)) || (c === "pets" && !(S.profile || {}).pets)) return "shop";
+    if (c === "debt" && !(S.profile || {}).loans) return "other";
+    return c;
+  }
+  for (const [tok, c] of KW2) if (d.includes(tok)) return CAT[c] && CATS.includes(CAT[c]) ? c : (c === "car" ? "transport" : "other");
+  return null;
+}
+// Категории магазинов из выписок (Trading 212, Revolut) — если по названию не узнали
+const KW2 = [["restaurants", "cafe"], ["fast food", "cafe"], ["groceries", "food"], ["supermarkets", "food"], ["transport", "transport"], ["automobile", "car"], ["fuel", "car"], ["utilities", "home"], ["clothing", "shop"], ["entertainment", "fun"], ["personal_services", "beauty"], ["health", "health"], ["memberships", "subs"], ["mail_or_telephone", "shop"], ["travel", "fun"]];
+function parseCsvText(text) {
+  const lines = text.replace(/^﻿/, "").split(/\r?\n/);
+  const delims = [";", ",", "\t"];
+  const split = (line, dl) => { const out = []; let cur = "", q = false; for (let i = 0; i < line.length; i++) { const ch = line[i]; if (ch === '"') { if (q && line[i + 1] === '"') { cur += '"'; i++; } else q = !q; } else if (ch === dl && !q) { out.push(cur); cur = ""; } else cur += ch; } out.push(cur); return out.map(s => s.trim()); };
+  let hi = -1, dl = ";", head = null;
+  for (let i = 0; i < Math.min(lines.length, 60); i++) {
+    const l = lines[i].toLowerCase().replace(/^#/, "");
+    if (!/(data|date|дата|time)/.test(l) || !/(kwota|amount|obciąż|obciaz|uznani|сумма|wartość|wartosc|debit|credit|total)/.test(l)) continue;
+    dl = delims.sort((a, b) => l.split(b).length - l.split(a).length)[0];
+    hi = i; head = split(lines[i].replace(/^#/, ""), dl).map(h => h.toLowerCase().replace(/^#/, "")); break;
+  }
+  if (hi < 0) throw new Error("Не нашёл в файле строку с заголовками (дата, сумма). Нужна выписка в формате CSV.");
+  const find = (re, not) => head.findIndex(h => re.test(h) && !(not && not.test(h)));
+  let iDate = find(/data (transakcji|operacji)|transaction date|completed date|^data$|^date$|дата/);
+  if (iDate < 0) iDate = find(/data|date/, /rozlicz|waluty|value/);
+  if (iDate < 0) iDate = find(/data|date|time/);
+  const iAction = find(/^action$/), iMerch = find(/merchant name/);
+  if (iAction >= 0 && iMerch >= 0) return parseT212(lines.slice(hi + 1), dl, split, iDate, find(/^total$/), iAction, iMerch, find(/merchant category/));
+  const iAmt = find(/kwota|amount|сумма|wartość|wartosc/, /saldo|balance|blokad|fee|commission|po transakcji|waluta/);
+  const iDeb = find(/obciąż|obciaz|wypływ|debit|wydatki/);
+  const iCred = find(/uznani|wpływ|credit|wpływy/);
+  const iDesc = head.map((h, i) => /opis|tytu|description|odbiorc|kontrahent|nazwa|merchant|szczeg|payee|counterparty|nadawc|zleceniodawc|na konto|z konta|lokalizacja|rodzaj|typ|type/.test(h) && !/rachunk|numer|account no|iban|saldo|waluta|currency/.test(h) ? i : -1).filter(i => i >= 0);
+  if (iDate < 0 || (iAmt < 0 && iDeb < 0)) throw new Error("Не понял, где в выписке дата и сумма. Пришли файл разработчику, добавлю этот банк.");
+  const pnum = s => { s = (s || "").replace(/\s| |pln|zł|eur|usd/gi, "").replace("−", "-"); if (/,\d{1,2}$/.test(s)) s = s.replace(/\./g, "").replace(",", "."); else s = s.replace(/,/g, ""); const v = parseFloat(s); return isFinite(v) ? v : 0; };
+  const pdate = s => { s = (s || "").trim(); let m = s.match(/^(\d{4})[-./](\d{1,2})[-./](\d{1,2})/); if (m) return new Date(+m[1], +m[2] - 1, +m[3]); m = s.match(/^(\d{1,2})[-./](\d{1,2})[-./](\d{4})/); if (m) return new Date(+m[3], +m[2] - 1, +m[1]); return null; };
+  const tx = [];
+  for (let i = hi + 1; i < lines.length; i++) {
+    if (!lines[i].trim()) continue;
+    const r = split(lines[i], dl);
+    const date = pdate(r[iDate]); if (!date) continue;
+    let a = iAmt >= 0 ? pnum(r[iAmt]) : 0;
+    if (iAmt < 0 || !a) { const d = iDeb >= 0 ? pnum(r[iDeb]) : 0, c = iCred >= 0 ? pnum(r[iCred]) : 0; a = d ? -Math.abs(d) : Math.abs(c); }
+    if (!a) continue;
+    const desc = iDesc.map(j => r[j]).filter(Boolean).join(" · ").replace(/\s+/g, " ").slice(0, 160);
+    tx.push({ date, a, desc });
+  }
+  if (!tx.length) throw new Error("В файле не нашлось операций.");
+  return tx;
+}
+// Trading 212: траты по карте — строки «Card debit», есть название и категория магазина
+function parseT212(rows, dl, split, iDate, iTot, iAction, iMerch, iMcat) {
+  const tx = [];
+  rows.forEach(line => {
+    if (!line.trim()) return;
+    const r = split(line, dl);
+    if (!/card debit/i.test(r[iAction] || "")) return;
+    const m = (r[iDate] || "").match(/^(\d{4})-(\d{2})-(\d{2})/); if (!m) return;
+    const a = parseFloat(r[iTot]); if (!a) return;
+    tx.push({ date: new Date(+m[1], +m[2] - 1, +m[3]), a: a < 0 ? a : -a, desc: (r[iMerch] || "") + (iMcat >= 0 && r[iMcat] ? " · " + r[iMcat] : "") });
+  });
+  if (!tx.length) throw new Error("В выписке Trading 212 нет трат по карте.");
+  return tx;
+}
+// PDF-выписка: текст достаём библиотекой pdf.js, строки собираем по координатам
+let pdfjsReady = null;
+function loadPdfJs() {
+  if (!pdfjsReady) pdfjsReady = new Promise((res, rej) => {
+    const sc = document.createElement("script");
+    sc.src = "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js";
+    sc.onload = () => { window.pdfjsLib.GlobalWorkerOptions.workerSrc = "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js"; res(window.pdfjsLib); };
+    sc.onerror = () => { pdfjsReady = null; rej(new Error("Не удалось загрузить модуль чтения PDF. Проверь интернет или загрузи CSV.")); };
+    document.head.appendChild(sc);
+  });
+  return pdfjsReady;
+}
+async function pdfLines(buf) {
+  const lib = await loadPdfJs();
+  const doc = await lib.getDocument({ data: buf }).promise;
+  const out = [];
+  for (let pn = 1; pn <= doc.numPages; pn++) {
+    const page = await doc.getPage(pn);
+    const tc = await page.getTextContent();
+    const rows = [];
+    tc.items.forEach(it => {
+      if (!it.str.trim()) return;
+      const x = it.transform[4], y = it.transform[5];
+      let row = rows.find(r => Math.abs(r.y - y) < 2.5);
+      if (!row) rows.push(row = { y, items: [] });
+      row.items.push({ x, w: it.width, s: it.str });
+    });
+    rows.sort((a, b) => b.y - a.y).forEach(r => {
+      r.items.sort((a, b) => a.x - b.x);
+      let line = "", end = null;
+      r.items.forEach(i => { line += (end === null ? "" : i.x - end > 6 ? "   " : i.x - end > 0.5 ? " " : "") + i.s; end = i.x + i.w; });
+      out.push(line.trim());
+    });
+  }
+  return out;
+}
+function parsePdfStatement(lines) {
+  const reDate = /^(\d{1,2})[.\-/](\d{1,2})[.\-/](\d{4})|^(\d{4})-(\d{2})-(\d{2})/;
+  const reAmt = /(?:^|\s)(-?\d{1,3}(?:[ \u00a0.]\d{3})*,\d{2})(?=\s|$)/g;
+  const toDate = m => m[4] ? new Date(+m[4], +m[5] - 1, +m[6]) : new Date(+m[3], +m[2] - 1, +m[1]);
+  const pn = s => parseFloat(s.replace(/[ \u00a0.]/g, "").replace(",", "."));
+  const tx = []; let cur = null, extra = 0;
+  for (const raw of lines) {
+    const line = raw.replace(/\s+/g, " ").trim();
+    if (/saldo (początkowe|poczatkowe|końcowe|koncowe|otwarcia|zamknięcia)|strona \d+|numer (wyciągu|rachunku)|^data /i.test(line)) { cur = null; continue; }
+    const m = line.match(reDate);
+    if (m) {
+      let rest = line.slice(m[0].length).trim();
+      let date = toDate(m);
+      const m2 = rest.match(reDate); if (m2) { date = toDate(m2); rest = rest.slice(m2[0].length).trim(); }
+      const amts = [...rest.matchAll(reAmt)].map(x => x[1]);
+      if (!amts.length) { cur = null; continue; }
+      let a;
+      if (amts.length >= 3) { const inn = pn(amts[amts.length - 3]), outt = pn(amts[amts.length - 2]); a = inn - outt; }
+      else a = pn(amts[0]);
+      let desc = rest; amts.forEach(x => desc = desc.replace(x, "")); desc = desc.replace(/\s+/g, " ").trim();
+      if (!a) { cur = null; continue; }
+      cur = { date, a, desc }; tx.push(cur); extra = 0;
+    } else if (cur && extra < 4 && line && !/^(wpływy|wydatki|saldo|opis|księgowania)/i.test(line)) {
+      cur.desc += " " + line; extra++;
+    }
+  }
+  if (!tx.length) throw new Error("Не нашёл операций в PDF. Попробуй выгрузить выписку в CSV.");
+  return tx;
+}
+async function readFileText(file) {
+  const buf = await file.arrayBuffer();
+  try { return new TextDecoder("utf-8", { fatal: true }).decode(buf); } catch (e) { return new TextDecoder("windows-1250").decode(buf); }
+}
+function shortName(desc) {
+  let m = desc.match(/KART[AĄ]\s+[\d.,]+\s+[A-Z]{3}\s+(.+)/i) || desc.match(/BLIK\s+(?:P2P\s+)?(.+)/i) || desc.match(/^(?:PRZELEW|ZLECENIE)[^ ]*\s+(?:NA RACHUNEK|DO|OD)?\s*(.+)/i);
+  if (m) return m[1].replace(/\s+\d{6,}.*$/, "").replace(/\s+(SPÓŁKA|SP\. Z O\.O|SP Z OO|S\.A\.).*$/i, "").replace(/\s+K\.\d+/, "").replace(/\s+/g, " ").trim().slice(0, 30);
+  return desc.split(" · ").map(s => s.replace(/\b\d{4,}\b|\bpl\d+\b|\b[a-z]{2}\d{2}[\d ]{10,}\b/gi, "").trim()).filter(s => s && !/^(płatność kartą|platnosc karta|zakup|transakcja|card payment|przelew|blik|płatność|operacja kartą)/i.test(s))[0] || desc.slice(0, 30);
+}
+function openImport() {
+  const { sh, close } = openSheet(`<h3>📄 Загрузить выписку</h3>
+    <p class="muted" style="margin-top:-6px">Файл читается прямо здесь, на телефоне, и никуда не отправляется. В приложении сохраняются только суммы, даты и короткие названия магазинов.</p>
+    <div class="tip"><b>Какой файл подойдёт</b>
+      CSV из истории операций (Millennium, PKO, mBank, ING, Santander, Pekao, Revolut) или выписка банка в PDF (wyciąg). Можно сразу несколько файлов, например за разные месяцы. Подходит и выписка Trading 212 в CSV: из неё возьмутся траты по карте.</div>
+    <input type="file" id="iFile" accept=".csv,.txt,.pdf,text/csv,application/pdf" multiple style="display:none">
+    <button class="btn" id="iPick">Выбрать файл</button>
+    <div id="iErr" class="minus" style="margin-top:10px"></div>`, () => go(tab));
+  const inp = sh.querySelector("#iFile");
+  sh.querySelector("#iPick").onclick = () => inp.click();
+  inp.onchange = async () => {
+    try {
+      let all = [];
+      sh.querySelector("#iErr").textContent = ""; sh.querySelector("#iPick").textContent = "Читаю файл…";
+      for (const f of inp.files) {
+        const head = new Uint8Array(await f.slice(0, 5).arrayBuffer());
+        const isPdf = head[0] === 0x25 && head[1] === 0x50 && head[2] === 0x44 && head[3] === 0x46;
+        all = all.concat(isPdf ? parsePdfStatement(await pdfLines(await f.arrayBuffer())) : parseCsvText(await readFileText(f)));
+      }
+      reviewImport(all);
+    } catch (e) { sh.querySelector("#iErr").textContent = e.message; sh.querySelector("#iPick").textContent = "Выбрать файл"; haptic("error"); }
+  };
+}
+function reviewImport(tx) {
+  const exp = [], inc = [];
+  tx.forEach(t => {
+    if (t.a > 0) { inc.push(t); return; }
+    const c = guessCat(t.desc, t.a);
+    exp.push({ date: t.date, a: -t.a, desc: t.desc, n: shortName(t.desc).slice(0, 30), c: c === "_skip" ? null : (c || "other"), skip: c === "_skip", unk: !c });
+  });
+  exp.sort((a, b) => b.date - a.date);
+  const months = new Set(exp.map(e => monthKey(e.date)));
+  const draw = () => {
+    const by = {}; CATS.forEach(c => by[c.id] = 0);
+    exp.filter(e => !e.skip).forEach(e => by[e.c] = (by[e.c] || 0) + e.a);
+    const nm = Math.max(1, months.size);
+    const incSum = inc.filter(t => !/własn|wlasn|wewnętrz|wewnetrz|między|miedzy/i.test(t.desc)).reduce((a, t) => a + t.a, 0);
+    const unk = exp.filter(e => e.unk && !e.skip);
+    const { sh } = openSheet(`<h3>Нашёл ${exp.length} трат за ${nm} ${mWord(nm)}</h3>
+      <p class="muted" style="margin-top:-6px">В среднем в месяц по категориям. Нажми на категорию или трату, чтобы поправить.</p>
+      <div class="list">${CATS.filter(c => by[c.id]).sort((a, b) => by[b.id] - by[a.id]).map(c => `<div class="it" data-rc="${c.id}"><span>${c.ic} ${c.name}</span><b>${money(by[c.id] / nm)}</b></div>`).join("")}</div>
+      ${incSum ? `<div class="tip" style="margin-top:10px"><b>Поступления</b>в среднем ${money(incSum / nm)} в месяц. <button class="chip" id="rInc">Взять как доход</button></div>` : ""}
+      ${unk.length ? `<h3 style="margin-top:14px">Не распознал (${unk.length}), сейчас в «Прочее»</h3><div class="list">${unk.slice(0, 40).map(e => `<div class="it" data-ix="${exp.indexOf(e)}"><span>${esc(e.n)}<br><span class="muted">${e.date.getDate()} ${MONTHS_G[e.date.getMonth()]}</span></span><b>${money(e.a)}</b></div>`).join("")}</div>` : ""}
+      <label class="row" style="margin:14px 0 4px;justify-content:flex-start;gap:10px"><input type="checkbox" id="rPlan" checked style="width:20px;height:20px"> <span>Сделать план по средним тратам</span></label>
+      <button class="btn" id="rSave">Сохранить траты</button>
+      <button class="btn sec" id="rAll">Показать все траты</button>`, () => go(tab));
+    sh.querySelectorAll("[data-ix]").forEach(el => el.onclick = () => pickCat(exp[+el.dataset.ix], draw));
+    sh.querySelectorAll("[data-rc]").forEach(el => el.onclick = () => listCat(el.dataset.rc));
+    sh.querySelector("#rAll").onclick = () => listCat(null);
+    const ri = sh.querySelector("#rInc"); if (ri) ri.onclick = () => { S.income = Math.round(incSum / nm / 10) * 10; saveSettings(); ri.textContent = "✓ " + money(S.income); haptic("success"); };
+    sh.querySelector("#rSave").onclick = async () => {
+      const added = {};
+      for (const e of exp) {
+        if (e.skip) continue;
+        const key = monthKey(e.date), items = await loadMonth(key);
+        if (!added[key]) { added[key] = true; for (let i = items.length - 1; i >= 0; i--) if (items[i].i) items.splice(i, 1); } // повторная загрузка заменяет прошлый импорт за этот месяц
+        const it = { d: e.date.getDate(), c: e.c, a: Math.round(e.a * 100) / 100, n: e.n, i: 1 };
+        if (isSplit(e.c)) it.p = 0;
+        items.push(it);
+      }
+      Object.keys(added).forEach(saveMonth);
+      if (sh.querySelector("#rPlan").checked) {
+        CATS.forEach(c => { const v = Math.round(by[c.id] / nm / 10) * 10; if (isSplit(c.id)) S.plansP[c.id] = [Math.round(v / 2), Math.round(v / 2)]; else S.plans[c.id] = v; });
+      }
+      saveSettings(); haptic("success");
+      openLife();
+    };
+    function listCat(cid) {
+      const list = exp.filter(e => cid ? (e.c === cid && !e.skip) : true);
+      const { sh: s2 } = openSheet(`<button class="back" id="bk">‹ Назад</button><h3>${cid ? CAT[cid].ic + " " + CAT[cid].name : "Все траты"}</h3>
+        <div class="list">${list.map(e => `<div class="it" data-ix="${exp.indexOf(e)}" style="${e.skip ? "opacity:.45" : ""}"><span>${esc(e.n)}<br><span class="muted">${e.date.getDate()} ${MONTHS_G[e.date.getMonth()]} · ${e.skip ? "не трата (перевод)" : CAT[e.c].name}</span></span><b>${money(e.a)}</b></div>`).join("")}</div>`, () => go(tab));
+      s2.querySelector("#bk").onclick = draw;
+      s2.querySelectorAll("[data-ix]").forEach(el => el.onclick = () => pickCat(exp[+el.dataset.ix], () => listCat(cid)));
+    }
+  };
+  function pickCat(e, back) {
+    const { sh } = openSheet(`<h3>${esc(e.n)}</h3><p class="muted">${money(e.a)} · ${e.date.getDate()} ${MONTHS_G[e.date.getMonth()]}<br>${esc(e.desc)}</p>
+      <div class="chips">${CATS.map(c => `<button class="chip ${!e.skip && c.id === e.c ? "on" : ""}" data-c="${c.id}">${c.ic} ${c.name}</button>`).join("")}<button class="chip ${e.skip ? "on" : ""}" data-c="_skip">↔️ Не трата (перевод себе)</button></div>
+      <label class="row" style="margin-top:12px;justify-content:flex-start;gap:10px"><input type="checkbox" id="pkAll" checked style="width:20px;height:20px"><span>Так же для всех «${esc(e.n.slice(0, 18))}»</span></label>`, () => go(tab));
+    sh.querySelectorAll("[data-c]").forEach(b => b.onclick = () => {
+      const c = b.dataset.c, all = sh.querySelector("#pkAll").checked, key = e.n.toLowerCase().slice(0, 18);
+      exp.forEach(x => { if (x === e || (all && x.n.toLowerCase().slice(0, 18) === key)) { x.skip = c === "_skip"; x.c = x.skip ? x.c || "other" : c; x.unk = false; } });
+      if (all && key) { S.rules[key] = c; saveSettings(); }
+      haptic(); back();
+    });
+  }
+  draw();
+}
+
+/* ---------- Бюджет (раскладка дохода по процентам) ---------- */
+const BGROUPS = [
+  { id: "needs", title: "Потребности", items: [["🏠", "Аренда", 35], ["🛒", "Продукты", 15], ["⚡", "Коммуналка", 5], ["📞", "Связь", 3], ["🚗", "Транспорт", 5], ["💧", "Гигиена", 3], ["💊", "Лекарства", 7]] },
+  { id: "wants", title: "Желания", items: [["👕", "Шопинг", 7], ["🎬", "Развлечения", 5], ["✈️", "Путешествия", 5]] },
+  { id: "inv", title: "Инвестиции", items: [["📈", "Инвестиции", 5], ["🛟", "Резервный фонд", 5]] },
+];
+const BDEF = BGROUPS.flatMap(g => g.items.map(i => i[2]));
+function viewBudget() {
+  setHead("Бюджет", "Раскладка дохода по процентам");
+  const B = S.budget; if (!B.pcts || B.pcts.length !== BDEF.length) B.pcts = BDEF.slice();
+  if (!B.amount && S.income) B.amount = S.income;
+  let k = 0;
+  let h = `<div class="card"><label class="field" style="margin:0"><span>Доход за месяц, ${S.cur}</span><input id="bAmt" inputmode="decimal" value="${B.amount ? fmt(B.amount) : ""}" placeholder="0" style="font-size:24px;font-weight:800"></label></div>`;
+  BGROUPS.forEach(g => {
+    h += `<section class="group g-${g.id}"><div class="ghead"><span>${g.title}</span><span id="bg-${g.id}"></span></div>`;
+    g.items.forEach(([ic, n]) => { const i = k++; h += `<div class="brow"><span>${ic}</span><span class="n">${n}</span><label class="pct"><input inputmode="decimal" data-i="${i}" value="${B.pcts[i]}">%</label><span class="amt" id="ba-${i}"></span></div>`; });
+    h += `</section>`;
+  });
+  h += `<div class="card"><div class="row"><b>Итого</b><b id="bTp"></b><b id="bTa"></b></div><div class="muted" id="bMsg"></div></div>
+    <button class="btn sec" id="bShift">⇄ Перераспределить проценты</button>
+    <button class="btn sec" id="bReset">Проценты по умолчанию</button><button class="btn" id="bToPlan">Сделать из этого план трат</button>`;
+  V().innerHTML = h;
+  const render = () => {
+    let i = 0, tot = 0;
+    BGROUPS.forEach(g => { let gp = 0; g.items.forEach(() => { document.getElementById("ba-" + i).textContent = money(B.amount * B.pcts[i] / 100); gp += B.pcts[i]; i++; }); tot += gp; document.getElementById("bg-" + g.id).textContent = `${+gp.toFixed(1)}% · ${money(B.amount * gp / 100)}`; });
+    tot = +tot.toFixed(1);
+    const tp = document.getElementById("bTp"); tp.textContent = tot + "%"; tp.className = Math.abs(tot - 100) < .05 ? "" : "minus";
+    document.getElementById("bTa").textContent = money(B.amount * tot / 100);
+    const d = +(100 - tot).toFixed(1);
+    document.getElementById("bMsg").textContent = Math.abs(d) < .05 ? "" : d > 0 ? `Не распределено ${d}% (${money(B.amount * d / 100)})` : `Перебор на ${-d}%`;
+  };
+  const amt = document.getElementById("bAmt");
+  amt.oninput = () => { B.amount = num(amt.value); render(); saveSettings(); };
+  amt.onblur = () => { amt.value = B.amount ? fmt(B.amount) : ""; };
+  V().querySelectorAll(".pct input").forEach(inp => { inp.oninput = () => { B.pcts[+inp.dataset.i] = Math.min(100, num(inp.value)); render(); saveSettings(); }; inp.onfocus = () => inp.select(); });
+  document.getElementById("bShift").onclick = () => {
+    const items = BGROUPS.flatMap(g => g.items).map(([ic, n], i) => ({ id: String(i), label: ic + " " + n, val: B.pcts[i] }));
+    openTransfer("Перераспределить проценты", items, B.amount, (f, t, a) => { B.pcts[+f] = Math.round((B.pcts[+f] - a) * 10) / 10; B.pcts[+t] = Math.round((B.pcts[+t] + a) * 10) / 10; saveSettings(); },
+      () => { document.getElementById("sheet").classList.remove("open"); document.getElementById("sheetBg").classList.remove("open"); viewBudget(); });
+  };
+  document.getElementById("bReset").onclick = () => { B.pcts = BDEF.slice(); saveSettings(); viewBudget(); };
+  document.getElementById("bToPlan").onclick = () => {
+    const a = i => B.amount * B.pcts[i] / 100;
+    S.income = B.amount;
+    const m = { home: a(0) + a(2), food: a(1), subs: a(3), transport: a(4), beauty: a(5), health: a(6), shop: a(7), fun: a(8) + a(9) };
+    Object.keys(m).forEach(k => { const v = Math.round(m[k]); if (isSplit(k)) S.plansP[k] = [Math.round(v / 2), Math.round(v / 2)]; else S.plans[k] = v; });
+    saveSettings(); haptic("success"); go("spend");
+  };
+  render();
+}
+
+/* ---------- Накопления (сложный процент, как в боте) ---------- */
+function mRate(p) { return Math.pow(1 + p / 100, 1 / 12) - 1; }
+function simulate(start, monthly, rate, months) {
+  const r = mRate(rate); let bal = start, paid = start; const rows = [];
+  for (let i = 1; i <= months; i++) { bal = bal * (1 + r) + monthly; paid += monthly; if (i % 12 === 0 || i === months) rows.push({ y: i / 12, bal, paid }); }
+  return rows;
+}
+function monthsToTarget(start, monthly, rate, target) {
+  if (start >= target) return 0; const r = mRate(rate); let bal = start;
+  for (let i = 1; i <= 720; i++) { bal = bal * (1 + r) + monthly; if (bal >= target) return i; } return null;
+}
+function neededMonthly(start, rate, target, months) {
+  const r = mRate(rate), g = Math.pow(1 + r, months), fv = start * g; if (fv >= target) return 0;
+  return (target - fv) / (r === 0 ? months : (g - 1) / r);
+}
+function viewCalc() {
+  setHead("Накопления", "Сложный процент, взнос в конце месяца");
+  const C = S.calc;
+  const f = (id, label, val, extra) => `<label class="field"><span>${label}</span><input id="${id}" inputmode="decimal" value="${val}" ${extra || ""}></label>`;
+  V().innerHTML = `<div class="card"><div class="seg" id="cMode">
+      <button data-m="target">Когда цель</button><button data-m="years">Через N лет</button><button data-m="need">Какой взнос</button></div>
+    <div class="chips" id="cCur" style="margin-bottom:12px">${["$", "zł", "€"].map(c => `<button class="chip" data-c="${c}">${c}</button>`).join("")}</div>
+    <div class="grid2">${f("cStart", "Уже вложено", C.start)}${f("cMonthly", "Взнос в месяц", C.monthly)}${f("cRate", "Доходность, % в год", C.rate)}${f("cTarget", "Цель", C.target)}${f("cYears", "Лет", C.years)}</div>
+    <div class="chips" id="cRates">${[5, 7, 10].map(r => `<button class="chip" data-r="${r}">${r}%</button>`).join("")}</div></div>
+    <div class="card" id="cRes"></div>
+    <div class="card"><h2>Рост по годам</h2><div id="cChart"></div><div class="legend"><span><i style="background:var(--c2)"></i>Твои взносы</span><span><i style="background:var(--c1)"></i>Доход от процентов</span></div></div>
+    <div class="card"><h2>Таблица</h2><div id="cTable"></div></div>
+    <p class="muted">⚠️ Учебный расчёт, а не инвестиционная рекомендация. Доходность не гарантирована, налоги и инфляция не учтены.</p>`;
+  const sync = () => {
+    document.querySelectorAll("#cMode button").forEach(b => b.classList.toggle("on", b.dataset.m === C.mode));
+    document.querySelectorAll("#cCur .chip").forEach(b => b.classList.toggle("on", b.dataset.c === C.cur));
+    document.querySelectorAll("#cRates .chip").forEach(b => b.classList.toggle("on", +b.dataset.r === C.rate));
+    document.getElementById("cMonthly").closest(".field").classList.toggle("hidden", C.mode === "need");
+    document.getElementById("cTarget").closest(".field").classList.toggle("hidden", C.mode === "years");
+    document.getElementById("cYears").closest(".field").classList.toggle("hidden", C.mode === "target");
+    calcRender();
+  };
+  document.querySelectorAll("#cMode button").forEach(b => b.onclick = () => { C.mode = b.dataset.m; haptic(); sync(); saveSettings(); });
+  document.querySelectorAll("#cCur .chip").forEach(b => b.onclick = () => { C.cur = b.dataset.c; haptic(); sync(); saveSettings(); });
+  document.querySelectorAll("#cRates .chip").forEach(b => b.onclick = () => { C.rate = +b.dataset.r; document.getElementById("cRate").value = C.rate; haptic(); sync(); saveSettings(); });
+  [["cStart", "start"], ["cMonthly", "monthly"], ["cRate", "rate"], ["cTarget", "target"], ["cYears", "years"]].forEach(([id, k]) => {
+    document.getElementById(id).oninput = e => { C[k] = num(e.target.value); if (k === "years") C[k] = Math.min(60, Math.max(1, Math.round(C[k]) || 1)); sync(); saveSettings(); };
+  });
+  sync();
+}
+function calcRender() {
+  const C = S.calc, cur = C.cur, res = document.getElementById("cRes");
+  let rows, html;
+  if (C.mode === "target") {
+    const n = monthsToTarget(C.start, C.monthly, C.rate, C.target);
+    if (n === 0) { html = `<div class="big">🎉 Цель уже достигнута</div>`; rows = []; }
+    else if (n === null) { html = `<div class="big">60+ лет</div><div class="muted">За 60 лет цель не набирается, увеличь взнос.</div>`; rows = simulate(C.start, C.monthly, C.rate, 720); }
+    else {
+      rows = simulate(C.start, C.monthly, C.rate, n);
+      const w = new Date(); w.setMonth(w.getMonth() + n);
+      const last = rows[rows.length - 1];
+      html = `<h2>🎯 Цель ${money(C.target, cur)} будет через</h2><div class="big">${duration(n)}</div><div class="muted">примерно ${MONTHS[w.getMonth()]} ${w.getFullYear()}. Твоих взносов ${money(last.paid, cur)}, остальное ${money(last.bal - last.paid, cur)} даст сложный процент.</div>`;
+    }
+  } else if (C.mode === "years") {
+    rows = simulate(C.start, C.monthly, C.rate, C.years * 12);
+    const l = rows[rows.length - 1];
+    html = `<h2>⏳ Через ${C.years} ${yWord(C.years)}</h2><div class="big">${money(l.bal, cur)}</div><div class="muted">Вложено ${money(l.paid, cur)}, доход +${money(l.bal - l.paid, cur)}.</div>`;
+  } else {
+    const need = neededMonthly(C.start, C.rate, C.target, C.years * 12);
+    rows = simulate(C.start, need, C.rate, C.years * 12);
+    html = `<h2>💡 Чтобы набрать ${money(C.target, cur)} за ${C.years} ${yWord(C.years)}, откладывай</h2><div class="big">${money(need, cur)} в месяц</div>`;
+    if (S.income && S.cur === cur) html += `<div class="muted">Это ${Math.round(need / S.income * 100)}% твоего дохода.</div>`;
+  }
+  res.innerHTML = html;
+  document.getElementById("cChart").innerHTML = rows.length ? growthSvg(rows, cur, C.mode !== "years" ? C.target : 0) : "";
+  const step = rows.length > 20 ? 5 : rows.length > 10 ? 2 : 1;
+  const show = rows.filter((r, i) => (i + 1) % step === 0 || i === rows.length - 1);
+  document.getElementById("cTable").innerHTML = rows.length ? `<table><tr><th>Год</th><th>Вложено</th><th>Доход</th><th>Итого</th></tr>${show.map(r => `<tr><td>${Number.isInteger(r.y) ? r.y : r.y.toFixed(1)}</td><td>${money(r.paid, cur)}</td><td>${money(r.bal - r.paid, cur)}</td><td><b>${money(r.bal, cur)}</b></td></tr>`).join("")}</table>` : "";
+}
+function growthSvg(rows, cur, target) {
+  const W = 340, H = 180, L = 40, B = 18, T = 8;
+  const max = Math.max(target || 0, ...rows.map(r => r.bal)) * 1.05 || 1;
+  const n = rows.length, bw = Math.max(2, (W - L - 4) / n - 2);
+  const y = v => T + (H - B - T) * (1 - v / max);
+  let g = "";
+  for (let i = 0; i <= 4; i++) { const v = max * i / 4, yy = y(v); g += `<line x1="${L}" x2="${W}" y1="${yy}" y2="${yy}" stroke="var(--line)"/><text x="${L - 4}" y="${yy + 3}" text-anchor="end">${v >= 1e6 ? (v / 1e6).toFixed(1) + "M" : Math.round(v / 1000) + "k"}</text>`; }
+  rows.forEach((r, i) => {
+    const x = L + 3 + i * (bw + 2);
+    g += `<rect x="${x}" y="${y(r.paid)}" width="${bw}" height="${H - B - y(r.paid)}" fill="var(--c2)" rx="2"/>`;
+    g += `<rect x="${x}" y="${y(r.bal)}" width="${bw}" height="${Math.max(0, y(r.paid) - y(r.bal))}" fill="var(--c1)" rx="2"/>`;
+    if (n <= 12 || (i + 1) % Math.ceil(n / 8) === 0 || i === n - 1) g += `<text x="${x + bw / 2}" y="${H - 4}" text-anchor="middle">${Math.ceil(r.y)}</text>`;
+  });
+  if (target) g += `<line x1="${L}" x2="${W}" y1="${y(target)}" y2="${y(target)}" stroke="var(--warn)" stroke-dasharray="4 4"/><text x="${W - 2}" y="${y(target) - 3}" text-anchor="end">цель</text>`;
+  return `<svg viewBox="0 0 ${W} ${H}" width="100%" role="img" aria-label="График роста капитала по годам">${g}</svg>`;
+}
+
+/* ---------- Ещё ---------- */
+function viewMore() {
+  setHead("Ещё", "");
+  V().innerHTML = `<div class="card"><h2>В чате бота</h2>
+      <div class="tip"><b>🏦 IKE / IKZE</b>Записывай взносы, бот покажет остаток лимита на ${BOT_LIMITS.year}: IKE ${money(BOT_LIMITS.IKE, "zł")}, IKZE ${money(BOT_LIMITS.IKZE, "zł")} (JDG ${money(BOT_LIMITS.IKZE_JDG, "zł")}).</div>
+      <div class="tip"><b>🧾 Налоги</b>Загрузи CSV-выписку Trading 212, и бот посчитает цифры для PIT-38 по курсам NBP.</div>
+      <button class="btn" id="toChat">Перейти в чат бота</button></div>
+    <div class="card"><h2>Настройки</h2>
+      <button class="btn sec" id="mProf">Анкета: семья, дети, животные, машина</button>
+      <button class="btn sec" id="mPlan">Доход и план трат</button>
+      <button class="btn sec" id="mImp">📄 Загрузить выписку из банка</button>
+      <button class="btn sec" id="mLife">🧭 Мой план по всем статьям</button>
+      <label class="field" style="margin-top:12px"><span>Город для поиска квартир</span><select id="mCity">${[["gdansk", "Gdańsk"], ["gdynia", "Gdynia"], ["sopot", "Sopot"], ["warszawa", "Warszawa"], ["krakow", "Kraków"], ["wroclaw", "Wrocław"], ["poznan", "Poznań"]].map(([v, t]) => `<option value="${v}" ${S.city === v ? "selected" : ""}>${t}</option>`).join("")}</select></label>
+      <label class="field"><span>Комнат</span><select id="mRooms">${["1", "2", "3"].map(r => `<option ${S.rooms === r ? "selected" : ""}>${r}</option>`).join("")}</select></label>
+      <button class="btn sec" id="mExport">Скопировать все данные</button>
+      <p class="muted">Данные хранятся в твоём Telegram и видны только тебе.</p></div>
+    <p class="muted">⚠️ Учебные расчёты, а не инвестиционная рекомендация.</p>`;
+  document.getElementById("toChat").onclick = () => { if (inTg) tg.close(); };
+  document.getElementById("mPlan").onclick = () => openPlan();
+  document.getElementById("mProf").onclick = () => openProfile(false);
+  document.getElementById("mImp").onclick = () => openImport();
+  document.getElementById("mLife").onclick = () => openLife();
+  document.getElementById("mCity").onchange = e => { S.city = e.target.value; saveSettings(); };
+  document.getElementById("mRooms").onchange = e => { S.rooms = e.target.value; saveSettings(); };
+  document.getElementById("mExport").onclick = async () => {
+    const data = { settings: S, months: {} };
+    for (let i = 0; i < 24; i++) { const d = new Date(); d.setDate(1); d.setMonth(d.getMonth() - i); const k = monthKey(d); const m = await loadMonth(k); if (m.length) data.months[k] = m; }
+    try { await navigator.clipboard.writeText(JSON.stringify(data)); haptic("success"); document.getElementById("mExport").textContent = "Скопировано"; } catch (e) { haptic("error"); }
+  };
+}
+
+/* ---------- запуск ---------- */
+async function init() {
+  if (inTg) {
+    tg.ready(); tg.expand();
+    try { if (tg.isVersionAtLeast("8.0") && tg.requestFullscreen && ["android", "ios"].includes(tg.platform)) tg.requestFullscreen(); } catch (e) {}
+    try { tg.disableVerticalSwipes && tg.disableVerticalSwipes(); } catch (e) {}
+    const theme = () => { document.documentElement.dataset.theme = tg.colorScheme === "dark" ? "dark" : "light"; try { tg.setHeaderColor("bg_color"); tg.setBackgroundColor(getComputedStyle(document.body).backgroundColor); } catch (e) {} };
+    theme(); tg.onEvent("themeChanged", theme);
+  }
+  const saved = await Store.get("settings");
+  S = Object.assign(JSON.parse(JSON.stringify(DEFAULT_SETTINGS)), saved || {});
+  S.calc = Object.assign({}, DEFAULT_SETTINGS.calc, S.calc || {});
+  S.budget = Object.assign({}, DEFAULT_SETTINGS.budget, S.budget || {});
+  S.plans = S.plans || {}; S.plansP = S.plansP || {}; S.rules = S.rules || {};
+  rebuildCats();
+  document.getElementById("fab").onclick = () => openAdd();
+  const start = (inTg && tg.initDataUnsafe && tg.initDataUnsafe.start_param) || new URLSearchParams(location.search).get("tab");
+  drawNav(); go(TABS.some(t => t[0] === start) ? start : "home");
+  if (!S.profile) openProfile(true);
+}
+init().catch(e => { document.getElementById("view").innerHTML = '<div class="card"><b>Ошибка запуска</b><div class="muted">' + esc(e && e.message || e) + '</div></div>'; });
+window.addEventListener("error", e => { const v = document.getElementById("view"); if (v && !v.innerHTML.trim()) v.innerHTML = '<div class="card"><b>Ошибка</b><div class="muted">' + esc(e.message) + '</div></div>'; });
