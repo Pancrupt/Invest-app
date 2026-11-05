@@ -70,6 +70,7 @@ const ALL_CATS = [
   { id: "kids", ic: "🧸", name: "Дети", hint: "садик, кружки, одежда", subs: ["Садик / школа", "Кружки", "Одежда", "Игрушки"], need: "kids" },
   { id: "pets", ic: "🐾", name: "Животные", hint: "корм, ветеринар", subs: ["Корм", "Ветеринар", "Груминг и аксессуары"], need: "pets" },
   { id: "debt", ic: "💳", name: "Кредиты и долги", hint: "рассрочки, лимит", subs: ["Кредит", "Рассрочка", "Проценты"], need: "loans" },
+  { id: "people", ic: "👥", name: "Переводы людям", hint: "родным, друзьям, за услуги", subs: ["Родственникам", "Друзьям", "За услуги", "Возврат долга"] },
   { id: "gifts", ic: "🎁", name: "Подарки", hint: "дни рождения, праздники", subs: [] },
   { id: "other", ic: "📦", name: "Прочее", hint: "всё остальное, наличные", subs: ["Наличные", "Комиссии банка"] },
 ];
@@ -402,7 +403,7 @@ function barsSvg(hist, plan) {
 /* ---------- советы ---------- */
 function tip(title, text) { return `<div class="tip"><b>${title}</b>${text}</div>`; }
 // Рекомендуемая доля дохода по статьям (ориентир для «сколько стоит тратить»)
-const NORM = { home: .30, food: .15, cafe: .04, transport: .05, car: .08, health: .04, beauty: .03, subs: .02, shop: .05, fun: .05, kids: .08, pets: .03, debt: .10, gifts: .02, other: .03 };
+const NORM = { home: .30, food: .15, cafe: .04, transport: .05, car: .08, health: .04, beauty: .03, subs: .02, shop: .05, fun: .05, kids: .08, pets: .03, debt: .10, people: .03, gifts: .02, other: .03 };
 function defaultShare(id) { // доля дохода в %, с поправкой на семью
   let k = NORM[id] || 0; const p = S.profile || {};
   if (id === "food") k *= (p.adults === 2 ? 1 : .7) + (p.kids || 0) * .25;
@@ -510,6 +511,8 @@ function tipsFor(id, plan, spent, avg, prog) {
     out.push(tip("Правило 48 часов", "Хочешь купить что-то дороже 200 zł: подожди 2 дня. Половина желаний за это время проходит."));
   } else if (id === "health") {
     out.push(tip("Здоровье", "Здесь не стоит резать. Проверь только, есть ли у лекарств дешёвые замены (zamiennik), и что даёт NFZ бесплатно."));
+  } else if (id === "people") {
+    out.push(tip("Переводы людям", "Здесь деньги родным, друзьям и мастерам, которым платишь переводом. Переводы жене или мужу и на свои счета лучше отмечать «не трата»: деньги остаются в семье и не должны считаться дважды."));
   } else if (id === "other") {
     out.push(tip("Наличные", "Снятые наличные попадают сюда. Если помнишь, на что они ушли, перенеси их в нужную категорию: нажми на трату в списке."));
   }
@@ -744,7 +747,7 @@ function openImport() {
   const { sh, close } = openSheet(`<h3>📄 Загрузить выписку</h3>
     <p class="muted" style="margin-top:-6px">Файл читается прямо здесь, на телефоне, и никуда не отправляется. В приложении сохраняются только суммы, даты и короткие названия магазинов.</p>
     <div class="tip"><b>Какой файл подойдёт</b>
-      Выписка банка в PDF (wyciąg), Excel (.xlsx, .xls) или CSV: Millennium, PKO, mBank, ING, Santander, Pekao, Revolut и другие. Можно сразу несколько файлов, например за разные месяцы. Подходит и выписка Trading 212 в CSV: из неё возьмутся траты по карте.</div>
+      Выписка банка в PDF (wyciąg), Excel (.xlsx, .xls) или CSV: Millennium, PKO, mBank, ING, Santander, Pekao, Revolut и другие. Можно сразу несколько файлов: за разные месяцы или <b style="display:inline">выписки всех, кто ведёт общий бюджет</b> (твою и жены/мужа). Переводы между вами приложение найдёт само и не посчитает ни тратой, ни доходом, а доход сложит. Подходит и выписка Trading 212 в CSV: из неё возьмутся траты по карте.</div>
     <input type="file" id="iFile" accept=".csv,.txt,.pdf,.xlsx,.xls,text/csv,application/pdf,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,application/vnd.ms-excel" multiple style="display:none">
     <button class="btn" id="iPick">Выбрать файл</button>
     <div id="iErr" class="minus" style="margin-top:10px"></div>`, () => go(tab));
@@ -754,43 +757,115 @@ function openImport() {
     try {
       let all = [];
       sh.querySelector("#iErr").textContent = ""; sh.querySelector("#iPick").textContent = "Читаю файл…";
+      let fi = 0;
       for (const f of inp.files) {
+        const from = all.length;
         const head = new Uint8Array(await f.slice(0, 5).arrayBuffer());
         const isPdf = head[0] === 0x25 && head[1] === 0x50 && head[2] === 0x44 && head[3] === 0x46;
         const isZip = head[0] === 0x50 && head[1] === 0x4b, isOle = head[0] === 0xd0 && head[1] === 0xcf;
         if (isPdf) all = all.concat(parsePdfStatement(await pdfLines(await f.arrayBuffer())));
         else if (isZip || isOle || /\.xlsx?$/i.test(f.name)) all = all.concat(parseCsvText(await excelToCsv(await f.arrayBuffer())));
         else all = all.concat(parseCsvText(await readFileText(f)));
+        for (let k = from; k < all.length; k++) all[k].f = fi;
+        fi++;
       }
       reviewImport(all);
     } catch (e) { sh.querySelector("#iErr").textContent = e.message; sh.querySelector("#iPick").textContent = "Выбрать файл"; haptic("error"); }
   };
 }
+// Переводы людям: кто получатель
+const REL = [["spouse", "💑 Жена / муж", "не трата"], ["self", "↔️ Это я (свой счёт)", "не трата"], ["family", "👨‍👩‍👦 Родственник", "Родственникам"], ["friend", "🤝 Друг", "Друзьям"], ["service", "🛠 За услуги", "За услуги"], ["debt", "💳 Возврат долга", "Возврат долга"]];
+function relApply(e, rel) {
+  const r = REL.find(x => x[0] === rel); if (!r) return;
+  e.rel = rel; e.unk = false;
+  if (rel === "spouse" || rel === "self") { e.skip = true; e.c = "people"; e.s = null; }
+  else { e.skip = false; e.c = "people"; e.s = r[2]; }
+}
+function personKey(n) { return n.toLowerCase().replace(/\s+/g, " ").trim().slice(0, 24); }
+function looksLikePerson(desc, name) {
+  if (!/przelew|blik na telefon|na numer telefonu|p2p|odbiorca:|transfer to|перевод/i.test(desc)) return false;
+  if (/wychodz|przychodz|płatność|platnosc|blik\b/i.test(name)) return false;
+  if (/sp\.? ?z|s\.a\.|spółka|spolka|sp\.? ?k\b|sp\.? ?j\b|fundacja|bank|urząd|urzad|ltd|gmbh|inc\b|nieruchomo|sklep|serwis|\d|\.pl|\.com|-/i.test(name)) return false;
+  const w = name.trim().split(/\s+/);
+  return w.length >= 1 && w.length <= 4 && w.every(x => /^[A-Za-zÀ-žА-яЁё'.]+$/.test(x));
+}
+function catSelect(e, i) {
+  const opts = CATS.map(c => `<option value="${c.id}" ${!e.skip && e.c === c.id ? "selected" : ""}>${c.ic} ${c.name}</option>`).join("") + `<option value="_skip" ${e.skip ? "selected" : ""}>↔️ Не трата</option>`;
+  return `<select class="csel" data-sel="${i}">${opts}</select>`;
+}
+// Переводы внутри семьи: одна и та же сумма ушла из одной выписки и пришла в другую в пределах 3 дней
+function markInternal(tx) {
+  const outs = tx.filter(t => t.a < 0), ins = tx.filter(t => t.a > 0);
+  let n = 0;
+  outs.forEach(o => {
+    const m = ins.find(i => !i.internal && i.f !== o.f && Math.abs(i.a + o.a) < 0.01 && Math.abs(i.date - o.date) <= 3 * 864e5);
+    if (m) { m.internal = o.internal = true; n++; }
+  });
+  return n;
+}
 function reviewImport(tx) {
   const exp = [], inc = [];
+  const files = new Set(tx.map(t => t.f)).size;
+  const internalN = files > 1 ? markInternal(tx) : 0;
   tx.forEach(t => {
-    if (t.a > 0 && /zwrot|refund/i.test(t.desc)) { const c = guessCat(t.desc, -t.a); exp.push({ date: t.date, a: -t.a, desc: t.desc, n: shortName(t.desc).slice(0, 30), c: c && c !== "_skip" ? c : "other", skip: false, unk: false, refund: true }); return; }
+    const n = shortName(t.desc).slice(0, 30);
+    if (t.internal) return;
+    if (t.a > 0 && S.people && ["spouse", "self"].includes(S.people[personKey(n)])) return; // от жены/мужа или со своего счёта — не доход
+    if (t.a > 0 && /zwrot|refund/i.test(t.desc)) { const c = guessCat(t.desc, -t.a); exp.push({ date: t.date, a: -t.a, desc: t.desc, n, c: c && c !== "_skip" ? c : "other", skip: false, unk: false }); return; }
     if (t.a > 0) { inc.push(t); return; }
-    const c = guessCat(t.desc, t.a);
-    exp.push({ date: t.date, a: -t.a, desc: t.desc, n: shortName(t.desc).slice(0, 30), c: c === "_skip" ? null : (c || "other"), skip: c === "_skip", unk: !c });
+    const e = { date: t.date, a: -t.a, desc: t.desc, n };
+    const pk = personKey(n);
+    if (S.people && S.people[pk]) { relApply(e, S.people[pk]); e.person = true; }
+    else {
+      const c = guessCat(t.desc, t.a);
+      if (c) { e.c = c === "_skip" ? "other" : c; e.skip = c === "_skip"; e.unk = false; }
+      else if (looksLikePerson(t.desc, n)) { e.person = true; e.unk = true; e.c = "people"; e.skip = false; }
+      else { e.c = "other"; e.skip = false; e.unk = true; }
+    }
+    exp.push(e);
   });
   exp.sort((a, b) => b.date - a.date);
   const months = new Set(exp.map(e => monthKey(e.date)));
+  const nm = Math.max(1, months.size);
+  const incSum = inc.filter(t => !/własn|wlasn|wewnętrz|wewnetrz|między|miedzy/i.test(t.desc)).reduce((a, t) => a + t.a, 0);
+  let scroll = 0;
+  const setCat = (e, v, all) => {
+    const key = personKey(e.n);
+    exp.forEach(x => {
+      if (x !== e && !(all && personKey(x.n) === key)) return;
+      x.unk = false; x.skip = v === "_skip"; if (!x.skip) { x.c = v; x.s = null; }
+    });
+    if (all && key) { S.rules[key.slice(0, 18)] = v; saveSettings(); }
+  };
   const draw = () => {
     const by = {}; CATS.forEach(c => by[c.id] = 0);
     exp.filter(e => !e.skip).forEach(e => by[e.c] = (by[e.c] || 0) + e.a);
-    const nm = Math.max(1, months.size);
-    const incSum = inc.filter(t => !/własn|wlasn|wewnętrz|wewnetrz|między|miedzy/i.test(t.desc)).reduce((a, t) => a + t.a, 0);
-    const unk = exp.filter(e => e.unk && !e.skip);
+    // люди: группируем по имени
+    const ppl = {};
+    exp.filter(e => e.person).forEach(e => { const k = personKey(e.n); (ppl[k] = ppl[k] || { n: e.n, list: [], sum: 0 }).list.push(e); ppl[k].sum += e.a; });
+    const pplList = Object.entries(ppl).sort((a, b) => b[1].sum - a[1].sum);
+    const unk = exp.filter(e => e.unk && !e.person);
+    const row = e => { const i = exp.indexOf(e); return `<div class="it" style="align-items:center;gap:8px"><span style="min-width:0;flex:1">${esc(e.n)}<br><span class="muted">${e.date.getDate()} ${MONTHS_G[e.date.getMonth()]} · <b>${money(e.a)}</b></span></span>${catSelect(e, i)}</div>`; };
     const { sh } = openSheet(`<h3>Нашёл ${exp.length} трат за ${nm} ${mWord(nm)}</h3>
-      <p class="muted" style="margin-top:-6px">В среднем в месяц по категориям. Нажми на категорию или трату, чтобы поправить.</p>
+      <p class="muted" style="margin-top:-6px">В среднем в месяц по категориям. Нажми на категорию, чтобы проверить её траты.</p>
       <div class="list">${CATS.filter(c => by[c.id]).sort((a, b) => by[b.id] - by[a.id]).map(c => `<div class="it" data-rc="${c.id}"><span>${c.ic} ${c.name}</span><b>${money(by[c.id] / nm)}</b></div>`).join("")}</div>
+      ${internalN ? `<div class="tip"><b>👨‍👩‍👧 Общий бюджет из ${files} выписок</b>Нашёл ${internalN} ${internalN === 1 ? "перевод" : internalN < 5 ? "перевода" : "переводов"} между вашими счетами, они не считаются ни тратой, ни доходом.</div>` : ""}
       ${incSum ? `<div class="tip" style="margin-top:10px"><b>Поступления</b>в среднем ${money(incSum / nm)} в месяц. <button class="chip" id="rInc">Взять как доход</button></div>` : ""}
-      ${unk.length ? `<h3 style="margin-top:14px">Не распознал (${unk.length}), сейчас в «Прочее»</h3><div class="list">${unk.slice(0, 40).map(e => `<div class="it" data-ix="${exp.indexOf(e)}"><span>${esc(e.n)}<br><span class="muted">${e.date.getDate()} ${MONTHS_G[e.date.getMonth()]}</span></span><b>${money(e.a)}</b></div>`).join("")}</div>` : ""}
+      ${pplList.length ? `<h3 style="margin-top:16px">👥 Переводы людям</h3><p class="muted" style="margin-top:-6px">Кто это? Выбор запомнится для следующих выписок.</p>
+        ${pplList.map(([k, p]) => { const rel = p.list[0].rel; return `<div class="tip"><div class="row"><b style="margin:0">${esc(p.n)}</b><b>${money(p.sum)}</b></div><div class="muted" style="margin:2px 0 8px">${p.list.length} ${p.list.length === 1 ? "перевод" : p.list.length < 5 ? "перевода" : "переводов"}${rel ? " · " + REL.find(r => r[0] === rel)[2] : ""}</div>
+          <div class="chips">${REL.map(r => `<button class="chip ${rel === r[0] ? "on" : ""}" data-pk="${esc(k)}" data-rel="${r[0]}">${r[1]}</button>`).join("")}</div></div>`; }).join("")}` : ""}
+      ${unk.length ? `<h3 style="margin-top:16px">❓ Не распознал (${unk.length})</h3><p class="muted" style="margin-top:-6px">Выбери категорию напротив каждой траты. Для того же магазина в следующий раз выберется сама.</p><div class="list">${unk.map(row).join("")}</div>` : ""}
       <label class="row" style="margin:14px 0 4px;justify-content:flex-start;gap:10px"><input type="checkbox" id="rPlan" checked style="width:20px;height:20px"> <span>Сделать план по средним тратам</span></label>
       <button class="btn" id="rSave">Сохранить траты</button>
-      <button class="btn sec" id="rAll">Показать все траты</button>`, () => go(tab));
-    sh.querySelectorAll("[data-ix]").forEach(el => el.onclick = () => pickCat(exp[+el.dataset.ix], draw));
+      <button class="btn sec" id="rAll">Все траты с категориями</button>`, () => go(tab));
+    sh.scrollTop = scroll;
+    sh.onscroll = () => { scroll = sh.scrollTop; };
+    sh.querySelectorAll("[data-sel]").forEach(el => el.onchange = () => { setCat(exp[+el.dataset.sel], el.value, true); haptic(); draw(); });
+    sh.querySelectorAll("[data-rel]").forEach(b => b.onclick = () => {
+      const k = b.dataset.pk, rel = b.dataset.rel;
+      ppl[k].list.forEach(e => relApply(e, rel));
+      S.people = S.people || {}; S.people[k] = rel; saveSettings(); haptic(); draw();
+    });
     sh.querySelectorAll("[data-rc]").forEach(el => el.onclick = () => listCat(el.dataset.rc));
     sh.querySelector("#rAll").onclick = () => listCat(null);
     const ri = sh.querySelector("#rInc"); if (ri) ri.onclick = () => { S.income = Math.round(incSum / nm / 10) * 10; saveSettings(); ri.textContent = "✓ " + money(S.income); haptic("success"); };
@@ -801,6 +876,7 @@ function reviewImport(tx) {
         const key = monthKey(e.date), items = await loadMonth(key);
         if (!added[key]) { added[key] = true; for (let i = items.length - 1; i >= 0; i--) if (items[i].i) items.splice(i, 1); } // повторная загрузка заменяет прошлый импорт за этот месяц
         const it = { d: e.date.getDate(), c: e.c, a: Math.round(e.a * 100) / 100, n: e.n, i: 1 };
+        if (e.s) it.s = e.s;
         if (isSplit(e.c)) it.p = 0;
         items.push(it);
       }
@@ -811,24 +887,13 @@ function reviewImport(tx) {
       saveSettings(); haptic("success");
       openLife();
     };
-    function listCat(cid) {
-      const list = exp.filter(e => cid ? (e.c === cid && !e.skip) : true);
-      const { sh: s2 } = openSheet(`<button class="back" id="bk">‹ Назад</button><h3>${cid ? CAT[cid].ic + " " + CAT[cid].name : "Все траты"}</h3>
-        <div class="list">${list.map(e => `<div class="it" data-ix="${exp.indexOf(e)}" style="${e.skip ? "opacity:.45" : ""}"><span>${esc(e.n)}<br><span class="muted">${e.date.getDate()} ${MONTHS_G[e.date.getMonth()]} · ${e.skip ? "не трата (перевод)" : CAT[e.c].name}</span></span><b>${money(e.a)}</b></div>`).join("")}</div>`, () => go(tab));
-      s2.querySelector("#bk").onclick = draw;
-      s2.querySelectorAll("[data-ix]").forEach(el => el.onclick = () => pickCat(exp[+el.dataset.ix], () => listCat(cid)));
-    }
   };
-  function pickCat(e, back) {
-    const { sh } = openSheet(`<h3>${esc(e.n)}</h3><p class="muted">${money(e.a)} · ${e.date.getDate()} ${MONTHS_G[e.date.getMonth()]}<br>${esc(e.desc)}</p>
-      <div class="chips">${CATS.map(c => `<button class="chip ${!e.skip && c.id === e.c ? "on" : ""}" data-c="${c.id}">${c.ic} ${c.name}</button>`).join("")}<button class="chip ${e.skip ? "on" : ""}" data-c="_skip">↔️ Не трата (перевод себе)</button></div>
-      <label class="row" style="margin-top:12px;justify-content:flex-start;gap:10px"><input type="checkbox" id="pkAll" checked style="width:20px;height:20px"><span>Так же для всех «${esc(e.n.slice(0, 18))}»</span></label>`, () => go(tab));
-    sh.querySelectorAll("[data-c]").forEach(b => b.onclick = () => {
-      const c = b.dataset.c, all = sh.querySelector("#pkAll").checked, key = e.n.toLowerCase().slice(0, 18);
-      exp.forEach(x => { if (x === e || (all && x.n.toLowerCase().slice(0, 18) === key)) { x.skip = c === "_skip"; x.c = x.skip ? x.c || "other" : c; x.unk = false; } });
-      if (all && key) { S.rules[key] = c; saveSettings(); }
-      haptic(); back();
-    });
+  function listCat(cid) {
+    const list = exp.filter(e => cid ? (e.c === cid && !e.skip) : true);
+    const { sh: s2 } = openSheet(`<button class="back" id="bk">‹ Назад</button><h3>${cid ? CAT[cid].ic + " " + CAT[cid].name : "Все траты"}</h3>
+      <div class="list">${list.map(e => { const i = exp.indexOf(e); return `<div class="it" style="align-items:center;gap:8px;${e.skip ? "opacity:.5" : ""}"><span style="min-width:0;flex:1">${esc(e.n)}<br><span class="muted">${e.date.getDate()} ${MONTHS_G[e.date.getMonth()]} · <b>${money(e.a)}</b>${e.s ? " · " + esc(e.s) : ""}</span></span>${catSelect(e, i)}</div>`; }).join("")}</div>`, () => go(tab));
+    s2.querySelector("#bk").onclick = draw;
+    s2.querySelectorAll("[data-sel]").forEach(el => el.onchange = () => { setCat(exp[+el.dataset.sel], el.value, true); haptic(); });
   }
   draw();
 }
