@@ -1,0 +1,7 @@
+{
+ "version": "2026-11-19h",
+ "channel": "beta",
+ "notes": "Zmiany do sprawdzenia (numery do wyboru):\n#1 Bot uruchamia się poprawnie od zera (pusty state.json), potrzebne do bota testowego.\n#2 Bot testowy oznacza aktualizacje znaczkiem «🧪 WERSJA TESTOWA».",
+ "zip": "beta-2026-11-19h.zip",
+ "sha256": "e09a51d1115845f79874310ef586103f9a0b71ffe957a33a7ceb997cca7d9903"
+}
