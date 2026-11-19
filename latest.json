@@ -1,6 +1,6 @@
 {
- "version": "2026-11-19",
- "notes": "Bot sam sprawdza, czy jest nowa wersja, i przysyła «🔔 Jest nowa wersja» z przyciskiem «🔄 Aktualizuj». W edytorze «Grafik» też jest przycisk «🔄 Aktualizuj». /sprawdz — sprawdzić teraz.",
+ "version": "2026-11-19b",
+ "notes": "Bot sam sprawdza, czy jest nowa wersja, i przysyła kierownikowi i właścicielowi «🔔 Jest nowa wersja» z przyciskiem «🔄 Aktualizuj». W edytorze «Grafik» też jest przycisk «🔄 Aktualizuj». /sprawdz — sprawdzić teraz.",
  "zip": "aktualizacja-20261119.zip",
- "sha256": "daa5d607ace3a773bd93c4fd41f58a59cf77a0d28d9c3f4d215c2e576da01b60"
+ "sha256": "556ff48dbbf0a6f9c88a74184d47a2b1a1968ef455e843098b1f8f394b9efdd2"
 }
