@@ -1,6 +1,6 @@
 {
- "version": "2026-11-19c",
- "notes": "Bot sam sprawdza, czy jest nowa wersja, i przysyła kierownikowi i właścicielowi «🔔 Jest nowa wersja» z przyciskiem «🔄 Aktualizuj» (też w edytorze «Grafik»). «Grafik» otwiera się od razu na pełnym ekranie. /sprawdz — sprawdzić teraz.",
+ "version": "2026-11-19d",
+ "notes": "Bot sam sprawdza, czy jest nowa wersja, i przysyła kierownikowi i właścicielowi «🔔 Jest nowa wersja» z przyciskiem «🔄 Aktualizuj» (też w edytorze «Grafik»). «Grafik» otwiera się od razu na pełnym ekranie. Nowe wersje widać od razu, bez czekania. /sprawdz — sprawdzić teraz.",
  "zip": "aktualizacja-20261119.zip",
- "sha256": "0c6bf524b5c81ae5243c9a34bfe7091d6c922b6d5b76e6d901b5297f89b25dd4"
+ "sha256": "fd119789d90737e69f173171701f6aae2e4debcc8981a50bd992741875d84397"
 }
