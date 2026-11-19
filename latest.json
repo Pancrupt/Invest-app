@@ -1,6 +1,6 @@
 {
- "version": "2026-11-19e",
- "notes": "Bot co 10 minut sprawdza, czy jest nowa wersja, i od razu przysyła kierownikowi i właścicielowi «🔔 Jest nowa wersja» z przyciskiem «🔄 Aktualizuj» (też w edytorze «Grafik»). «Grafik» otwiera się na pełnym ekranie. /sprawdz — sprawdzić teraz.",
+ "version": "2026-11-19f",
+ "notes": "🌴 Urlop: pracownik wybiera daty od–do (w bocie «🌴 Urlop» albo w «Grafik» «🌴 Wniosek o urlop») i wysyła wniosek. Kierownik zatwierdza albo odrzuca (Telegram lub «Grafik»). Zatwierdzony urlop jest w grafiku i w grafiku dla kadr oznaczony jako U (fioletowy), zmiany w te dni są zdejmowane, a każdy dzień roboczy urlopu liczy się 8 h do normy.",
  "zip": "aktualizacja-20261119.zip",
- "sha256": "4e7f6684303722127afe24de8ad654d6e85232213f890ebb5242671d218f89e8"
+ "sha256": "bc92d3bf3a868b16c989b6d9f409f7452f832988f447698043d61747f9ac1383"
 }
