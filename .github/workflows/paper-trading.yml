@@ -1,0 +1,53 @@
+name: Paper trading tick
+
+on:
+  schedule:
+    - cron: "7 * * * *"   # каждый час в :07
+  workflow_dispatch: {}
+
+permissions:
+  contents: write
+
+concurrency:
+  group: paper-trading
+  cancel-in-progress: false
+
+jobs:
+  tick:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - run: pip install -r bot/requirements.txt
+
+      - name: Check out data branch
+        run: |
+          git config --global user.name "paper-trading-bot"
+          git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          if git ls-remote --exit-code --heads origin paper-trading >/dev/null; then
+            git fetch origin paper-trading
+            git worktree add data origin/paper-trading -B paper-trading
+          else
+            git worktree add --orphan -b paper-trading data
+          fi
+
+      - name: Run engine
+        run: STATE_DIR=data python bot/engine.py tick
+
+      - name: Save state
+        working-directory: data
+        run: |
+          git add -A
+          git diff --cached --quiet && exit 0
+          git commit -q -m "tick $(date -u +%Y-%m-%dT%H:%MZ)"
+          for i in 1 2 3 4; do
+            git push origin paper-trading && exit 0
+            git pull --rebase origin paper-trading || exit 1
+            sleep $((i * 5))
+          done
+          exit 1
