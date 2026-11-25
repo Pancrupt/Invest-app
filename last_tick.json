@@ -1,5 +1,5 @@
 {
- "ts": 1795610518,
+ "ts": 1795618299,
  "markets": {
   "crypto": {
    "session_open": true,
@@ -7,39 +7,40 @@
    "books": {
     "ai": {
      "log": [],
-     "ts": 1795610518,
+     "ts": 1795618299,
      "equity": 1000.0,
-     "bench_hold": 999.0,
-     "basket_hold": 999.0
+     "bench_hold": 979.17,
+     "basket_hold": 982.99
     },
     "rules": {
      "log": [],
-     "ts": 1795610518,
+     "ts": 1795618299,
      "equity": 1000.0,
-     "bench_hold": 999.0,
-     "basket_hold": 999.0
+     "bench_hold": 979.17,
+     "basket_hold": 982.99
     }
    }
   },
   "stocks": {
-   "session_open": false,
+   "session_open": true,
    "errors": [],
    "books": {
     "ai": {
-     "log": [],
-     "ts": 1795610518,
-     "equity": 1000.0,
-     "bench_hold": 999.0,
-     "basket_hold": 999.0
+     "log": [
+      "купил COST на $150",
+      "купил AAPL на $100"
+     ],
+     "ts": 1795618299,
+     "equity": 999.63,
+     "bench_hold": 969.54,
+     "basket_hold": 958.73
     },
     "rules": {
-     "log": [
-      "AAPL: рынок закрыт"
-     ],
-     "ts": 1795610518,
+     "log": [],
+     "ts": 1795618299,
      "equity": 1000.0,
-     "bench_hold": 999.0,
-     "basket_hold": 999.0
+     "bench_hold": 969.54,
+     "basket_hold": 958.73
     }
    }
   }

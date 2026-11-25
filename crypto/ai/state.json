@@ -4,8 +4,10 @@
  "cash": 1000.0,
  "positions": {},
  "fees_usd": 0.0,
- "last_check": 1795610518,
- "executed_orders": [],
+ "last_check": 1795618299,
+ "executed_orders": [
+  "crypto-20261125-1243"
+ ],
  "benchmark": "BTC",
  "bench_qty": 0.01705215227520774,
  "basket_qty": {
