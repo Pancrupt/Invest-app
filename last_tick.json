@@ -1,0 +1,47 @@
+{
+ "ts": 1795610518,
+ "markets": {
+  "crypto": {
+   "session_open": true,
+   "errors": [],
+   "books": {
+    "ai": {
+     "log": [],
+     "ts": 1795610518,
+     "equity": 1000.0,
+     "bench_hold": 999.0,
+     "basket_hold": 999.0
+    },
+    "rules": {
+     "log": [],
+     "ts": 1795610518,
+     "equity": 1000.0,
+     "bench_hold": 999.0,
+     "basket_hold": 999.0
+    }
+   }
+  },
+  "stocks": {
+   "session_open": false,
+   "errors": [],
+   "books": {
+    "ai": {
+     "log": [],
+     "ts": 1795610518,
+     "equity": 1000.0,
+     "bench_hold": 999.0,
+     "basket_hold": 999.0
+    },
+    "rules": {
+     "log": [
+      "AAPL: рынок закрыт"
+     ],
+     "ts": 1795610518,
+     "equity": 1000.0,
+     "bench_hold": 999.0,
+     "basket_hold": 999.0
+    }
+   }
+  }
+ }
+}

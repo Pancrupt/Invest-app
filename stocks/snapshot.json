@@ -1,0 +1,313 @@
+{
+ "market": "stocks",
+ "title": "Акции США",
+ "generated_at": 1795610518,
+ "generated_at_iso": "2026-11-25 12:41 UTC",
+ "session_open": false,
+ "benchmark": "SPY",
+ "features": {
+  "SPY": {
+   "price": 718.780029,
+   "ret_1h_pct": -0.0,
+   "ret_24h_pct": -0.29,
+   "ret_7d_pct": -5.84,
+   "rsi14_1h": 35.3,
+   "atr1h_pct": 0.96,
+   "vs_sma50h_pct": -0.73,
+   "vs_sma200h_pct": -4.31,
+   "volume_24h_vs_avg": 1.77,
+   "pct_below_7d_high": 7.91
+  },
+  "QQQ": {
+   "price": 638.099976,
+   "ret_1h_pct": 0.0,
+   "ret_24h_pct": -1.99,
+   "ret_7d_pct": -10.11,
+   "rsi14_1h": 27.4,
+   "atr1h_pct": 1.28,
+   "vs_sma50h_pct": -1.61,
+   "vs_sma200h_pct": -6.93,
+   "volume_24h_vs_avg": 1.48,
+   "pct_below_7d_high": 13.79
+  },
+  "AAPL": {
+   "price": 354.070007,
+   "ret_1h_pct": -0.03,
+   "ret_24h_pct": 1.13,
+   "ret_7d_pct": 3.14,
+   "rsi14_1h": 59.6,
+   "atr1h_pct": 0.85,
+   "vs_sma50h_pct": 0.95,
+   "vs_sma200h_pct": 1.92,
+   "volume_24h_vs_avg": 1.11,
+   "pct_below_7d_high": 1.91
+  },
+  "MSFT": {
+   "price": 496.130005,
+   "ret_1h_pct": -0.07,
+   "ret_24h_pct": -1.48,
+   "ret_7d_pct": -5.2,
+   "rsi14_1h": 37.7,
+   "atr1h_pct": 1.15,
+   "vs_sma50h_pct": -1.34,
+   "vs_sma200h_pct": -5.19,
+   "volume_24h_vs_avg": 1.07,
+   "pct_below_7d_high": 12.7
+  },
+  "NVDA": {
+   "price": 155.380005,
+   "ret_1h_pct": -0.06,
+   "ret_24h_pct": 4.41,
+   "ret_7d_pct": -27.76,
+   "rsi14_1h": 23.2,
+   "atr1h_pct": 3.46,
+   "vs_sma50h_pct": 2.02,
+   "vs_sma200h_pct": -17.51,
+   "volume_24h_vs_avg": 1.84,
+   "pct_below_7d_high": 41.58
+  },
+  "AMZN": {
+   "price": 252.289993,
+   "ret_1h_pct": -0.01,
+   "ret_24h_pct": -2.81,
+   "ret_7d_pct": 0.15,
+   "rsi14_1h": 33.5,
+   "atr1h_pct": 1.33,
+   "vs_sma50h_pct": -2.08,
+   "vs_sma200h_pct": -2.02,
+   "volume_24h_vs_avg": 1.02,
+   "pct_below_7d_high": 9.12
+  },
+  "GOOGL": {
+   "price": 279.049988,
+   "ret_1h_pct": 0.01,
+   "ret_24h_pct": 0.0,
+   "ret_7d_pct": -14.72,
+   "rsi14_1h": 38.2,
+   "atr1h_pct": 1.43,
+   "vs_sma50h_pct": -0.56,
+   "vs_sma200h_pct": -7.09,
+   "volume_24h_vs_avg": 1.05,
+   "pct_below_7d_high": 17.58
+  },
+  "META": {
+   "price": 589.820007,
+   "ret_1h_pct": -0.07,
+   "ret_24h_pct": -2.06,
+   "ret_7d_pct": -9.54,
+   "rsi14_1h": 46.0,
+   "atr1h_pct": 1.39,
+   "vs_sma50h_pct": -2.24,
+   "vs_sma200h_pct": -6.98,
+   "volume_24h_vs_avg": 0.85,
+   "pct_below_7d_high": 12.41
+  },
+  "TSLA": {
+   "price": 384.679993,
+   "ret_1h_pct": -0.02,
+   "ret_24h_pct": 1.84,
+   "ret_7d_pct": -0.61,
+   "rsi14_1h": 36.9,
+   "atr1h_pct": 1.81,
+   "vs_sma50h_pct": 1.84,
+   "vs_sma200h_pct": 0.61,
+   "volume_24h_vs_avg": 0.97,
+   "pct_below_7d_high": 7.68
+  },
+  "AMD": {
+   "price": 413.269989,
+   "ret_1h_pct": 0.01,
+   "ret_24h_pct": -15.1,
+   "ret_7d_pct": -20.24,
+   "rsi14_1h": 25.5,
+   "atr1h_pct": 3.53,
+   "vs_sma50h_pct": -12.49,
+   "vs_sma200h_pct": -18.84,
+   "volume_24h_vs_avg": 1.32,
+   "pct_below_7d_high": 43.73
+  },
+  "AVGO": {
+   "price": 301.079987,
+   "ret_1h_pct": -0.05,
+   "ret_24h_pct": -13.9,
+   "ret_7d_pct": -7.94,
+   "rsi14_1h": 28.0,
+   "atr1h_pct": 2.22,
+   "vs_sma50h_pct": -8.24,
+   "vs_sma200h_pct": -9.05,
+   "volume_24h_vs_avg": 1.38,
+   "pct_below_7d_high": 22.83
+  },
+  "NFLX": {
+   "price": 58.869999,
+   "ret_1h_pct": 0.01,
+   "ret_24h_pct": 0.59,
+   "ret_7d_pct": -11.18,
+   "rsi14_1h": 58.1,
+   "atr1h_pct": 1.11,
+   "vs_sma50h_pct": -0.52,
+   "vs_sma200h_pct": -7.14,
+   "volume_24h_vs_avg": 1.11,
+   "pct_below_7d_high": 15.2
+  },
+  "JPM": {
+   "price": 317.100006,
+   "ret_1h_pct": -0.06,
+   "ret_24h_pct": -1.16,
+   "ret_7d_pct": -5.19,
+   "rsi14_1h": 40.7,
+   "atr1h_pct": 0.82,
+   "vs_sma50h_pct": -2.02,
+   "vs_sma200h_pct": -5.45,
+   "volume_24h_vs_avg": 1.35,
+   "pct_below_7d_high": 13.47
+  },
+  "V": {
+   "price": 416.779999,
+   "ret_1h_pct": 0.0,
+   "ret_24h_pct": 3.41,
+   "ret_7d_pct": 1.56,
+   "rsi14_1h": 78.7,
+   "atr1h_pct": 0.66,
+   "vs_sma50h_pct": 0.61,
+   "vs_sma200h_pct": 0.46,
+   "volume_24h_vs_avg": 0.95,
+   "pct_below_7d_high": 6.11
+  },
+  "COST": {
+   "price": 1091.709961,
+   "ret_1h_pct": -0.01,
+   "ret_24h_pct": 0.05,
+   "ret_7d_pct": 8.25,
+   "rsi14_1h": 57.7,
+   "atr1h_pct": 0.69,
+   "vs_sma50h_pct": -1.02,
+   "vs_sma200h_pct": 4.28,
+   "volume_24h_vs_avg": 1.26,
+   "pct_below_7d_high": 2.93
+  },
+  "LLY": {
+   "price": 1407.589966,
+   "ret_1h_pct": -0.2,
+   "ret_24h_pct": 3.73,
+   "ret_7d_pct": 7.86,
+   "rsi14_1h": 71.5,
+   "atr1h_pct": 0.78,
+   "vs_sma50h_pct": 1.17,
+   "vs_sma200h_pct": 3.31,
+   "volume_24h_vs_avg": 0.97,
+   "pct_below_7d_high": 4.81
+  },
+  "PLTR": {
+   "price": 161.179993,
+   "ret_1h_pct": -0.03,
+   "ret_24h_pct": 3.6,
+   "ret_7d_pct": -18.85,
+   "rsi14_1h": 53.9,
+   "atr1h_pct": 1.85,
+   "vs_sma50h_pct": 2.77,
+   "vs_sma200h_pct": -8.68,
+   "volume_24h_vs_avg": 1.12,
+   "pct_below_7d_high": 25.22
+  },
+  "COIN": {
+   "price": 102.345001,
+   "ret_1h_pct": -0.01,
+   "ret_24h_pct": -7.52,
+   "ret_7d_pct": -40.31,
+   "rsi14_1h": 13.4,
+   "atr1h_pct": 2.05,
+   "vs_sma50h_pct": -7.64,
+   "vs_sma200h_pct": -27.9,
+   "volume_24h_vs_avg": 1.15,
+   "pct_below_7d_high": 68.6
+  },
+  "UBER": {
+   "price": 64.699997,
+   "ret_1h_pct": -0.02,
+   "ret_24h_pct": -1.27,
+   "ret_7d_pct": -4.84,
+   "rsi14_1h": 36.1,
+   "atr1h_pct": 1.26,
+   "vs_sma50h_pct": -3.4,
+   "vs_sma200h_pct": -4.83,
+   "volume_24h_vs_avg": 1.04,
+   "pct_below_7d_high": 12.06
+  },
+  "ASML": {
+   "price": 1336.060059,
+   "ret_1h_pct": 0.04,
+   "ret_24h_pct": -3.71,
+   "ret_7d_pct": -16.69,
+   "rsi14_1h": 27.4,
+   "atr1h_pct": 1.91,
+   "vs_sma50h_pct": -2.23,
+   "vs_sma200h_pct": -12.0,
+   "volume_24h_vs_avg": 1.2,
+   "pct_below_7d_high": 26.5
+  }
+ },
+ "news": [
+  "Cathie Wood Buys $61.6 Million in Anthropic, Sells $21 Million in Meta and Palantir",
+  "Amazon Takes Car Shopping Abroad for the First Time",
+  "Dow Jones Futures Fall, Techs Dive; Trump Says 'Not Too Late' For U.S. To Take Nvidia Stake",
+  "Think Nvidia's Stock Is Wild? Check Out These Related ETFs",
+  "Nvidia Loses Nearly $3 Trillion as Governance Crisis Deepens",
+  "Jim Cramer Says Tuesday’s Stock Market Pullback Is Actually Good News",
+  "A Record $132 Billion AI Backlog Lands as Chip Stocks Whipsaw",
+  "Tesla’s FSD Push In Europe Hits Another Snag As EU Reportedly Delays Approval Talks Yet Again – TSLA Stock Falls Premarket",
+  "Microsoft Stock And 2 AI Software Leaders For Productivity Focused Investors",
+  "Microsoft Declares Code Red After 24-Hour Global Outage",
+  "Tesla (TSLA) Could Be 36% Undervalued Following SpaceX Merger Talks",
+  "Prediction: Micron Stock Will Be at This Price at the End of 2027",
+  "Market Chatter: Walmart-Backed PhonePe Resumes IPO Process; Seeks Up to $15 Billion in Valuation",
+  "The AI Stock Slump Is Crushing Caterpillar. Here’s Why I Like the Stock More Than Ever.",
+  "Is This 6%-Yielding Monthly Dividend Stock a Bargain or a Trap?",
+  "Billionaire David Tepper Is Piling Into This AI Stock",
+  "CoreWeave Cratered 40% Year-to-Date: 320% Gains to Come According to This Investment Bank Desk",
+  "Elon Musk sees ‘a hundred million humanoid robots’ consuming jobs in 5 years. Can you afford the machine age?",
+  "Is This the Bottom? It May Not Matter. Here's Why!",
+  "AMD, Micron and Sandisk Stocks Slide as AI Spending Fears Deepen",
+  "Is AMD Stock Falling On Its Own?",
+  "Market Chatter: JPMorgan Weighs Scaling Back UK Investments After Bank Tax Increase",
+  "Dell Stock Joins Nvidia, AMD, and Intel Selloff Despite Record Demand",
+  "Do You Like Cash? Consider Uber Stock",
+  "Should You Trim Or Add To Your AMD Position?",
+  "US Semiconductor Stocks Extend Losses as AI Investment Concerns, Tariff Risks and Rate Expectations Weigh on Markets",
+  "Kraken’s Krak Moves Into Credit With Two US Cards, One Backed by a USDC Deposit",
+  "Broadcom Bought $1 Billion Worth of Anthropic’s IPO, and It Has Tens of Billions More Riding on Its Success.",
+  "State Street Consumer Staples SPDR (XLP) Adds Walmart and Costco on Nov. 23",
+  "Was Jensen’s $25M White House Donation ‘the Cheapest Put Option’ Ever Bought?"
+ ],
+ "portfolio": {
+  "cash": 1000.0,
+  "equity": 1000.0,
+  "positions": [],
+  "max_positions": 3,
+  "max_position_pct": 30.0
+ },
+ "recent_trades": [],
+ "rules": {
+  "max_positions": 3,
+  "limits": {
+   "size_pct": [
+    1,
+    30.0
+   ],
+   "stop_pct": [
+    1.5,
+    15
+   ],
+   "take_profit_pct": [
+    1.5,
+    60
+   ],
+   "max_hold_h": [
+    4,
+    336
+   ]
+  },
+  "fee_pct": 0.1,
+  "slippage_pct": 0.05
+ }
+}

@@ -1,0 +1,253 @@
+{
+ "market": "crypto",
+ "title": "Крипта",
+ "generated_at": 1795610518,
+ "generated_at_iso": "2026-11-25 12:41 UTC",
+ "session_open": true,
+ "benchmark": "BTC",
+ "features": {
+  "BTC": {
+   "price": 58584.98,
+   "ret_1h_pct": 0.05,
+   "ret_24h_pct": -3.03,
+   "ret_7d_pct": -8.47,
+   "rsi14_1h": 30.1,
+   "atr1h_pct": 0.9,
+   "vs_sma50h_pct": -2.79,
+   "vs_sma200h_pct": -4.5,
+   "volume_24h_vs_avg": 0.87,
+   "pct_below_7d_high": 10.13
+  },
+  "ETH": {
+   "price": 1643,
+   "ret_1h_pct": 0.41,
+   "ret_24h_pct": -3.48,
+   "ret_7d_pct": -8.38,
+   "rsi14_1h": 31.3,
+   "atr1h_pct": 1.0,
+   "vs_sma50h_pct": -2.92,
+   "vs_sma200h_pct": -4.65,
+   "volume_24h_vs_avg": 0.92,
+   "pct_below_7d_high": 12.21
+  },
+  "SOL": {
+   "price": 67.68,
+   "ret_1h_pct": 0.31,
+   "ret_24h_pct": -4.2,
+   "ret_7d_pct": -8.8,
+   "rsi14_1h": 26.6,
+   "atr1h_pct": 1.14,
+   "vs_sma50h_pct": -4.25,
+   "vs_sma200h_pct": -5.31,
+   "volume_24h_vs_avg": 1.0,
+   "pct_below_7d_high": 15.84
+  },
+  "XRP": {
+   "price": 0.9079,
+   "ret_1h_pct": 0.02,
+   "ret_24h_pct": -2.17,
+   "ret_7d_pct": -7.55,
+   "rsi14_1h": 33.9,
+   "atr1h_pct": 0.97,
+   "vs_sma50h_pct": -2.74,
+   "vs_sma200h_pct": -3.75,
+   "volume_24h_vs_avg": 0.58,
+   "pct_below_7d_high": 12.91
+  },
+  "ADA": {
+   "price": 0.13966,
+   "ret_1h_pct": -0.01,
+   "ret_24h_pct": -3.99,
+   "ret_7d_pct": -8.55,
+   "rsi14_1h": 24.8,
+   "atr1h_pct": 1.11,
+   "vs_sma50h_pct": -4.27,
+   "vs_sma200h_pct": -5.25,
+   "volume_24h_vs_avg": 0.67,
+   "pct_below_7d_high": 11.95
+  },
+  "DOGE": {
+   "price": 0.0536,
+   "ret_1h_pct": 0.02,
+   "ret_24h_pct": -3.48,
+   "ret_7d_pct": -9.38,
+   "rsi14_1h": 19.0,
+   "atr1h_pct": 0.96,
+   "vs_sma50h_pct": -3.74,
+   "vs_sma200h_pct": -5.14,
+   "volume_24h_vs_avg": 0.69,
+   "pct_below_7d_high": 12.28
+  },
+  "AVAX": {
+   "price": 6.396,
+   "ret_1h_pct": 0.0,
+   "ret_24h_pct": -4.41,
+   "ret_7d_pct": -9.71,
+   "rsi14_1h": 25.0,
+   "atr1h_pct": 1.08,
+   "vs_sma50h_pct": -4.02,
+   "vs_sma200h_pct": -5.74,
+   "volume_24h_vs_avg": 0.76,
+   "pct_below_7d_high": 12.91
+  },
+  "LINK": {
+   "price": 8.608,
+   "ret_1h_pct": 0.22,
+   "ret_24h_pct": -3.78,
+   "ret_7d_pct": -5.71,
+   "rsi14_1h": 26.8,
+   "atr1h_pct": 1.05,
+   "vs_sma50h_pct": -3.45,
+   "vs_sma200h_pct": -3.03,
+   "volume_24h_vs_avg": 0.69,
+   "pct_below_7d_high": 10.95
+  },
+  "DOT": {
+   "price": 0.635,
+   "ret_1h_pct": -0.06,
+   "ret_24h_pct": -4.34,
+   "ret_7d_pct": -12.23,
+   "rsi14_1h": 26.2,
+   "atr1h_pct": 1.17,
+   "vs_sma50h_pct": -4.63,
+   "vs_sma200h_pct": -7.19,
+   "volume_24h_vs_avg": 0.78,
+   "pct_below_7d_high": 15.04
+  },
+  "LTC": {
+   "price": 40.187,
+   "ret_1h_pct": 0.24,
+   "ret_24h_pct": -1.39,
+   "ret_7d_pct": -8.73,
+   "rsi14_1h": 35.5,
+   "atr1h_pct": 1.09,
+   "vs_sma50h_pct": -2.12,
+   "vs_sma200h_pct": -3.65,
+   "volume_24h_vs_avg": 0.92,
+   "pct_below_7d_high": 11.38
+  },
+  "BCH": {
+   "price": 194.15,
+   "ret_1h_pct": 0.15,
+   "ret_24h_pct": -2.39,
+   "ret_7d_pct": -6.46,
+   "rsi14_1h": 34.2,
+   "atr1h_pct": 1.06,
+   "vs_sma50h_pct": -2.4,
+   "vs_sma200h_pct": -3.45,
+   "volume_24h_vs_avg": 0.65,
+   "pct_below_7d_high": 9.59
+  },
+  "UNI": {
+   "price": 4.5042,
+   "ret_1h_pct": 0.13,
+   "ret_24h_pct": -4.89,
+   "ret_7d_pct": -13.49,
+   "rsi14_1h": 9.7,
+   "atr1h_pct": 1.29,
+   "vs_sma50h_pct": -5.22,
+   "vs_sma200h_pct": -7.14,
+   "volume_24h_vs_avg": 0.59,
+   "pct_below_7d_high": 17.89
+  },
+  "ATOM": {
+   "price": 1.2152,
+   "ret_1h_pct": 0.21,
+   "ret_24h_pct": -4.93,
+   "ret_7d_pct": -5.88,
+   "rsi14_1h": 33.6,
+   "atr1h_pct": 1.34,
+   "vs_sma50h_pct": -3.56,
+   "vs_sma200h_pct": -2.53,
+   "volume_24h_vs_avg": 0.84,
+   "pct_below_7d_high": 9.29
+  },
+  "NEAR": {
+   "price": 2.8019,
+   "ret_1h_pct": -0.34,
+   "ret_24h_pct": -3.47,
+   "ret_7d_pct": -15.81,
+   "rsi14_1h": 32.9,
+   "atr1h_pct": 1.5,
+   "vs_sma50h_pct": -4.44,
+   "vs_sma200h_pct": -8.0,
+   "volume_24h_vs_avg": 0.78,
+   "pct_below_7d_high": 23.97
+  },
+  "AAVE": {
+   "price": 91.2,
+   "ret_1h_pct": 0.04,
+   "ret_24h_pct": -3.49,
+   "ret_7d_pct": -17.63,
+   "rsi14_1h": 15.9,
+   "atr1h_pct": 1.12,
+   "vs_sma50h_pct": -4.45,
+   "vs_sma200h_pct": -10.0,
+   "volume_24h_vs_avg": 1.03,
+   "pct_below_7d_high": 21.67
+  }
+ },
+ "news": [
+  "Fed’s preferred inflation gauge lands with a December rate increase already priced in",
+  "Ether, DeFi fall twice as hard as bitcoin as equities selloff resumes",
+  "Italy’s UniCredit launches six-year bitcoin certificate with gains capped at 65%",
+  "Gold's haven status has lost its edge over bitcoin, and the Fed's to blame",
+  "EU proposes $54.7 billion fund for AI, quantum startups alongside post-quantum security push",
+  "Live updates: Bitcoin slips back under $60,000 as HYPE leads altcoins lower",
+  "Solana developers move to stop validators finishing work on blocks that already lost",
+  "Just 10 accounts drove all of the XRP Ledger's trading growth last quarter",
+  "Crypto traders can now hedge Nvidia, Anthropic and oil bets on Derive",
+  "A year after buying bitcoin, Czech central bank won't say what it's worth",
+  "Trump says he's willing to give Nvidia's Huang a pardon, doesn't think he needs one",
+  "Utah moves to drop criminal pursuit of Kalshi after the firm halted services there",
+  "'AI trade never died': Traders see room for market recovery, but bitcoin's participation is another story",
+  "Anchorage Digital to unveil new asset-management subsidiary",
+  "South Korea proposes ending 2017 ICO ban to boost jobs and onshore crypto investment",
+  "Crypto trader Ansem says his wallet was hacked as $2 million in memecoins were sold",
+  "Live updates: Bitcoin pulls back below $60,000, stock rally fades, as tariffs re-enter the picture",
+  "Bitcoin drops as November spot ETF outflows increase to record $4.71 billion",
+  "JPMorgan, HSBC and StoneX complete first digital gold trades in London",
+  "Bitcoin hands back Monday's Nvidia-driven gains, liquidations triple",
+  "Bitcoin’s drop to $55,000 left a record 11.6 million BTC underwater",
+  "U.S. seeks $1.1 billion seized in Binance hack as North Korean funds keep moving",
+  "BTCS sells more than half its ether to repay $43.8 million in Aave debt",
+  "South Korea regulator backs bank-controlled stablecoins after months of dispute",
+  "Bitcoin falls below $60,000 as rally on Jensen Huang’s Nvidia return fades",
+  "Japan’s SBI, SMFG launch Solana venture for stablecoins, tokenization",
+  "Hong Kong launches tokenized debt platform with 24-hour settlement",
+  "Bitcoin ETFs near $5B in record monthly outflows amid AI stock rout",
+  "Bitcoin price may fall below $53K if bear-market history repeats",
+  "HYPE drops 8% as Trump bump gives way to 40% slide from peak"
+ ],
+ "portfolio": {
+  "cash": 1000.0,
+  "equity": 1000.0,
+  "positions": [],
+  "max_positions": 3,
+  "max_position_pct": 30.0
+ },
+ "recent_trades": [],
+ "rules": {
+  "max_positions": 3,
+  "limits": {
+   "size_pct": [
+    1,
+    30.0
+   ],
+   "stop_pct": [
+    1.5,
+    15
+   ],
+   "take_profit_pct": [
+    1.5,
+    60
+   ],
+   "max_hold_h": [
+    4,
+    336
+   ]
+  },
+  "fee_pct": 0.1,
+  "slippage_pct": 0.05
+ }
+}
