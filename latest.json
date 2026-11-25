@@ -1,6 +1,6 @@
 {
- "version": "2026-11-19g",
- "notes": "Przycisk «🌴 Urlop» pojawia się na dole sam: przy pierwszej wiadomości do bota każdy dostaje nowe przyciski. Wnioski urlopowe: daty od–do, kierownik zatwierdza, urlop U w grafiku i w grafiku dla kadr, 8 h za dzień roboczy.",
- "zip": "aktualizacja-20261119.zip",
- "sha256": "b340be2f93ac899588fc9f2ffa713d2e3cc436bce441178fab43ffe126562c61"
+ "version": "2026-11-25",
+ "notes": "Plik bot.log nie rośnie już bez końca (powyżej 5 MB starsza część trafia do bot.log.1). Gdy na dysku z botem zostaje mniej niż 300 MB, właściciel dostaje ostrzeżenie. Brak miejsca na kopię state.json nie blokuje już startu bota.",
+ "zip": "aktualizacja-20261125.zip",
+ "sha256": "35fc1aed8b8b59c867aa4b74c0ae0526d9d84fae892ad5ff53f41eb5fb9b04dd"
 }
