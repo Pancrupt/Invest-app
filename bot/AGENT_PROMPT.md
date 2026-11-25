@@ -14,6 +14,20 @@ git fetch origin paper-trading
 git worktree add ../data origin/paper-trading -B paper-trading   # ветка с данными
 ```
 
+Сначала обнови снимок рынка, чтобы решения принимались по свежим ценам и новостям:
+
+```bash
+gh api -X POST repos/pancrupt/invest-app/actions/workflows/paper-trading.yml/dispatches -f ref=main
+sleep 15
+for i in $(seq 1 40); do
+  s=$(gh api "repos/pancrupt/invest-app/actions/runs?per_page=1&event=workflow_dispatch" --jq '.workflow_runs[0].status')
+  [ "$s" = "completed" ] && break; sleep 10
+done
+cd ../data && git pull -q origin paper-trading && cd -
+```
+
+Если запустить не получилось, работай со снимком как есть и укажи его возраст в `summary`.
+
 В `../data` для каждого рынка (`crypto`, `stocks`) лежит `snapshot.json`:
 индикаторы по тикерам (`features`), заголовки новостей (`news`), текущий портфель ИИ-счёта (`portfolio`),
 последние сделки, лимиты. Время снимка — `generated_at_iso`. Если снимку больше 3 часов, всё равно работай,
