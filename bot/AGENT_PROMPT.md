@@ -84,5 +84,13 @@ git commit -m "ИИ-решение $(date -u +%Y-%m-%dT%H:%MZ)"
 git push origin paper-trading || (git pull --rebase origin paper-trading && git push origin paper-trading)
 ```
 
+Сразу после пуша запусти движок, чтобы заявки исполнились без ожидания часового запуска:
+
+```bash
+gh api -X POST repos/pancrupt/invest-app/actions/workflows/paper-trading.yml/dispatches -f ref=main
+```
+
+Если команда не сработала, ничего страшного: заявки исполнятся при ближайшем ежечасном запуске.
+
 Меняй в ветке `paper-trading` только эти четыре файла. Ничего не трогай в `main`, не открывай PR.
 В конце кратко напиши, какие решения принял на каждом рынке.
