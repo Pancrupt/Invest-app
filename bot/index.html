@@ -1,0 +1,109 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ИИ-трейдер: проверка</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.js"></script>
+<style>
+:root{--bg:#f6f7f9;--card:#fff;--text:#16181d;--muted:#667085;--line:#e4e7ec;--ai:#6d28d9;--rules:#0e7490;--bench:#d97706;--basket:#98a2b3;--pos:#15803d;--neg:#b91c1c}
+@media (prefers-color-scheme:dark){:root{--bg:#0f1115;--card:#171a21;--text:#e6e8ec;--muted:#98a2b3;--line:#262b35;--ai:#a78bfa;--rules:#22d3ee;--bench:#fbbf24;--basket:#667085;--pos:#4ade80;--neg:#f87171}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--text);font:15px/1.5 system-ui,-apple-system,Segoe UI,Roboto,sans-serif}
+main{max-width:1000px;margin:0 auto;padding:20px 16px 60px}
+h1{font-size:22px;margin:0 0 4px}
+.sub{color:var(--muted);margin:0 0 18px}
+.tabs{display:flex;gap:8px;margin-bottom:16px}
+.tabs button{border:1px solid var(--line);background:var(--card);color:var(--text);padding:8px 14px;border-radius:999px;cursor:pointer;font:inherit}
+.tabs button.on{background:var(--text);color:var(--bg)}
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px;margin-bottom:16px}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px}
+.stat .k{color:var(--muted);font-size:13px}
+.stat .v{font-size:22px;font-weight:600}
+.dot{display:inline-block;width:10px;height:10px;border-radius:50%;margin-right:6px}
+.pos{color:var(--pos)}.neg{color:var(--neg)}
+table{width:100%;border-collapse:collapse;font-size:14px}
+th,td{text-align:left;padding:6px 8px;border-bottom:1px solid var(--line);vertical-align:top}
+th{color:var(--muted);font-weight:500}
+.scroll{overflow-x:auto}
+.role{margin:8px 0}.role b{display:block;font-size:13px;color:var(--muted)}
+.note{color:var(--muted);font-size:13px}
+td{white-space:nowrap}td:last-child{white-space:normal;min-width:200px}
+</style>
+</head>
+<body>
+<main>
+<h1>Шесть ИИ-ботов против «купил и держу»</h1>
+<p class="sub">Виртуальные счета по $1 000, реальные цены, комиссия 0,1% и проскальзывание 0,05%. Это эксперимент, а не инвестиционный совет.</p>
+<div class="tabs"><button data-m="crypto" class="on">Крипта</button><button data-m="stocks">Акции США</button></div>
+<div id="root"><div class="card">Загружаю данные…</div></div>
+</main>
+<script>
+const RAW = "https://raw.githubusercontent.com/pancrupt/invest-app/paper-trading/";
+const css = n => getComputedStyle(document.documentElement).getPropertyValue(n).trim();
+let chart;
+async function j(p, d) { try { const r = await fetch(RAW + p + "?t=" + Date.now()); if (!r.ok) return d; return p.endsWith(".jsonl") ? (await r.text()).trim().split("\n").filter(Boolean).map(JSON.parse) : await r.json(); } catch (e) { return d; } }
+const pct = (a, b) => (a / b - 1) * 100;
+const fmt = x => (x >= 0 ? "+" : "") + x.toFixed(2) + "%";
+const cls = x => x >= 0 ? "pos" : "neg";
+const esc = s => String(s ?? "").replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const when = ts => new Date(ts * 1000).toLocaleString("ru-RU", {day:"2-digit",month:"2-digit",hour:"2-digit",minute:"2-digit"});
+function maxDD(arr) { let peak = -1, dd = 0; for (const v of arr) { peak = Math.max(peak, v); dd = Math.min(dd, pct(v, peak)); } return dd; }
+function stats(eq, trades, start) {
+  const sells = trades.filter(t => t.side === "sell"), wins = sells.filter(t => t.pnl > 0);
+  const last = eq.length ? eq[eq.length - 1].equity : start;
+  return { ret: pct(last, start), dd: maxDD(eq.map(e => e.equity)), n: sells.length, win: sells.length ? wins.length / sells.length * 100 : null, fees: trades.reduce((s, t) => s + (t.fee || 0), 0) };
+}
+async function render(m) {
+  const root = document.getElementById("root");
+  const [eqAi, eqRules, trAi, trRules, orders, decisions] = await Promise.all([
+    j(`${m}/ai/equity.json`, []), j(`${m}/rules/equity.json`, []), j(`${m}/ai/trades.json`, []),
+    j(`${m}/rules/trades.json`, []), j(`${m}/ai/orders.json`, null), j(`${m}/ai/decisions.jsonl`, [])]);
+  if (!eqAi.length) { root.innerHTML = `<div class="card">Данных пока нет: первый запуск ещё не прошёл.</div>`; return; }
+  const start = 1000, b = eqAi[eqAi.length - 1];
+  const sA = stats(eqAi, trAi, start), sR = stats(eqRules, trRules, start);
+  const benchName = m === "crypto" ? "BTC" : "S&P 500 (SPY)";
+  const days = (b.ts - eqAi[0].ts) / 86400;
+  const row = (name, color, s) => `<div class="stat"><div class="k"><span class="dot" style="background:${color}"></span>${name}</div><div class="v ${cls(s.ret)}">${fmt(s.ret)}</div><div class="note">сделок ${s.n}${s.win != null ? `, в плюс ${s.win.toFixed(0)}%` : ""}, просадка ${s.dd.toFixed(1)}%</div></div>`;
+  const simple = (name, color, v) => `<div class="stat"><div class="k"><span class="dot" style="background:${color}"></span>${name}</div><div class="v ${cls(pct(v, start))}">${fmt(pct(v, start))}</div><div class="note">купил в начале и держу</div></div>`;
+  const last = decisions.length ? decisions[decisions.length - 1] : orders;
+  const roles = last && last.roles ? [["Сканер","scanner"],["Аналитик новостей","analyst"],["Планировщик выхода","exit_planner"],["Риск-менеджер","risk_manager"],["Спорщик","bear"],["Главный бот","chief"]].map(([n,k]) => `<div class="role"><b>${n}</b>${esc(last.roles[k])}</div>`).join("") : "";
+  const trades = trAi.map(t => ({...t, who: "ИИ"})).concat(trRules.map(t => ({...t, who: "Правила"}))).sort((a, b) => b.ts - a.ts).slice(0, 40);
+  root.innerHTML = `
+  <div class="card"><div class="grid">
+    ${row("6 ИИ-ботов", css("--ai"), sA)}${row("Бот без ИИ", css("--rules"), sR)}
+    ${simple(benchName, css("--bench"), b.bench_hold)}${simple("Все тикеры поровну", css("--basket"), b.basket_hold)}
+  </div><p class="note">С ${when(eqAi[0].ts)} · ${days.toFixed(1)} дн. · обновлено ${when(b.ts)}. Меньше 2–4 недель — это ещё шум, а не вывод.</p></div>
+  <div class="card"><div style="position:relative;height:320px"><canvas id="c"></canvas></div></div>
+  <div class="card"><h3 style="margin-top:0">Последнее решение ИИ${last ? ` · ${esc(last.created_at || "")}` : ""}</h3>
+    ${last ? `<p><b>${esc(last.summary)}</b></p>${roles}` : `<p class="note">Сеанс Claude ещё не принимал решений.</p>`}</div>
+  <div class="card"><h3 style="margin-top:0">Сделки</h3><div class="scroll"><table>
+    <tr><th>Когда</th><th>Счёт</th><th>Сделка</th><th>Цена</th><th>Итог</th><th>Причина</th></tr>
+    ${trades.map(t => `<tr><td>${when(t.ts)}</td><td>${t.who}</td><td>${t.side === "buy" ? "купил" : "продал"} ${esc(t.symbol)}</td><td>${t.price.toPrecision(6)}</td><td class="${t.pnl != null ? cls(t.pnl) : ""}">${t.pnl != null ? fmt(t.pnl_pct) : "—"}</td><td>${esc(t.reason)}</td></tr>`).join("") || `<tr><td colspan="6" class="note">Сделок пока нет</td></tr>`}
+  </table></div></div>`;
+  const rulesBy = new Map(eqRules.map(e => [e.ts, e.equity]));
+  if (chart) chart.destroy();
+  const ds = (label, data, color, dash) => ({label, data, borderColor: color, backgroundColor: color, borderWidth: 2, pointRadius: 0, tension: .2, borderDash: dash || []});
+  chart = new Chart(document.getElementById("c"), {
+    type: "line",
+    data: { labels: eqAi.map(e => when(e.ts)), datasets: [
+      ds("6 ИИ-ботов", eqAi.map(e => e.equity), css("--ai")),
+      ds("Бот без ИИ", eqAi.map(e => rulesBy.get(e.ts) ?? null), css("--rules")),
+      ds(benchName, eqAi.map(e => e.bench_hold), css("--bench"), [6, 4]),
+      ds("Все поровну", eqAi.map(e => e.basket_hold), css("--basket"), [2, 3])]},
+    options: { responsive: true, maintainAspectRatio: false, interaction: {mode: "index", intersect: false}, spanGaps: true,
+      plugins: {legend: {labels: {color: css("--text")}}},
+      scales: {x: {ticks: {color: css("--muted"), maxTicksLimit: 8}, grid: {color: css("--line")}},
+               y: {ticks: {color: css("--muted"), callback: v => "$" + v}, grid: {color: css("--line")}}}}
+  });
+}
+document.querySelectorAll(".tabs button").forEach(btn => btn.onclick = () => {
+  document.querySelectorAll(".tabs button").forEach(x => x.classList.toggle("on", x === btn));
+  try { localStorage.setItem("m", btn.dataset.m); } catch (e) {}
+  render(btn.dataset.m);
+});
+let m0 = "crypto"; try { m0 = localStorage.getItem("m") || "crypto"; } catch (e) {}
+document.querySelector(`.tabs button[data-m="${m0}"]`)?.click();
+</script>
+</body>
+</html>
