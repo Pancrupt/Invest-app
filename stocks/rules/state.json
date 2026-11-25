@@ -1,10 +1,21 @@
 {
  "started_at": 1795610518,
  "start_cash": 1000.0,
- "cash": 1000.0,
- "positions": {},
- "fees_usd": 0.0,
- "last_check": 1795625069,
+ "cash": 700.0,
+ "positions": {
+  "AAPL": {
+   "qty": 0.8453989921473096,
+   "entry": 354.507165,
+   "cost": 300.0,
+   "opened_at": 1795639406,
+   "stop": 346.18041,
+   "tp": 370.62918,
+   "max_hold_h": 72,
+   "reason": "тренд вверх, RSI 56.2, за 7 дней 2.02%"
+  }
+ },
+ "fees_usd": 0.3,
+ "last_check": 1795639406,
  "executed_orders": [],
  "benchmark": "SPY",
  "bench_qty": 1.3898549754884562,

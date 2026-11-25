@@ -1,5 +1,5 @@
 {
- "ts": 1795625069,
+ "ts": 1795639406,
  "markets": {
   "crypto": {
    "session_open": true,
@@ -7,17 +7,17 @@
    "books": {
     "ai": {
      "log": [],
-     "ts": 1795625069,
+     "ts": 1795639406,
      "equity": 1000.0,
-     "bench_hold": 990.5,
-     "basket_hold": 990.75
+     "bench_hold": 1020.39,
+     "basket_hold": 1038.98
     },
     "rules": {
      "log": [],
-     "ts": 1795625069,
+     "ts": 1795639406,
      "equity": 1000.0,
-     "bench_hold": 990.5,
-     "basket_hold": 990.75
+     "bench_hold": 1020.39,
+     "basket_hold": 1038.98
     }
    }
   },
@@ -27,17 +27,19 @@
    "books": {
     "ai": {
      "log": [],
-     "ts": 1795625069,
-     "equity": 999.93,
-     "bench_hold": 969.69,
-     "basket_hold": 957.41
+     "ts": 1795639406,
+     "equity": 1001.39,
+     "bench_hold": 993.61,
+     "basket_hold": 991.68
     },
     "rules": {
-     "log": [],
-     "ts": 1795625069,
-     "equity": 1000.0,
-     "bench_hold": 969.69,
-     "basket_hold": 957.41
+     "log": [
+      "купил AAPL на $300"
+     ],
+     "ts": 1795639406,
+     "equity": 999.55,
+     "bench_hold": 993.61,
+     "basket_hold": 991.68
     }
    }
   }
