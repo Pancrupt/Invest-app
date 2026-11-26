@@ -1,21 +1,21 @@
 {
  "market": "stocks",
  "title": "Акции США",
- "generated_at": 1795682568,
- "generated_at_iso": "2026-11-26 08:42 UTC",
+ "generated_at": 1795682663,
+ "generated_at_iso": "2026-11-26 08:44 UTC",
  "session_open": false,
  "benchmark": "SPY",
  "features": {
   "SPY": {
    "price": 716.700012,
-   "ret_1h_pct": -0.01,
+   "ret_1h_pct": -0.0,
    "ret_24h_pct": 3.17,
    "ret_7d_pct": -5.65,
    "rsi14_1h": 51.8,
    "atr1h_pct": 1.02,
    "vs_sma50h_pct": -0.39,
    "vs_sma200h_pct": -4.32,
-   "volume_24h_vs_avg": 1.43,
+   "volume_24h_vs_avg": 1.56,
    "pct_below_7d_high": 8.22
   },
   "QQQ": {
@@ -27,7 +27,7 @@
    "atr1h_pct": 1.46,
    "vs_sma50h_pct": -1.39,
    "vs_sma200h_pct": -7.07,
-   "volume_24h_vs_avg": 1.35,
+   "volume_24h_vs_avg": 1.33,
    "pct_below_7d_high": 14.54
   },
   "AAPL": {
@@ -56,14 +56,14 @@
   },
   "NVDA": {
    "price": 149.300003,
-   "ret_1h_pct": 0.01,
+   "ret_1h_pct": 0.02,
    "ret_24h_pct": 14.37,
    "ret_7d_pct": -29.87,
    "rsi14_1h": 44.3,
    "atr1h_pct": 3.79,
    "vs_sma50h_pct": -0.89,
    "vs_sma200h_pct": -19.67,
-   "volume_24h_vs_avg": 1.73,
+   "volume_24h_vs_avg": 1.68,
    "pct_below_7d_high": 47.35
   },
   "AMZN": {
@@ -87,7 +87,7 @@
    "atr1h_pct": 1.49,
    "vs_sma50h_pct": -1.86,
    "vs_sma200h_pct": -8.25,
-   "volume_24h_vs_avg": 1.01,
+   "volume_24h_vs_avg": 0.93,
    "pct_below_7d_high": 19.52
   },
   "META": {
@@ -116,7 +116,7 @@
   },
   "AMD": {
    "price": 406.029999,
-   "ret_1h_pct": -0.2,
+   "ret_1h_pct": -0.18,
    "ret_24h_pct": -4.51,
    "ret_7d_pct": -21.58,
    "rsi14_1h": 49.4,
@@ -128,7 +128,7 @@
   },
   "AVGO": {
    "price": 300.859985,
-   "ret_1h_pct": 0.12,
+   "ret_1h_pct": 0.1,
    "ret_24h_pct": -1.43,
    "ret_7d_pct": -7.07,
    "rsi14_1h": 48.9,
@@ -146,7 +146,7 @@
    "rsi14_1h": 54.1,
    "atr1h_pct": 1.16,
    "vs_sma50h_pct": 0.95,
-   "vs_sma200h_pct": -5.62,
+   "vs_sma200h_pct": -5.61,
    "volume_24h_vs_avg": 1.0,
    "pct_below_7d_high": 13.6
   },
@@ -236,7 +236,7 @@
   },
   "ASML": {
    "price": 1303.079956,
-   "ret_1h_pct": -0.0,
+   "ret_1h_pct": -0.01,
    "ret_24h_pct": 2.71,
    "ret_7d_pct": -16.74,
    "rsi14_1h": 43.4,
@@ -262,8 +262,8 @@
   "Asian stocks rally as Taiwan, South Korea rebound; Nvidia risks linger",
   "Asian shares rebound led by AI stocks after Wall Street pares sharp losses",
   "MegazoneCloud Launches Its Amazon Quick Center of Excellence to Turn Enterprise Data Into Autonomous Action",
-  "CoreWeave (CRWV) Debt Sale Wins Investment Grade Ratings",
   "Asian stocks stabilise after tech rout",
+  "CoreWeave (CRWV) Debt Sale Wins Investment Grade Ratings",
   "2 Ways Anthropic's IPO Pays Off for Alphabet Investors",
   "Global markets rebound as tech shares recover and tariff fears ease",
   "Is the Stock Market Open Today? Here Are the Trading Hours for Thanksgiving.",
