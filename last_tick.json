@@ -1,25 +1,23 @@
 {
- "ts": 1795668209,
+ "ts": 1795668301,
  "markets": {
   "crypto": {
    "session_open": true,
    "errors": [],
    "books": {
     "ai": {
-     "log": [
-      "купил LINK на $100"
-     ],
-     "ts": 1795668209,
-     "equity": 999.85,
-     "bench_hold": 1039.6,
-     "basket_hold": 1056.47
+     "log": [],
+     "ts": 1795668301,
+     "equity": 999.86,
+     "bench_hold": 1038.91,
+     "basket_hold": 1055.95
     },
     "rules": {
      "log": [],
-     "ts": 1795668209,
+     "ts": 1795668301,
      "equity": 1000.0,
-     "bench_hold": 1039.6,
-     "basket_hold": 1056.47
+     "bench_hold": 1038.91,
+     "basket_hold": 1055.95
     }
    }
   },
@@ -31,14 +29,14 @@
      "log": [
       "рынок закрыт, заявка ИИ ждёт открытия"
      ],
-     "ts": 1795668209,
+     "ts": 1795668301,
      "equity": 1001.38,
      "bench_hold": 996.11,
      "basket_hold": 995.74
     },
     "rules": {
      "log": [],
-     "ts": 1795668209,
+     "ts": 1795668301,
      "equity": 1000.61,
      "bench_hold": 996.11,
      "basket_hold": 995.74

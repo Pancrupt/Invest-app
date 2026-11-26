@@ -1,21 +1,21 @@
 {
  "market": "stocks",
  "title": "Акции США",
- "generated_at": 1795668209,
- "generated_at_iso": "2026-11-26 04:43 UTC",
+ "generated_at": 1795668301,
+ "generated_at_iso": "2026-11-26 04:45 UTC",
  "session_open": false,
  "benchmark": "SPY",
  "features": {
   "SPY": {
    "price": 716.700012,
-   "ret_1h_pct": -0.01,
+   "ret_1h_pct": -0.0,
    "ret_24h_pct": 3.17,
    "ret_7d_pct": -5.65,
    "rsi14_1h": 51.8,
    "atr1h_pct": 1.02,
    "vs_sma50h_pct": -0.39,
    "vs_sma200h_pct": -4.32,
-   "volume_24h_vs_avg": 1.43,
+   "volume_24h_vs_avg": 1.56,
    "pct_below_7d_high": 8.22
   },
   "QQQ": {
@@ -27,7 +27,7 @@
    "atr1h_pct": 1.46,
    "vs_sma50h_pct": -1.39,
    "vs_sma200h_pct": -7.07,
-   "volume_24h_vs_avg": 1.35,
+   "volume_24h_vs_avg": 1.33,
    "pct_below_7d_high": 14.54
   },
   "AAPL": {
@@ -56,14 +56,14 @@
   },
   "NVDA": {
    "price": 149.300003,
-   "ret_1h_pct": 0.01,
+   "ret_1h_pct": 0.02,
    "ret_24h_pct": 14.37,
    "ret_7d_pct": -29.87,
    "rsi14_1h": 44.3,
    "atr1h_pct": 3.79,
    "vs_sma50h_pct": -0.89,
    "vs_sma200h_pct": -19.67,
-   "volume_24h_vs_avg": 1.73,
+   "volume_24h_vs_avg": 1.68,
    "pct_below_7d_high": 47.35
   },
   "AMZN": {
@@ -87,7 +87,7 @@
    "atr1h_pct": 1.49,
    "vs_sma50h_pct": -1.86,
    "vs_sma200h_pct": -8.25,
-   "volume_24h_vs_avg": 1.01,
+   "volume_24h_vs_avg": 0.93,
    "pct_below_7d_high": 19.52
   },
   "META": {
@@ -116,7 +116,7 @@
   },
   "AMD": {
    "price": 406.029999,
-   "ret_1h_pct": -0.2,
+   "ret_1h_pct": -0.18,
    "ret_24h_pct": -4.51,
    "ret_7d_pct": -21.58,
    "rsi14_1h": 49.4,
@@ -128,7 +128,7 @@
   },
   "AVGO": {
    "price": 300.859985,
-   "ret_1h_pct": 0.12,
+   "ret_1h_pct": 0.1,
    "ret_24h_pct": -1.43,
    "ret_7d_pct": -7.07,
    "rsi14_1h": 48.9,
@@ -146,7 +146,7 @@
    "rsi14_1h": 54.1,
    "atr1h_pct": 1.16,
    "vs_sma50h_pct": 0.95,
-   "vs_sma200h_pct": -5.62,
+   "vs_sma200h_pct": -5.61,
    "volume_24h_vs_avg": 1.0,
    "pct_below_7d_high": 13.6
   },
@@ -236,7 +236,7 @@
   },
   "ASML": {
    "price": 1303.079956,
-   "ret_1h_pct": -0.0,
+   "ret_1h_pct": -0.01,
    "ret_24h_pct": 2.71,
    "ret_7d_pct": -16.74,
    "rsi14_1h": 43.4,
@@ -248,20 +248,20 @@
   }
  },
  "news": [
+  "MegazoneCloud Launches Its Amazon Quick Center of Excellence to Turn Enterprise Data Into Autonomous Action",
+  "Kioxia and NVIDIA Collaborate to Expand Effective High-Bandwidth Memory Capacity with SSDs",
   "‘I Don’t Think He Needs a Pardon at All’: JD Vance Defends Nvidia CEO Jensen Huang as Crypto Bettors Put Him Atop Trump’s List",
   "Michael Burry Says He’s Shorting The Market’s ‘Generals’ As Apple Flashes A Warning Last Seen In 2002",
   "Cathie Wood Buys More SpaceX Amid Tesla Merger Talks — Ron Baron Says SpaceX Could Make $50B A Year From One Data Center",
   "Trump admin weighed using Cold War law to reinstate Nvidia CEO Huang, WaPo reports",
   "Nvidia chips reach Chinese-owned U.S. firms despite export curbs, CBS reports",
-  "Kioxia and NVIDIA Collaborate to Expand Effective High-Bandwidth Memory Capacity with SSDs",
   "Is Nvidia Stock a Buy After Dell's Record AI Backlog?",
   "‘Trump Put’ Protects Nvidia Growth Through 2028, Says Gary Black as NVDA Stock Trades at Cheapest Valuation in 10 Years",
   "Nvidia’s Market Cap Falls Below Microsoft’s: Analyst Flags Five Overhangs For NVDA Stock",
-  "Nvidia Put on Negative Credit Watch by S&P Over ‘Key Man’ Risk: Moody’s Says Jensen Huang’s Return as CEO ‘Reduces Near-Term Uncertainty’",
-  "Pete Hegseth, Trump Officials Reportedly Floated Wartime Law to Force Jensen Huang’s Return as Nvidia CEO, But Pentagon Says It ‘Never Happened’",
-  "Tech Stocks Stall Into Thanksgiving: Will the AI Rebound Return?",
   "Dow Jones Futures Rise After Nasdaq Slashes Losses In Wild Market Ride",
   "Where Will the Money From Anthropic’s Record IPO Go Next: AI or Crypto?",
+  "Global markets rebound as tech shares recover and tariff fears ease",
+  "Mark Cuban Says the Most Common Mistake He Saw Founders Make on 'Shark Tank' Was a Job They Kept Handing Off: 'You're Going to Fail'",
   "Michael Burry Says His Portfolio Was Discussed 'About the Time the Market Reversed Off Its Lows': He Is 'Temporarily Almost Entirely Long'",
   "Asian stocks enjoy another bounce as tech holds court",
   "Washington Calls It a Goldilocks Economy. On a $2,071 Social Security Check, She Calls It the Annoyance Economy: Prices Up 3.7%, and Her Real Raise Is Just 3.3%",
@@ -276,8 +276,8 @@
   "Bill Gurley: Investors Weren’t “Scrambling to Actually Own Anthropic.” That’s a Problem for Amazon and Alphabet",
   "Circle Is Down 13% in a Week and Just Hit a New 52-Week Low. Is the Selling Overdone?",
   "Why Retail Investors Are Watching AMD and AI Infrastructure Stocks After SpaceX Satellite News",
-  "5 Best Strong Buy Growth Stocks to Buy for 2027",
-  "Why My Analysis Points to Nearly 40% Semiconductor Equipment Growth in 2026"
+  "Tech Stocks Stall Into Thanksgiving: Will the AI Rebound Return?",
+  "5 Best Strong Buy Growth Stocks to Buy for 2027"
  ],
  "portfolio": {
   "cash": 750.02,
