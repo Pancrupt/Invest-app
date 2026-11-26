@@ -1,6 +1,6 @@
 {
- "version": "2026-11-26b",
- "notes": "Stała i zmienna dyspozycja, także w aplikacji «Grafik»: ✏️ Edytuj pracownika → «📌 Dyspozycja». Pracownik ustawia ją w «🗓 Moja dyspozycja» → «📌 Stała / zmienna», bot sam wpisuje stałą w każdy nowy miesiąc. Zawiera też wszystkie wcześniejsze zmiany.",
- "zip": "aktualizacja-20261126b.zip",
- "sha256": "c75f224de9d66b971aa5b8734496f359ffccbec6bc85ebf08687e462d367575e"
+ "version": "2026-11-26c",
+ "notes": "Kierownik może sam wpisać urlop pracownikowi (od razu zatwierdzony): «Grafik» → ✏️ Edytuj pracownika → «🌴 Urlop» albo w Telegramie «👥 Pracownicy» → ⚙️ imię → «🌴 Urlop: wpisz / usuń». Zawiera też wszystkie wcześniejsze zmiany.",
+ "zip": "aktualizacja-20261126c.zip",
+ "sha256": "1980657aa3eb690d8dacf06596eb9d241de8edf28e4dc27bb22d7c4c9976bb4b"
 }
