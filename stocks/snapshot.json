@@ -1,8 +1,8 @@
 {
  "market": "stocks",
  "title": "Акции США",
- "generated_at": 1795682663,
- "generated_at_iso": "2026-11-26 08:44 UTC",
+ "generated_at": 1795684934,
+ "generated_at_iso": "2026-11-26 09:22 UTC",
  "session_open": false,
  "benchmark": "SPY",
  "features": {
@@ -248,6 +248,9 @@
   }
  },
  "news": [
+  "Nvidia halts chip exports to south-east Asia after US crackdown",
+  "CoStar Data Shows Noho Office Leasing Nearing 900,000 Sq. Ft.",
+  "Nvidia Wins Back Wall Street Backing As Jensen Huang Returns; CRWD, LI Stocks Score Upgrades While DKNG, AMBA Face Pressure",
   "Nvidia Reportedly Halts AI Server Shipments To Southeast Asia Ahead Of Jensen Huang's Congress Testimony",
   "S&P Weighs Nvidia Downgrade Despite Huang's Return. What Would a Cut Mean?",
   "Prediction: This Is What Nvidia Stock Will Be Worth by 2028",
@@ -258,15 +261,11 @@
   "Nvidia stops shipping AI servers to 4 Southeast Asian countries- FT",
   "Kioxia jumps 14% after Nvidia collaboration as chip stocks rebound",
   "ANT, NVDA Slide Tests Investor Resolve, Software Firms Post Sharp Growth",
-  "SpaceX Reportedly Slashes Some Nvidia Chip Rents — AI Researcher Sees Musk’s Edge In A GPU Glut",
-  "Asian stocks rally as Taiwan, South Korea rebound; Nvidia risks linger",
-  "Asian shares rebound led by AI stocks after Wall Street pares sharp losses",
-  "MegazoneCloud Launches Its Amazon Quick Center of Excellence to Turn Enterprise Data Into Autonomous Action",
+  "The Trade Desk Stock Is Headed for Its First Back-to-Back Losing Years. Its Only Other Full-Year Decline Was Followed by a 61% Gain.",
   "Asian stocks stabilise after tech rout",
   "CoreWeave (CRWV) Debt Sale Wins Investment Grade Ratings",
-  "2 Ways Anthropic's IPO Pays Off for Alphabet Investors",
-  "Global markets rebound as tech shares recover and tariff fears ease",
-  "Is the Stock Market Open Today? Here Are the Trading Hours for Thanksgiving.",
+  "The Nasdaq Fell Below Correction Territory: 2 Beaten-Down Nasdaq Stocks to Buy and Hold",
+  "Palantir Is Down 22% From Its October High. Dan Ives Puts It Among the Sell-Off’s “Clear Areas of Safety”",
   "What Is JPMorgan Chase (JPM) Saying With Its $450 Billion AI Debt Call?",
   "Dow Jones Futures Rise After Nasdaq Slashes Losses In Wild Market Ride",
   "Michael Burry Says His Portfolio Was Discussed 'About the Time the Market Reversed Off Its Lows': He Is 'Temporarily Almost Entirely Long'",
@@ -275,9 +274,10 @@
   "Big AI Buyers Want a Second Source. Is AMD (AMD) It?",
   "ASML (ASML) Can’t Meet Demand. Is That a Strength or Risk?",
   "Are You Overpaying For Palantir Stock Versus Its Rivals?",
-  "What Sent Coinbase Stock Lower?",
   "Bill Gurley: Investors Weren’t “Scrambling to Actually Own Anthropic.” That’s a Problem for Amazon and Alphabet",
-  "Circle Is Down 13% in a Week and Just Hit a New 52-Week Low. Is the Selling Overdone?"
+  "Circle Is Down 13% in a Week and Just Hit a New 52-Week Low. Is the Selling Overdone?",
+  "Why Retail Investors Are Watching AMD and AI Infrastructure Stocks After SpaceX Satellite News",
+  "Washington Calls It a Goldilocks Economy. On a $2,071 Social Security Check, She Calls It the Annoyance Economy: Prices Up 3.7%, and Her Real Raise Is Just 3.3%"
  ],
  "portfolio": {
   "cash": 750.02,
@@ -291,7 +291,7 @@
     "weight_pct": 15.0,
     "stop": 1063.00776,
     "tp": 1130.3968000000002,
-    "held_h": 17.9
+    "held_h": 18.5
    },
    {
     "symbol": "AAPL",
@@ -301,7 +301,7 @@
     "weight_pct": 10.1,
     "stop": 340.660125,
     "tp": 365.11777499999994,
-    "held_h": 17.9
+    "held_h": 18.5
    }
   ],
   "max_positions": 3,
