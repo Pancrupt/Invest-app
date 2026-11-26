@@ -1,21 +1,21 @@
 {
  "market": "stocks",
  "title": "Акции США",
- "generated_at": 1795684934,
- "generated_at_iso": "2026-11-26 09:22 UTC",
+ "generated_at": 1795721416,
+ "generated_at_iso": "2026-11-26 19:30 UTC",
  "session_open": false,
  "benchmark": "SPY",
  "features": {
   "SPY": {
    "price": 716.700012,
-   "ret_1h_pct": -0.0,
+   "ret_1h_pct": -0.01,
    "ret_24h_pct": 3.17,
    "ret_7d_pct": -5.65,
    "rsi14_1h": 51.8,
    "atr1h_pct": 1.02,
    "vs_sma50h_pct": -0.39,
    "vs_sma200h_pct": -4.32,
-   "volume_24h_vs_avg": 1.56,
+   "volume_24h_vs_avg": 1.43,
    "pct_below_7d_high": 8.22
   },
   "QQQ": {
@@ -27,7 +27,7 @@
    "atr1h_pct": 1.46,
    "vs_sma50h_pct": -1.39,
    "vs_sma200h_pct": -7.07,
-   "volume_24h_vs_avg": 1.33,
+   "volume_24h_vs_avg": 1.35,
    "pct_below_7d_high": 14.54
   },
   "AAPL": {
@@ -56,14 +56,14 @@
   },
   "NVDA": {
    "price": 149.300003,
-   "ret_1h_pct": 0.02,
+   "ret_1h_pct": 0.01,
    "ret_24h_pct": 14.37,
    "ret_7d_pct": -29.87,
    "rsi14_1h": 44.3,
    "atr1h_pct": 3.79,
    "vs_sma50h_pct": -0.89,
    "vs_sma200h_pct": -19.67,
-   "volume_24h_vs_avg": 1.68,
+   "volume_24h_vs_avg": 1.73,
    "pct_below_7d_high": 47.35
   },
   "AMZN": {
@@ -87,7 +87,7 @@
    "atr1h_pct": 1.49,
    "vs_sma50h_pct": -1.86,
    "vs_sma200h_pct": -8.25,
-   "volume_24h_vs_avg": 0.93,
+   "volume_24h_vs_avg": 1.01,
    "pct_below_7d_high": 19.52
   },
   "META": {
@@ -116,7 +116,7 @@
   },
   "AMD": {
    "price": 406.029999,
-   "ret_1h_pct": -0.18,
+   "ret_1h_pct": -0.2,
    "ret_24h_pct": -4.51,
    "ret_7d_pct": -21.58,
    "rsi14_1h": 49.4,
@@ -128,7 +128,7 @@
   },
   "AVGO": {
    "price": 300.859985,
-   "ret_1h_pct": 0.1,
+   "ret_1h_pct": 0.12,
    "ret_24h_pct": -1.43,
    "ret_7d_pct": -7.07,
    "rsi14_1h": 48.9,
@@ -146,7 +146,7 @@
    "rsi14_1h": 54.1,
    "atr1h_pct": 1.16,
    "vs_sma50h_pct": 0.95,
-   "vs_sma200h_pct": -5.61,
+   "vs_sma200h_pct": -5.62,
    "volume_24h_vs_avg": 1.0,
    "pct_below_7d_high": 13.6
   },
@@ -236,7 +236,7 @@
   },
   "ASML": {
    "price": 1303.079956,
-   "ret_1h_pct": -0.01,
+   "ret_1h_pct": -0.0,
    "ret_24h_pct": 2.71,
    "ret_7d_pct": -16.74,
    "rsi14_1h": 43.4,
@@ -248,36 +248,36 @@
   }
  },
  "news": [
-  "Nvidia halts chip exports to south-east Asia after US crackdown",
-  "CoStar Data Shows Noho Office Leasing Nearing 900,000 Sq. Ft.",
-  "Nvidia Wins Back Wall Street Backing As Jensen Huang Returns; CRWD, LI Stocks Score Upgrades While DKNG, AMBA Face Pressure",
-  "Nvidia Reportedly Halts AI Server Shipments To Southeast Asia Ahead Of Jensen Huang's Congress Testimony",
-  "S&P Weighs Nvidia Downgrade Despite Huang's Return. What Would a Cut Mean?",
-  "Prediction: This Is What Nvidia Stock Will Be Worth by 2028",
-  "Nvidia Could Shift Chips To ‘Better-Funded Buyers’ As Neoclouds Face Shakeout: Analyst Sees ‘Smaller Top Tier’",
-  "Apple Is November's Mag7 Winner — Nvidia Takes The Biggest Hit",
-  "Mike Pompeo Has ‘No Doubt’ Alice Huang Coordinated With Communist Party of China: Crypto Bettors Weigh Odds of Her Arrest",
-  "MU, SNDK, SKHY Jump As Nvidia Tests Kioxia Memory Fix — Analyst Presses Memory Giants For ‘Massive’ Buybacks",
-  "Nvidia stops shipping AI servers to 4 Southeast Asian countries- FT",
-  "Kioxia jumps 14% after Nvidia collaboration as chip stocks rebound",
-  "ANT, NVDA Slide Tests Investor Resolve, Software Firms Post Sharp Growth",
-  "The Trade Desk Stock Is Headed for Its First Back-to-Back Losing Years. Its Only Other Full-Year Decline Was Followed by a 61% Gain.",
-  "Asian stocks stabilise after tech rout",
-  "CoreWeave (CRWV) Debt Sale Wins Investment Grade Ratings",
-  "The Nasdaq Fell Below Correction Territory: 2 Beaten-Down Nasdaq Stocks to Buy and Hold",
-  "Palantir Is Down 22% From Its October High. Dan Ives Puts It Among the Sell-Off’s “Clear Areas of Safety”",
-  "What Is JPMorgan Chase (JPM) Saying With Its $450 Billion AI Debt Call?",
-  "Dow Jones Futures Rise After Nasdaq Slashes Losses In Wild Market Ride",
-  "Michael Burry Says His Portfolio Was Discussed 'About the Time the Market Reversed Off Its Lows': He Is 'Temporarily Almost Entirely Long'",
-  "Coinbase CEO on the Anthropic and SpaceX IPOs: Who Actually Made the Money?",
-  "Broadcom Stock Hasn't Traded This Low Since July 2025. I Think It's a Buy.",
-  "Big AI Buyers Want a Second Source. Is AMD (AMD) It?",
-  "ASML (ASML) Can’t Meet Demand. Is That a Strength or Risk?",
-  "Are You Overpaying For Palantir Stock Versus Its Rivals?",
-  "Bill Gurley: Investors Weren’t “Scrambling to Actually Own Anthropic.” That’s a Problem for Amazon and Alphabet",
-  "Circle Is Down 13% in a Week and Just Hit a New 52-Week Low. Is the Selling Overdone?",
-  "Why Retail Investors Are Watching AMD and AI Infrastructure Stocks After SpaceX Satellite News",
-  "Washington Calls It a Goldilocks Economy. On a $2,071 Social Security Check, She Calls It the Annoyance Economy: Prices Up 3.7%, and Her Real Raise Is Just 3.3%"
+  "Tesla Stocks Slip 1.18% as EU Delays Self-Driving Vote to December 15",
+  "Apple Stocks Rise as AI Selloff Spares the iPhone Maker",
+  "Microsoft Stocks Slip 1.25% While Nadella Backs Cheaper In-House AI Models",
+  "Nvidia Stock Has Found Its Next Big Catalyst, Making the Stock a Once-in-a-Decade Buying Opportunity.",
+  "Super Micro Computer (SMCI) Faces Southeast Asia AI Server Disruption After Export Halt",
+  "Can NICE (TASE:NICE) Support A Reasonable Price On Earnings?",
+  "Big News For Nvidia Stock Fans",
+  "David Tepper, Cathie Wood and 4 Other Famous Investors Own Nvidia. Here’s Who Bought Recently",
+  "Nvidia Now Has 41% of Its Stock Portfolio in SpaceX. Here’s What That Means for Nvidia Shareholders",
+  "Stanley Druckenmiller, Bill Ackman and 7 Other Famous Investors Own Amazon. Here’s Who Bought and Sold Recently",
+  "Caterpillar's $78 Billion Backlog, Explained",
+  "Better Defense Stock to Own in 2027: Lockheed Martin vs. L3Harris Technologies",
+  "2 Growth Stocks That Lagged the S&P 500 in 2026 and Could Lead in 2027",
+  "Goldman Sachs sends strong signal on Amazon stock before Black Friday",
+  "This Oversold Artificial Intelligence (AI) Stock Will Skyrocket 123% in 2027, According to Wall Street",
+  "Arista Networks Stocks Fall 2.71% as AI Networking Gets Caught in Chip Rout",
+  "AMD Stocks Slip 1.75% After Filing Registers 337 Million Shares for Resale",
+  "Dow Jones Futures Rise With U.S. Markets Shut; Look For This Bullish Signal",
+  "Broadcom Stocks Edge Lower After Rebounding From an Intraday Low of $278",
+  "Alphabet Stocks Slip 2.13% as Credit Swaps Hit Record Amid $9.1 Billion Cash Burn",
+  "Costco members can't stop buying one thing they don't need",
+  "Palantir Stocks Rise 1.5% After Peter Thiel Discloses a $122 Million Share Purchase",
+  "Here's What Would Prove Me Wrong About Netflix Stock",
+  "NFL's Thanksgiving Boom Raises Stakes for Disney, Netflix",
+  "Eli Lilly Stock Is Up 64% Since April. Is It Time to Take Profits?",
+  "Eli Lilly Is Now Worth 7 Novo Nordisks. Here’s How the Gap Got So Wide.",
+  "Netflix Stock Is Down 36% in 2026. Can Its Disney Partnership Make It a Buy Again?",
+  "BJ’s joins Costco, Sam’s Club in Thanksgiving Day store closings",
+  "Cerebras Expands AI Inference Reach: Can It Challenge NVDA & AMD?",
+  "Mastercard Stocks Rise 1.94% as Payment Networks Gain in AI Selloff Rotation"
  ],
  "portfolio": {
   "cash": 750.02,
@@ -291,7 +291,7 @@
     "weight_pct": 15.0,
     "stop": 1063.00776,
     "tp": 1130.3968000000002,
-    "held_h": 18.5
+    "held_h": 28.6
    },
    {
     "symbol": "AAPL",
@@ -301,7 +301,7 @@
     "weight_pct": 10.1,
     "stop": 340.660125,
     "tp": 365.11777499999994,
-    "held_h": 18.5
+    "held_h": 28.6
    }
   ],
   "max_positions": 3,
