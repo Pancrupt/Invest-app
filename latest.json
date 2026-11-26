@@ -1,6 +1,6 @@
 {
- "version": "2026-11-25b",
- "notes": "Zbieranie dyspozycji trwa, dopóki kierownik nie kliknie «🔒 Zamknij zbieranie» (termin 25. niczego już nie zamyka). Jeśli nie zamknie do końca miesiąca, 1. dnia bot zamknie sam i zacznie zbierać na następny miesiąc. Naprawiono «🔔 Przypomnij» («To jest już nieaktualne»). bot.log nie rośnie bez końca, ostrzeżenie o braku miejsca na dysku.",
- "zip": "aktualizacja-20261125b.zip",
- "sha256": "cb80a1212e7a04f28c211029aad40569898038b684166faabbdc9fca06cd77c4"
+ "version": "2026-11-26",
+ "notes": "Stała i zmienna dyspozycja: pracownik może ustawić stałą («🗓 Moja dyspozycja» → «📌 Stała / zmienna»), bot sam wpisze ją w każdy nowy miesiąc, w danym miesiącu można ją poprawić. Kierownik może ustawić stałą pracownikowi: «👥 Pracownicy» → ⚙️ imię → «📌 Dyspozycja». Zawiera też wszystkie zmiany z 2026-11-25b.",
+ "zip": "aktualizacja-20261126.zip",
+ "sha256": "ee8dba744c5a0087d45e73725db7f4fa61c5decdc379e8baf60d65e7cd6edcd8"
 }
