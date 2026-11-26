@@ -1,8 +1,8 @@
 {
  "market": "stocks",
  "title": "Акции США",
- "generated_at": 1795651762,
- "generated_at_iso": "2026-11-26 00:09 UTC",
+ "generated_at": 1795668209,
+ "generated_at_iso": "2026-11-26 04:43 UTC",
  "session_open": false,
  "benchmark": "SPY",
  "features": {
@@ -15,7 +15,7 @@
    "atr1h_pct": 1.02,
    "vs_sma50h_pct": -0.39,
    "vs_sma200h_pct": -4.32,
-   "volume_24h_vs_avg": 2.05,
+   "volume_24h_vs_avg": 1.43,
    "pct_below_7d_high": 8.22
   },
   "QQQ": {
@@ -27,7 +27,7 @@
    "atr1h_pct": 1.46,
    "vs_sma50h_pct": -1.39,
    "vs_sma200h_pct": -7.07,
-   "volume_24h_vs_avg": 2.82,
+   "volume_24h_vs_avg": 1.35,
    "pct_below_7d_high": 14.54
   },
   "AAPL": {
@@ -39,7 +39,7 @@
    "atr1h_pct": 0.95,
    "vs_sma50h_pct": 1.4,
    "vs_sma200h_pct": 2.27,
-   "volume_24h_vs_avg": 1.56,
+   "volume_24h_vs_avg": 1.06,
    "pct_below_7d_high": 1.48
   },
   "MSFT": {
@@ -51,7 +51,7 @@
    "atr1h_pct": 1.25,
    "vs_sma50h_pct": -1.62,
    "vs_sma200h_pct": -6.07,
-   "volume_24h_vs_avg": 1.02,
+   "volume_24h_vs_avg": 0.93,
    "pct_below_7d_high": 14.13
   },
   "NVDA": {
@@ -63,7 +63,7 @@
    "atr1h_pct": 3.79,
    "vs_sma50h_pct": -0.89,
    "vs_sma200h_pct": -19.67,
-   "volume_24h_vs_avg": 2.45,
+   "volume_24h_vs_avg": 1.73,
    "pct_below_7d_high": 47.35
   },
   "AMZN": {
@@ -75,7 +75,7 @@
    "atr1h_pct": 1.5,
    "vs_sma50h_pct": -4.24,
    "vs_sma200h_pct": -4.92,
-   "volume_24h_vs_avg": 1.03,
+   "volume_24h_vs_avg": 0.98,
    "pct_below_7d_high": 12.63
   },
   "GOOGL": {
@@ -87,7 +87,7 @@
    "atr1h_pct": 1.49,
    "vs_sma50h_pct": -1.86,
    "vs_sma200h_pct": -8.25,
-   "volume_24h_vs_avg": 1.34,
+   "volume_24h_vs_avg": 1.01,
    "pct_below_7d_high": 19.52
   },
   "META": {
@@ -99,7 +99,7 @@
    "atr1h_pct": 1.46,
    "vs_sma50h_pct": 1.73,
    "vs_sma200h_pct": -3.13,
-   "volume_24h_vs_avg": 1.1,
+   "volume_24h_vs_avg": 0.8,
    "pct_below_7d_high": 6.32
   },
   "TSLA": {
@@ -111,7 +111,7 @@
    "atr1h_pct": 2.07,
    "vs_sma50h_pct": 0.85,
    "vs_sma200h_pct": -0.7,
-   "volume_24h_vs_avg": 2.01,
+   "volume_24h_vs_avg": 0.96,
    "pct_below_7d_high": 8.97
   },
   "AMD": {
@@ -123,7 +123,7 @@
    "atr1h_pct": 3.57,
    "vs_sma50h_pct": -10.96,
    "vs_sma200h_pct": -19.38,
-   "volume_24h_vs_avg": 1.44,
+   "volume_24h_vs_avg": 1.19,
    "pct_below_7d_high": 46.29
   },
   "AVGO": {
@@ -135,7 +135,7 @@
    "atr1h_pct": 2.16,
    "vs_sma50h_pct": -6.65,
    "vs_sma200h_pct": -8.67,
-   "volume_24h_vs_avg": 1.54,
+   "volume_24h_vs_avg": 1.21,
    "pct_below_7d_high": 22.92
   },
   "NFLX": {
@@ -147,7 +147,7 @@
    "atr1h_pct": 1.16,
    "vs_sma50h_pct": 0.95,
    "vs_sma200h_pct": -5.62,
-   "volume_24h_vs_avg": 1.12,
+   "volume_24h_vs_avg": 1.0,
    "pct_below_7d_high": 13.6
   },
   "JPM": {
@@ -159,7 +159,7 @@
    "atr1h_pct": 0.9,
    "vs_sma50h_pct": -1.06,
    "vs_sma200h_pct": -5.32,
-   "volume_24h_vs_avg": 1.27,
+   "volume_24h_vs_avg": 1.2,
    "pct_below_7d_high": 13.59
   },
   "V": {
@@ -171,7 +171,7 @@
    "atr1h_pct": 0.66,
    "vs_sma50h_pct": 2.62,
    "vs_sma200h_pct": 2.12,
-   "volume_24h_vs_avg": 1.03,
+   "volume_24h_vs_avg": 0.92,
    "pct_below_7d_high": 4.2
   },
   "COST": {
@@ -183,7 +183,7 @@
    "atr1h_pct": 0.64,
    "vs_sma50h_pct": -1.19,
    "vs_sma200h_pct": 3.45,
-   "volume_24h_vs_avg": 1.17,
+   "volume_24h_vs_avg": 1.15,
    "pct_below_7d_high": 3.39
   },
   "LLY": {
@@ -195,7 +195,7 @@
    "atr1h_pct": 0.92,
    "vs_sma50h_pct": 0.64,
    "vs_sma200h_pct": 1.85,
-   "volume_24h_vs_avg": 0.96,
+   "volume_24h_vs_avg": 0.91,
    "pct_below_7d_high": 5.96
   },
   "PLTR": {
@@ -219,7 +219,7 @@
    "atr1h_pct": 2.32,
    "vs_sma50h_pct": -4.16,
    "vs_sma200h_pct": -25.46,
-   "volume_24h_vs_avg": 1.15,
+   "volume_24h_vs_avg": 1.03,
    "pct_below_7d_high": 62.63
   },
   "UBER": {
@@ -231,7 +231,7 @@
    "atr1h_pct": 1.19,
    "vs_sma50h_pct": -0.09,
    "vs_sma200h_pct": -2.16,
-   "volume_24h_vs_avg": 1.23,
+   "volume_24h_vs_avg": 0.92,
    "pct_below_7d_high": 9.27
   },
   "ASML": {
@@ -248,36 +248,36 @@
   }
  },
  "news": [
-  "Dow Jones Futures: Market Goes On Wild Ride. Nasdaq, Nvidia Slash Losses While Anthropic Reverses Higher.",
-  "Microsoft's Green Card Filings Reveal A Striking Pattern After Mass Layoffs. Trump's New Rule Could Freeze Sponsorships For Two Years.",
-  "Altimeter’s Brad Gerstner Says Nvidia Was Priced for “Negative Growth for 2028 and 2029.” Wall Street Expects 29%",
-  "If SpaceX and Tesla Merge Next Year, Here's What a $5,000 Investment in the Combined Company Could Be Worth by the End of 2028",
-  "'Big Short' Investor Michael Burry Just Closed His Bet Against the Nasdaq. Here's What Investors Should Do Now",
-  "The Nvidia Scandal Set Off a Chip Crackdown in Congress. Which Stocks Are Most at Risk?",
-  "Musk's Plan To Put 1 Million AI Satellites In Orbit Gets US Approval. Amazon Questions Whether It Can Be Done.",
-  "S&P considers Nvidia credit downgrade over governance and ‘key man’ risks",
-  "Trump Has A Message for Big Tech Firms Like Amazon, Google and Microsoft Building Data Centers Abroad: ‘We’re Going to Put A Tremendous Tax On Them’",
-  "Nvidia settles 8-year-old investor suit for $290M",
-  "Applied Digital Dropped 14% in a Week Despite a $5.4 Billion Lease. Lucid Still Sees 227% Upside",
+  "‘I Don’t Think He Needs a Pardon at All’: JD Vance Defends Nvidia CEO Jensen Huang as Crypto Bettors Put Him Atop Trump’s List",
+  "Michael Burry Says He’s Shorting The Market’s ‘Generals’ As Apple Flashes A Warning Last Seen In 2002",
+  "Cathie Wood Buys More SpaceX Amid Tesla Merger Talks — Ron Baron Says SpaceX Could Make $50B A Year From One Data Center",
+  "Trump admin weighed using Cold War law to reinstate Nvidia CEO Huang, WaPo reports",
+  "Nvidia chips reach Chinese-owned U.S. firms despite export curbs, CBS reports",
+  "Kioxia and NVIDIA Collaborate to Expand Effective High-Bandwidth Memory Capacity with SSDs",
+  "Is Nvidia Stock a Buy After Dell's Record AI Backlog?",
+  "‘Trump Put’ Protects Nvidia Growth Through 2028, Says Gary Black as NVDA Stock Trades at Cheapest Valuation in 10 Years",
+  "Nvidia’s Market Cap Falls Below Microsoft’s: Analyst Flags Five Overhangs For NVDA Stock",
+  "Nvidia Put on Negative Credit Watch by S&P Over ‘Key Man’ Risk: Moody’s Says Jensen Huang’s Return as CEO ‘Reduces Near-Term Uncertainty’",
+  "Pete Hegseth, Trump Officials Reportedly Floated Wartime Law to Force Jensen Huang’s Return as Nvidia CEO, But Pentagon Says It ‘Never Happened’",
+  "Tech Stocks Stall Into Thanksgiving: Will the AI Rebound Return?",
+  "Dow Jones Futures Rise After Nasdaq Slashes Losses In Wild Market Ride",
+  "Where Will the Money From Anthropic’s Record IPO Go Next: AI or Crypto?",
+  "Michael Burry Says His Portfolio Was Discussed 'About the Time the Market Reversed Off Its Lows': He Is 'Temporarily Almost Entirely Long'",
+  "Asian stocks enjoy another bounce as tech holds court",
+  "Washington Calls It a Goldilocks Economy. On a $2,071 Social Security Check, She Calls It the Annoyance Economy: Prices Up 3.7%, and Her Real Raise Is Just 3.3%",
+  "SpaceX gets approval for 1 million data center satellites",
+  "Coinbase CEO on the Anthropic and SpaceX IPOs: Who Actually Made the Money?",
+  "Broadcom Stock Hasn't Traded This Low Since July 2025. I Think It's a Buy.",
+  "Big AI Buyers Want a Second Source. Is AMD (AMD) It?",
+  "ASML (ASML) Can’t Meet Demand. Is That a Strength or Risk?",
   "Are You Overpaying For Palantir Stock Versus Its Rivals?",
-  "CoreWeave Stock Could Soar 125%, According to One Wall Street Analyst, Even After a Price Target Cut. Is It a Buy?",
-  "2 Billionaire Funds Dumped AMD Last Quarter. Is It a Sell?",
-  "Here’s How Many Coca-Cola Shares It Takes to Earn $1,300 Every Quarter in Dividends",
-  "Anthropic Stock Is Down 33% From Its All-Time High. Here's What a $5,000 Investment Could Be Worth in 1 Year.",
-  "Trump heads to Arizona next week for a high-stakes expansion of TSMC's computer chip factories",
   "What Sent Coinbase Stock Lower?",
-  "Market Chatter: JPMorgan Projects $450 Billion in AI High-Grade Debt Issuance for 2027",
-  "JPMorgan sees $450B in AI bond issuance in 2027",
-  "Not Micron. Not Broadcom. This Is My Top Oversold Artificial Intelligence (AI) Stock to Buy in December",
-  "Prediction: AMD Stock Could Rally 58% as Analysts Maintain Strong Buy Rating",
-  "The Best Dividend Stocks to Buy With $5,000 in November",
-  "JPMorgan Sees $450 Billion AI Debt Blitz in 2027 Before Plateau",
+  "2 Billionaire Funds Dumped AMD Last Quarter. Is It a Sell?",
   "Bill Gurley: Investors Weren’t “Scrambling to Actually Own Anthropic.” That’s a Problem for Amazon and Alphabet",
   "Circle Is Down 13% in a Week and Just Hit a New 52-Week Low. Is the Selling Overdone?",
-  "GenScript Convenes AI, Biotech and Investment Leaders in London as Faster AI-Enabled Drug Design Raises the Stakes for Biological Evidence",
-  "Anthropic Earns “$80 a Year per Watt” of GPUs, Says Modal’s CEO. That’s Good News for SpaceX",
-  "5 Best Healthcare Stocks To Buy for 2027",
-  "Analysts Expect More From Marvell Than Marvell Does"
+  "Why Retail Investors Are Watching AMD and AI Infrastructure Stocks After SpaceX Satellite News",
+  "5 Best Strong Buy Growth Stocks to Buy for 2027",
+  "Why My Analysis Points to Nearly 40% Semiconductor Equipment Growth in 2026"
  ],
  "portfolio": {
   "cash": 750.02,
@@ -291,7 +291,7 @@
     "weight_pct": 15.0,
     "stop": 1063.00776,
     "tp": 1130.3968000000002,
-    "held_h": 9.3
+    "held_h": 13.9
    },
    {
     "symbol": "AAPL",
@@ -301,7 +301,7 @@
     "weight_pct": 10.1,
     "stop": 340.660125,
     "tp": 365.11777499999994,
-    "held_h": 9.3
+    "held_h": 13.9
    }
   ],
   "max_positions": 3,
