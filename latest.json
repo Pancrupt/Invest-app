@@ -1,6 +1,6 @@
 {
- "version": "2026-11-26c",
- "notes": "Kierownik może sam wpisać urlop pracownikowi (od razu zatwierdzony): «Grafik» → ✏️ Edytuj pracownika → «🌴 Urlop» albo w Telegramie «👥 Pracownicy» → ⚙️ imię → «🌴 Urlop: wpisz / usuń». Zawiera też wszystkie wcześniejsze zmiany.",
- "zip": "aktualizacja-20261126c.zip",
- "sha256": "1980657aa3eb690d8dacf06596eb9d241de8edf28e4dc27bb22d7c4c9976bb4b"
+ "version": "2026-11-26d",
+ "notes": "Kierownik widzi i poprawia dyspozycje pracowników w «Grafik»: «🗓 Dyspozycje pracowników — zobacz i popraw». Kierownik może też sam wpisać urlop (✏️ Edytuj pracownika → «🌴 Urlop»). Zawiera wszystkie wcześniejsze zmiany.",
+ "zip": "aktualizacja-20261126d.zip",
+ "sha256": "58b99ecfc58a7969bdbaec79bb35371ec1d353fa823f32858bfe1cb0d4bf3338"
 }
