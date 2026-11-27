@@ -1,5 +1,5 @@
 {
- "ts": 1795754627,
+ "ts": 1795754710,
  "markets": {
   "crypto": {
    "session_open": true,
@@ -7,19 +7,19 @@
    "books": {
     "ai": {
      "log": [
-      "LINK: вышел срок удержания (+3.64%)"
+      "купил LTC на $100"
      ],
-     "ts": 1795754627,
-     "equity": 1003.64,
-     "bench_hold": 1047.64,
-     "basket_hold": 1074.61
+     "ts": 1795754710,
+     "equity": 1003.49,
+     "bench_hold": 1047.57,
+     "basket_hold": 1074.56
     },
     "rules": {
      "log": [],
-     "ts": 1795754627,
-     "equity": 1001.61,
-     "bench_hold": 1047.64,
-     "basket_hold": 1074.61
+     "ts": 1795754710,
+     "equity": 1001.83,
+     "bench_hold": 1047.57,
+     "basket_hold": 1074.56
     }
    }
   },
@@ -31,14 +31,14 @@
      "log": [
       "рынок закрыт, заявка ИИ ждёт открытия"
      ],
-     "ts": 1795754627,
+     "ts": 1795754710,
      "equity": 1001.38,
      "bench_hold": 996.11,
      "basket_hold": 995.74
     },
     "rules": {
      "log": [],
-     "ts": 1795754627,
+     "ts": 1795754710,
      "equity": 1000.61,
      "bench_hold": 996.11,
      "basket_hold": 995.74

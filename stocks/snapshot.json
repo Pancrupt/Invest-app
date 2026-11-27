@@ -1,8 +1,8 @@
 {
  "market": "stocks",
  "title": "Акции США",
- "generated_at": 1795754627,
- "generated_at_iso": "2026-11-27 04:43 UTC",
+ "generated_at": 1795754710,
+ "generated_at_iso": "2026-11-27 04:45 UTC",
  "session_open": false,
  "benchmark": "SPY",
  "features": {
@@ -248,6 +248,7 @@
   }
  },
  "news": [
+  "Nvidia (NVDA) Stock Fair Value Falls After Analysts Reassess Leadership And Regulatory Risks",
   "Singapore yet to confirm if Nvidia has halted advanced chip shipments- deputy PM",
   "Amazon Lost 40 Satellites on a Boeing-Lockheed Rocket in November. SpaceX Is the Only Company That Can Fix Amazon’s Problem. Is the Stock a Buy Near $130?",
   "Can Amazon (AMZN) Turn Its AWS Growth Outlook Into Cash?",
@@ -261,9 +262,9 @@
   "These 2 AI Chip Stocks Are Down 36% to 39% From Their Highs. Here’s What History Says Happens Next.",
   "1 Incredibly Cheap Artificial Intelligence (AI) Stock to Buy Before It Doubles in 2027",
   "Asian stocks rise as tech rebound, easing U.S. trade concerns lift sentiment",
+  "Microsoft’s Brad Smith Says ‘We Didn’t Know’ $10 Million Trump Ballroom Donation Would Involve Demolition of the East Wing: ’We Never Expect to Get Everything Perfect",
   "5 Best Quantum Computing Stocks To Buy for 2027",
   "5 Best Tech Stocks to Buy for 2027 According to Hedge Funds",
-  "Weeks Before His Wife Needs a Nursing Home, He Buys a $75,000 SUV Online. Medicaid Ignores One Car Whatever It Costs, Taking $75,000 Off the Savings It Expects Them to Spend Down",
   "Dow Jones Futures Rise; Look For This Bullish Market Signal On Black Friday",
   "Why Redburn Downgraded Broadcom (AVGO) Despite Surging AI Revenue",
   "AI Risk Is 'Moving Somewhere Harder to See': Citigroup, JPMorgan Reportedly Look to Offload AI Debt as Investors Grow Wary of Buildout",
@@ -276,8 +277,7 @@
   "Costco sells something consumers want even if they don't need it",
   "Palantir Stocks Rise 1.5% After Peter Thiel Discloses a $122 Million Share Purchase",
   "Broadcom Stocks Edge Lower After Rebounding From an Intraday Low of $278",
-  "KHC, PINS, AMD: 3 Bets I’d Consider Waging From Thanksgiving Eve’s Top 25 Unusually Active Options",
-  "AMD Stocks Slip 1.75% After Filing Registers 337 Million Shares for Resale"
+  "KHC, PINS, AMD: 3 Bets I’d Consider Waging From Thanksgiving Eve’s Top 25 Unusually Active Options"
  ],
  "portfolio": {
   "cash": 750.02,
