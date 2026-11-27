@@ -1,8 +1,8 @@
 {
  "market": "stocks",
  "title": "Акции США",
- "generated_at": 1795783415,
- "generated_at_iso": "2026-11-27 12:43 UTC",
+ "generated_at": 1795783502,
+ "generated_at_iso": "2026-11-27 12:45 UTC",
  "session_open": false,
  "benchmark": "SPY",
  "features": {
@@ -249,11 +249,14 @@
  },
  "news": [
   "He was right about AI and still lost $35 billion",
+  "3 Stocks I'd Love to Buy at Black Friday Sale Prices",
+  "Constellation Energy Sinks 10% in a Week, NuScale 17%, as “the Jensen Huang Stock Put Is Fading”",
+  "President Donald Trump Just Floated the Idea of the U.S. Government Buying a Stake in Nvidia -- but It Wouldn't Fix the Company's Biggest Flaw",
+  "Dell, Super Micro Under Pressure as Nvidia Halts Shipments to 4 Asian Countries",
   "Market Chatter: Hackers Breach US Air Force Cloud Platform Powered by Microsoft, Amazon, Oracle, Alphabet",
+  "Why A Big Nvidia Stake Can Delay Retirement Years",
   "Railtown AI Introduces Model Evaluation Technology to Help Reduce Inference Costs and Expand Model Choice",
   "Don't Need Your RMDs? Why Investing Them Could Be Your Smartest Move Yet",
-  "Amazon Blocked Meta’s Muse Two Months Ago. Now It’s in Talks to Let It Shop, and Walmart Already Did",
-  "Asian Data Centers Are Racing to Sell Spare Compute to US Buyers. That’s Bad News for Nvidia’s Next Orders",
   "Dow Jones Futures Rise; Look For This Bullish Market Signal On Black Friday",
   "Broadcom’s 2027 Bull Case: AI Revenue Doubles to $115B and $230B—Here’s What Finally Unlocks the Stock",
   "3 Lessons From Berkshire Hathaway's Stock Portfolio That Work for Any Stock Portfolio",
@@ -261,11 +264,9 @@
   "3 Fintech Stocks to Buy for Long-Term Investors",
   "Stock Futures Rip on Thanksgiving Night as S&P 500 Futures Top 7,300",
   "Dexcom Or Abbott: Which Sensor Stock Is Better?",
-  "Why Is Intel Stock Rallying Today?",
   "The Next Phase of AI Spending Could Put This Overlooked Stock in the Spotlight",
   "Broadcom Makes More AI Money Than AMD—So Why Is AMD’s Stock Crushing It?",
   "SpaceX Cratered 13.5% This Month: Near 300% Returns to Materialize at Today’s Price According to this Pro Analyst",
-  "What's Happening With Micron Stock?",
   "What Will Decide Reddit Stock Over The Next Six Months?",
   "JPMorgan, BofA, Citigroup issue same red alert over US bank accounts — official policy changes shift liability to you",
   "How GLP 1 Coverage Could Send You Beyond XLV",
@@ -276,8 +277,7 @@
   "Palantir Nears AI Defense Deal With Poland's Defense Ministry",
   "Uber Secures 87.13% of Delivery Hero Shares in Takeover Bid",
   "What JPMorgan U.S. Tech Leaders ETF (JTEK) Bought: Synopsys Leads on Nov. 25",
-  "Banco Bradesco (BOVESPA:BBDC4) Stock Sees Fair Value Cut As Analysts Turn More Cautious",
-  "AI Chips Update - AI Surge Accelerates Semiconductor Growth Through 2026"
+  "Banco Bradesco (BOVESPA:BBDC4) Stock Sees Fair Value Cut As Analysts Turn More Cautious"
  ],
  "portfolio": {
   "cash": 750.02,
