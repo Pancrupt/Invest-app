@@ -1,8 +1,8 @@
 {
  "market": "stocks",
  "title": "Акции США",
- "generated_at": 1795812323,
- "generated_at_iso": "2026-11-27 20:45 UTC",
+ "generated_at": 1795813349,
+ "generated_at_iso": "2026-11-27 21:02 UTC",
  "session_open": false,
  "benchmark": "SPY",
  "features": {
@@ -261,11 +261,11 @@
   "Don't have time to shop Black Friday? AI will do it for you",
   "Why Did Redwire Stock Pop on Friday",
   "IREN (NasdaqGS:IREN) Stock Sees Modest Fair Value Cut After AI Cloud Sentiment Swings",
+  "AI Chip Stocks Swung Wildly—While Warren Buffett’s Apple Climbed 26%",
   "Can Meta's Business Pay For Its Spending?",
   "Should You Pick Palantir Over Its Big Tech Rivals?",
   "Nvidia Stocks Slip 1.66% as S&P Weighs Downgrade Over Key-Man Risk",
   "Black Friday Stock Deals: 7 Bargains Our Analysts Are Watching Now",
-  "Fidelity Counted 654,000 401(k) Millionaires in the Third Quarter of 2025, Up From 544,000 a Year Earlier",
   "Alphabet Down Nearly 20%: What Would Its CEO Say?",
   "Alphabet Stocks Move Lower as Record Credit Spreads Shadow AI Spending",
   "What Is The One Risk Facing Visa Stock Now?",
@@ -291,7 +291,7 @@
     "weight_pct": 15.1,
     "stop": 1063.00776,
     "tp": 1130.3968000000002,
-    "held_h": 53.9
+    "held_h": 54.2
    },
    {
     "symbol": "AAPL",
@@ -301,7 +301,7 @@
     "weight_pct": 10.2,
     "stop": 340.660125,
     "tp": 365.11777499999994,
-    "held_h": 53.9
+    "held_h": 54.2
    }
   ],
   "max_positions": 3,
