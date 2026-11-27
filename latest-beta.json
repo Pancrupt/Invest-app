@@ -1,7 +1,7 @@
 {
- "version": "2026-11-19h",
+ "version": "2026-11-27",
  "channel": "beta",
- "notes": "Zmiany do sprawdzenia (numery do wyboru):\n#1 Bot uruchamia się poprawnie od zera (pusty state.json), potrzebne do bota testowego.\n#2 Bot testowy oznacza aktualizacje znaczkiem «🧪 WERSJA TESTOWA».",
- "zip": "beta-2026-11-19h.zip",
- "sha256": "e09a51d1115845f79874310ef586103f9a0b71ffe957a33a7ceb997cca7d9903"
+ "notes": "Zmiany do sprawdzenia:\n#1 Lepsze automatyczne układanie grafiku: po zwykłym układaniu bot przestawia zmiany (zamiany między osobami, przeniesienia, R1↔R2), żeby najpierw nie było braków na zmianach, potem godziny były jak najbliżej etatu, a czwarta osoba na zmianie stała tylko tam, gdzie inaczej nie da się zebrać godzin.\nZawiera wersję 2026-11-26d i zmiany testowe z 2026-11-19h.",
+ "zip": "beta-2026-11-27.zip",
+ "sha256": "2d946a30fbd2380c1fdb32ba72b35c177b87b06bb4e744cd9978e081171d4b85"
 }
