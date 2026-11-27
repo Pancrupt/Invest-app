@@ -1,21 +1,21 @@
 {
  "market": "stocks",
  "title": "Акции США",
- "generated_at": 1795721416,
- "generated_at_iso": "2026-11-26 19:30 UTC",
+ "generated_at": 1795747528,
+ "generated_at_iso": "2026-11-27 02:45 UTC",
  "session_open": false,
  "benchmark": "SPY",
  "features": {
   "SPY": {
    "price": 716.700012,
-   "ret_1h_pct": -0.01,
+   "ret_1h_pct": -0.0,
    "ret_24h_pct": 3.17,
    "ret_7d_pct": -5.65,
    "rsi14_1h": 51.8,
    "atr1h_pct": 1.02,
    "vs_sma50h_pct": -0.39,
    "vs_sma200h_pct": -4.32,
-   "volume_24h_vs_avg": 1.43,
+   "volume_24h_vs_avg": 1.56,
    "pct_below_7d_high": 8.22
   },
   "QQQ": {
@@ -27,7 +27,7 @@
    "atr1h_pct": 1.46,
    "vs_sma50h_pct": -1.39,
    "vs_sma200h_pct": -7.07,
-   "volume_24h_vs_avg": 1.35,
+   "volume_24h_vs_avg": 1.33,
    "pct_below_7d_high": 14.54
   },
   "AAPL": {
@@ -56,14 +56,14 @@
   },
   "NVDA": {
    "price": 149.300003,
-   "ret_1h_pct": 0.01,
+   "ret_1h_pct": 0.02,
    "ret_24h_pct": 14.37,
    "ret_7d_pct": -29.87,
    "rsi14_1h": 44.3,
    "atr1h_pct": 3.79,
    "vs_sma50h_pct": -0.89,
    "vs_sma200h_pct": -19.67,
-   "volume_24h_vs_avg": 1.73,
+   "volume_24h_vs_avg": 1.68,
    "pct_below_7d_high": 47.35
   },
   "AMZN": {
@@ -87,7 +87,7 @@
    "atr1h_pct": 1.49,
    "vs_sma50h_pct": -1.86,
    "vs_sma200h_pct": -8.25,
-   "volume_24h_vs_avg": 1.01,
+   "volume_24h_vs_avg": 0.93,
    "pct_below_7d_high": 19.52
   },
   "META": {
@@ -116,7 +116,7 @@
   },
   "AMD": {
    "price": 406.029999,
-   "ret_1h_pct": -0.2,
+   "ret_1h_pct": -0.18,
    "ret_24h_pct": -4.51,
    "ret_7d_pct": -21.58,
    "rsi14_1h": 49.4,
@@ -128,7 +128,7 @@
   },
   "AVGO": {
    "price": 300.859985,
-   "ret_1h_pct": 0.12,
+   "ret_1h_pct": 0.1,
    "ret_24h_pct": -1.43,
    "ret_7d_pct": -7.07,
    "rsi14_1h": 48.9,
@@ -146,7 +146,7 @@
    "rsi14_1h": 54.1,
    "atr1h_pct": 1.16,
    "vs_sma50h_pct": 0.95,
-   "vs_sma200h_pct": -5.62,
+   "vs_sma200h_pct": -5.61,
    "volume_24h_vs_avg": 1.0,
    "pct_below_7d_high": 13.6
   },
@@ -236,7 +236,7 @@
   },
   "ASML": {
    "price": 1303.079956,
-   "ret_1h_pct": -0.0,
+   "ret_1h_pct": -0.01,
    "ret_24h_pct": 2.71,
    "ret_7d_pct": -16.74,
    "rsi14_1h": 43.4,
@@ -248,36 +248,36 @@
   }
  },
  "news": [
-  "Tesla Stocks Slip 1.18% as EU Delays Self-Driving Vote to December 15",
-  "Apple Stocks Rise as AI Selloff Spares the iPhone Maker",
-  "Microsoft Stocks Slip 1.25% While Nadella Backs Cheaper In-House AI Models",
-  "Nvidia Stock Has Found Its Next Big Catalyst, Making the Stock a Once-in-a-Decade Buying Opportunity.",
-  "Super Micro Computer (SMCI) Faces Southeast Asia AI Server Disruption After Export Halt",
-  "Can NICE (TASE:NICE) Support A Reasonable Price On Earnings?",
-  "Big News For Nvidia Stock Fans",
-  "David Tepper, Cathie Wood and 4 Other Famous Investors Own Nvidia. Here’s Who Bought Recently",
-  "Nvidia Now Has 41% of Its Stock Portfolio in SpaceX. Here’s What That Means for Nvidia Shareholders",
-  "Stanley Druckenmiller, Bill Ackman and 7 Other Famous Investors Own Amazon. Here’s Who Bought and Sold Recently",
-  "Caterpillar's $78 Billion Backlog, Explained",
-  "Better Defense Stock to Own in 2027: Lockheed Martin vs. L3Harris Technologies",
-  "2 Growth Stocks That Lagged the S&P 500 in 2026 and Could Lead in 2027",
-  "Goldman Sachs sends strong signal on Amazon stock before Black Friday",
-  "This Oversold Artificial Intelligence (AI) Stock Will Skyrocket 123% in 2027, According to Wall Street",
-  "Arista Networks Stocks Fall 2.71% as AI Networking Gets Caught in Chip Rout",
-  "AMD Stocks Slip 1.75% After Filing Registers 337 Million Shares for Resale",
-  "Dow Jones Futures Rise With U.S. Markets Shut; Look For This Bullish Signal",
-  "Broadcom Stocks Edge Lower After Rebounding From an Intraday Low of $278",
-  "Alphabet Stocks Slip 2.13% as Credit Swaps Hit Record Amid $9.1 Billion Cash Burn",
-  "Costco members can't stop buying one thing they don't need",
+  "Stocks Are Plunging Right Now. Here's What History Says Investors Should Do.",
+  "‘How Can TSLA Compete With Waymo?’ Gary Black Questions Tesla’s Robotaxi Strategy, Predicts Waymo Will Lead in Miles and Trips",
+  "What Could Tesla (TSLA) Merger Talks Mean For Its Stock?",
+  "Trump Says Huang Is Excited About His ‘Second Term’ at Nvidia",
+  "These 2 AI Chip Stocks Are Down 36% to 39% From Their Highs. Here’s What History Says Happens Next.",
+  "Amazon tried to kill Musk’s plan for 1 million AI satellites. The FCC chair scolded it and gave SpaceX the green light",
+  "Not Nvidia. Not Micron. If I Could Buy and Hold Only 1 Artificial Intelligence (AI) Semiconductor Stock Through 2030, This Would Be It.",
+  "Dave Ramsey Is 66 and Owns Zero Bonds. Should Retirees Follow Him?",
+  "Did Jensen Huang’s Alleged Chinese Spy Get Him to Do Anything Nvidia Didn’t Want?",
+  "Nvidia Is the Worst-Performing \"Magnificent Seven\" Stock This Year. Is It a Buy Before 2027?",
+  "Should You Buy Tesla Stock Before December?",
+  "1 Incredibly Cheap Artificial Intelligence (AI) Stock to Buy Before It Doubles in 2027",
+  "LUNR Aerospace Appoints Draganfly CEO Cameron Chell to Board of Directors",
+  "Prediction: These 3 Consumer Stocks Will Beat the S&P 500 Over the Next 10 Years",
+  "Weeks Before His Wife Needs a Nursing Home, He Buys a $75,000 SUV Online. Medicaid Ignores One Car Whatever It Costs, Taking $75,000 Off the Savings It Expects Them to Spend Down",
+  "2 Dividend Stocks to Buy in November and 1 to Leave on the Shelf",
+  "Dow Jones Futures Rise; Look For This Bullish Market Signal On Black Friday",
+  "Coinbase (COIN) Stock Sees Modest Fair Value Cut As Analyst Views Stay Split",
+  "When Walmart, Target, Costco, and other major retailers open on Black Friday",
+  "Is Standard Chartered (LSE:STAN) Undervalued Following Its J.P. Morgan Conference Appearance?",
+  "The Nasdaq Composite Is in a Correction, but These 3 Dividend Stocks Are Near 52-Week Highs. Here's Why They're Still Worth Buying Right Now.",
+  "Goldman Sachs resets Broadcom's 12-month price target before earnings",
+  "Costco sells something consumers want even if they don't need it",
   "Palantir Stocks Rise 1.5% After Peter Thiel Discloses a $122 Million Share Purchase",
+  "Broadcom Stocks Edge Lower After Rebounding From an Intraday Low of $278",
+  "KHC, PINS, AMD: 3 Bets I’d Consider Waging From Thanksgiving Eve’s Top 25 Unusually Active Options",
+  "AMD Stocks Slip 1.75% After Filing Registers 337 Million Shares for Resale",
   "Here's What Would Prove Me Wrong About Netflix Stock",
   "NFL's Thanksgiving Boom Raises Stakes for Disney, Netflix",
-  "Eli Lilly Stock Is Up 64% Since April. Is It Time to Take Profits?",
-  "Eli Lilly Is Now Worth 7 Novo Nordisks. Here’s How the Gap Got So Wide.",
-  "Netflix Stock Is Down 36% in 2026. Can Its Disney Partnership Make It a Buy Again?",
-  "BJ’s joins Costco, Sam’s Club in Thanksgiving Day store closings",
-  "Cerebras Expands AI Inference Reach: Can It Challenge NVDA & AMD?",
-  "Mastercard Stocks Rise 1.94% as Payment Networks Gain in AI Selloff Rotation"
+  "Billionaire Chris Hohn’s TCI Has 30% of Its $49.6 Billion Stock Portfolio in GE Aerospace"
  ],
  "portfolio": {
   "cash": 750.02,
@@ -291,7 +291,7 @@
     "weight_pct": 15.0,
     "stop": 1063.00776,
     "tp": 1130.3968000000002,
-    "held_h": 28.6
+    "held_h": 35.9
    },
    {
     "symbol": "AAPL",
@@ -301,7 +301,7 @@
     "weight_pct": 10.1,
     "stop": 340.660125,
     "tp": 365.11777499999994,
-    "held_h": 28.6
+    "held_h": 35.9
    }
   ],
   "max_positions": 3,
