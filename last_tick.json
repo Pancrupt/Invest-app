@@ -1,25 +1,25 @@
 {
- "ts": 1795747528,
+ "ts": 1795754627,
  "markets": {
   "crypto": {
    "session_open": true,
    "errors": [],
    "books": {
     "ai": {
-     "log": [],
-     "ts": 1795747528,
-     "equity": 1002.7,
-     "bench_hold": 1046.66,
-     "basket_hold": 1073.34
+     "log": [
+      "LINK: вышел срок удержания (+3.64%)"
+     ],
+     "ts": 1795754627,
+     "equity": 1003.64,
+     "bench_hold": 1047.64,
+     "basket_hold": 1074.61
     },
     "rules": {
-     "log": [
-      "купил ATOM на $300"
-     ],
-     "ts": 1795747528,
-     "equity": 999.55,
-     "bench_hold": 1046.66,
-     "basket_hold": 1073.34
+     "log": [],
+     "ts": 1795754627,
+     "equity": 1001.61,
+     "bench_hold": 1047.64,
+     "basket_hold": 1074.61
     }
    }
   },
@@ -31,14 +31,14 @@
      "log": [
       "рынок закрыт, заявка ИИ ждёт открытия"
      ],
-     "ts": 1795747528,
+     "ts": 1795754627,
      "equity": 1001.38,
      "bench_hold": 996.11,
      "basket_hold": 995.74
     },
     "rules": {
      "log": [],
-     "ts": 1795747528,
+     "ts": 1795754627,
      "equity": 1000.61,
      "bench_hold": 996.11,
      "basket_hold": 995.74
