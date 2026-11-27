@@ -1,6 +1,6 @@
 {
- "version": "2026-11-27",
- "notes": "Lepsze automatyczne układanie grafiku: po zwykłym układaniu bot przestawia zmiany (zamiany między osobami, przeniesienia, R1↔R2), żeby najpierw nie było braków na zmianach, potem godziny były jak najbliżej etatu, a czwarta osoba na zmianie stała tylko tam, gdzie inaczej nie da się zebrać godzin. Ułożony już grafik się nie zmienia: nowy sposób działa przy następnym «Ułóż grafik». Zawiera wszystkie wcześniejsze zmiany.",
- "zip": "aktualizacja-20261127.zip",
- "sha256": "2d946a30fbd2380c1fdb32ba72b35c177b87b06bb4e744cd9978e081171d4b85"
+ "version": "2026-11-27c",
+ "notes": "Można wybrać tylko jeden dzień oddania krwi w miesiącu, następny dzień jest wolny automatycznie. Kierownik w «🗓 Dyspozycje pracowników» może dodać albo usunąć dzień oddania krwi przyciskiem 🩸. Zawiera lepsze automatyczne układanie grafiku z 2026-11-27 i wszystkie wcześniejsze zmiany.",
+ "zip": "aktualizacja-20261127c.zip",
+ "sha256": "39fb7ed7e252002dbc31ad86a88c7730e07646ee2aa22d559be90d7ebffb0d45"
 }
