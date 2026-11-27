@@ -1,25 +1,23 @@
 {
- "ts": 1795754710,
+ "ts": 1795780772,
  "markets": {
   "crypto": {
    "session_open": true,
    "errors": [],
    "books": {
     "ai": {
-     "log": [
-      "купил LTC на $100"
-     ],
-     "ts": 1795754710,
-     "equity": 1003.49,
-     "bench_hold": 1047.57,
-     "basket_hold": 1074.56
+     "log": [],
+     "ts": 1795780772,
+     "equity": 1003.55,
+     "bench_hold": 1049.88,
+     "basket_hold": 1076.32
     },
     "rules": {
      "log": [],
-     "ts": 1795754710,
-     "equity": 1001.83,
-     "bench_hold": 1047.57,
-     "basket_hold": 1074.56
+     "ts": 1795780772,
+     "equity": 997.81,
+     "bench_hold": 1049.88,
+     "basket_hold": 1076.32
     }
    }
   },
@@ -31,14 +29,14 @@
      "log": [
       "рынок закрыт, заявка ИИ ждёт открытия"
      ],
-     "ts": 1795754710,
+     "ts": 1795780772,
      "equity": 1001.38,
      "bench_hold": 996.11,
      "basket_hold": 995.74
     },
     "rules": {
      "log": [],
-     "ts": 1795754710,
+     "ts": 1795780772,
      "equity": 1000.61,
      "bench_hold": 996.11,
      "basket_hold": 995.74
