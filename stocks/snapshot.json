@@ -1,8 +1,8 @@
 {
  "market": "stocks",
  "title": "Акции США",
- "generated_at": 1795812222,
- "generated_at_iso": "2026-11-27 20:43 UTC",
+ "generated_at": 1795812323,
+ "generated_at_iso": "2026-11-27 20:45 UTC",
  "session_open": false,
  "benchmark": "SPY",
  "features": {
@@ -15,7 +15,7 @@
    "atr1h_pct": 0.82,
    "vs_sma50h_pct": 1.28,
    "vs_sma200h_pct": -2.68,
-   "volume_24h_vs_avg": 1.45,
+   "volume_24h_vs_avg": 1.44,
    "pct_below_7d_high": 6.5
   },
   "QQQ": {
@@ -27,7 +27,7 @@
    "atr1h_pct": 1.17,
    "vs_sma50h_pct": 1.14,
    "vs_sma200h_pct": -4.58,
-   "volume_24h_vs_avg": 1.88,
+   "volume_24h_vs_avg": 2.07,
    "pct_below_7d_high": 11.76
   },
   "AAPL": {
@@ -38,8 +38,8 @@
    "rsi14_1h": 60.1,
    "atr1h_pct": 0.81,
    "vs_sma50h_pct": 2.07,
-   "vs_sma200h_pct": 3.0,
-   "volume_24h_vs_avg": 1.03,
+   "vs_sma200h_pct": 2.99,
+   "volume_24h_vs_avg": 1.07,
    "pct_below_7d_high": 0.67
   },
   "MSFT": {
@@ -51,7 +51,7 @@
    "atr1h_pct": 1.08,
    "vs_sma50h_pct": -0.64,
    "vs_sma200h_pct": -5.17,
-   "volume_24h_vs_avg": 0.91,
+   "volume_24h_vs_avg": 0.85,
    "pct_below_7d_high": 13.2
   },
   "NVDA": {
@@ -63,7 +63,7 @@
    "atr1h_pct": 2.5,
    "vs_sma50h_pct": -0.45,
    "vs_sma200h_pct": -18.95,
-   "volume_24h_vs_avg": 1.86,
+   "volume_24h_vs_avg": 2.25,
    "pct_below_7d_high": 47.1
   },
   "AMZN": {
@@ -75,7 +75,7 @@
    "atr1h_pct": 1.34,
    "vs_sma50h_pct": -0.32,
    "vs_sma200h_pct": -1.09,
-   "volume_24h_vs_avg": 0.86,
+   "volume_24h_vs_avg": 1.0,
    "pct_below_7d_high": 8.24
   },
   "GOOGL": {
@@ -87,7 +87,7 @@
    "atr1h_pct": 1.29,
    "vs_sma50h_pct": -0.94,
    "vs_sma200h_pct": -7.18,
-   "volume_24h_vs_avg": 0.9,
+   "volume_24h_vs_avg": 1.12,
    "pct_below_7d_high": 18.68
   },
   "META": {
@@ -99,7 +99,7 @@
    "atr1h_pct": 1.35,
    "vs_sma50h_pct": 4.65,
    "vs_sma200h_pct": 0.05,
-   "volume_24h_vs_avg": 0.86,
+   "volume_24h_vs_avg": 0.78,
    "pct_below_7d_high": 3.16
   },
   "TSLA": {
@@ -111,7 +111,7 @@
    "atr1h_pct": 1.68,
    "vs_sma50h_pct": 5.18,
    "vs_sma200h_pct": 3.81,
-   "volume_24h_vs_avg": 1.36,
+   "volume_24h_vs_avg": 1.34,
    "pct_below_7d_high": 3.98
   },
   "AMD": {
@@ -123,19 +123,19 @@
    "atr1h_pct": 3.15,
    "vs_sma50h_pct": -6.17,
    "vs_sma200h_pct": -15.77,
-   "volume_24h_vs_avg": 1.07,
+   "volume_24h_vs_avg": 1.02,
    "pct_below_7d_high": 40.67
   },
   "AVGO": {
    "price": 310.690002,
-   "ret_1h_pct": -0.5,
+   "ret_1h_pct": -0.53,
    "ret_24h_pct": -0.12,
    "ret_7d_pct": -4.3,
    "rsi14_1h": 56.0,
    "atr1h_pct": 1.92,
    "vs_sma50h_pct": -2.98,
    "vs_sma200h_pct": -5.58,
-   "volume_24h_vs_avg": 1.08,
+   "volume_24h_vs_avg": 1.07,
    "pct_below_7d_high": 19.03
   },
   "NFLX": {
@@ -147,7 +147,7 @@
    "atr1h_pct": 1.11,
    "vs_sma50h_pct": 3.16,
    "vs_sma200h_pct": -3.13,
-   "volume_24h_vs_avg": 0.92,
+   "volume_24h_vs_avg": 0.99,
    "pct_below_7d_high": 11.0
   },
   "JPM": {
@@ -171,7 +171,7 @@
    "atr1h_pct": 0.62,
    "vs_sma50h_pct": 3.63,
    "vs_sma200h_pct": 3.21,
-   "volume_24h_vs_avg": 0.84,
+   "volume_24h_vs_avg": 0.94,
    "pct_below_7d_high": 2.95
   },
   "COST": {
@@ -183,7 +183,7 @@
    "atr1h_pct": 0.58,
    "vs_sma50h_pct": -0.09,
    "vs_sma200h_pct": 4.26,
-   "volume_24h_vs_avg": 1.04,
+   "volume_24h_vs_avg": 0.98,
    "pct_below_7d_high": 2.38
   },
   "LLY": {
@@ -195,7 +195,7 @@
    "atr1h_pct": 0.88,
    "vs_sma50h_pct": 0.86,
    "vs_sma200h_pct": 1.7,
-   "volume_24h_vs_avg": 0.87,
+   "volume_24h_vs_avg": 0.91,
    "pct_below_7d_high": 5.9
   },
   "PLTR": {
@@ -207,7 +207,7 @@
    "atr1h_pct": 1.66,
    "vs_sma50h_pct": 9.02,
    "vs_sma200h_pct": -1.58,
-   "volume_24h_vs_avg": 0.89,
+   "volume_24h_vs_avg": 1.11,
    "pct_below_7d_high": 17.14
   },
   "COIN": {
@@ -231,7 +231,7 @@
    "atr1h_pct": 1.12,
    "vs_sma50h_pct": 0.82,
    "vs_sma200h_pct": -1.35,
-   "volume_24h_vs_avg": 0.86,
+   "volume_24h_vs_avg": 0.78,
    "pct_below_7d_high": 8.47
   },
   "ASML": {
@@ -243,7 +243,7 @@
    "atr1h_pct": 1.74,
    "vs_sma50h_pct": -1.82,
    "vs_sma200h_pct": -12.09,
-   "volume_24h_vs_avg": 0.91,
+   "volume_24h_vs_avg": 1.06,
    "pct_below_7d_high": 28.35
   }
  },
@@ -256,7 +256,6 @@
   "Amazon’s AWS Profit Rose 55%. Can It Absorb a $220 Billion Capex Bill?",
   "Stock Market Today: Indexes Log Best Thanksgiving Week In 18 Years",
   "Amazon Stocks Climb 2.96% as Thanksgiving Online Spending Hits $7.1 Billion",
-  "Jeff Bezos makes a $200 million move involving Amazon stock",
   "RTX Unit Pratt & Whitney Wins $2.5 Billion Navy Contract",
   "Anthropic Gets a Blockbuster IPO; Take-Two Gets a Blockbuster GTA VI Release",
   "Don't have time to shop Black Friday? AI will do it for you",
@@ -267,6 +266,7 @@
   "Nvidia Stocks Slip 1.66% as S&P Weighs Downgrade Over Key-Man Risk",
   "Black Friday Stock Deals: 7 Bargains Our Analysts Are Watching Now",
   "Fidelity Counted 654,000 401(k) Millionaires in the Third Quarter of 2025, Up From 544,000 a Year Earlier",
+  "Alphabet Down Nearly 20%: What Would Its CEO Say?",
   "Alphabet Stocks Move Lower as Record Credit Spreads Shadow AI Spending",
   "What Is The One Risk Facing Visa Stock Now?",
   "What Is The Biggest Threat To Eli Lilly Stock?",
