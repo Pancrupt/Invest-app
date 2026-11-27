@@ -1,6 +1,6 @@
 {
- "version": "2026-11-26d",
- "notes": "Kierownik widzi i poprawia dyspozycje pracowników w «Grafik»: «🗓 Dyspozycje pracowników — zobacz i popraw». Kierownik może też sam wpisać urlop (✏️ Edytuj pracownika → «🌴 Urlop»). Zawiera wszystkie wcześniejsze zmiany.",
- "zip": "aktualizacja-20261126d.zip",
- "sha256": "58b99ecfc58a7969bdbaec79bb35371ec1d353fa823f32858bfe1cb0d4bf3338"
+ "version": "2026-11-27",
+ "notes": "Lepsze automatyczne układanie grafiku: po zwykłym układaniu bot przestawia zmiany (zamiany między osobami, przeniesienia, R1↔R2), żeby najpierw nie było braków na zmianach, potem godziny były jak najbliżej etatu, a czwarta osoba na zmianie stała tylko tam, gdzie inaczej nie da się zebrać godzin. Ułożony już grafik się nie zmienia: nowy sposób działa przy następnym «Ułóż grafik». Zawiera wszystkie wcześniejsze zmiany.",
+ "zip": "aktualizacja-20261127.zip",
+ "sha256": "2d946a30fbd2380c1fdb32ba72b35c177b87b06bb4e744cd9978e081171d4b85"
 }
