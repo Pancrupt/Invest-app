@@ -100,5 +100,11 @@
   "equity": 998.6,
   "bench_hold": 1022.42,
   "basket_hold": 1049.52
+ },
+ {
+  "ts": 1795869832,
+  "equity": 998.6,
+  "bench_hold": 1008.86,
+  "basket_hold": 1036.88
  }
 ]

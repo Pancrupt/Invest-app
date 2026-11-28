@@ -1,8 +1,8 @@
 {
  "market": "stocks",
  "title": "Акции США",
- "generated_at": 1795841088,
- "generated_at_iso": "2026-11-28 04:44 UTC",
+ "generated_at": 1795869832,
+ "generated_at_iso": "2026-11-28 12:43 UTC",
  "session_open": false,
  "benchmark": "SPY",
  "features": {
@@ -15,7 +15,7 @@
    "atr1h_pct": 0.84,
    "vs_sma50h_pct": 1.26,
    "vs_sma200h_pct": -2.71,
-   "volume_24h_vs_avg": 1.13,
+   "volume_24h_vs_avg": 1.26,
    "pct_below_7d_high": 6.51
   },
   "QQQ": {
@@ -27,7 +27,7 @@
    "atr1h_pct": 1.2,
    "vs_sma50h_pct": 1.1,
    "vs_sma200h_pct": -4.65,
-   "volume_24h_vs_avg": 1.08,
+   "volume_24h_vs_avg": 1.07,
    "pct_below_7d_high": 11.79
   },
   "AAPL": {
@@ -50,21 +50,21 @@
    "rsi14_1h": 46.8,
    "atr1h_pct": 1.12,
    "vs_sma50h_pct": -0.7,
-   "vs_sma200h_pct": -5.23,
+   "vs_sma200h_pct": -5.22,
    "volume_24h_vs_avg": 0.77,
    "pct_below_7d_high": 13.22
   },
   "NVDA": {
-   "price": 149.600006,
+   "price": 149.610001,
    "ret_1h_pct": 0.17,
    "ret_24h_pct": -11.99,
    "ret_7d_pct": -29.31,
    "rsi14_1h": 43.3,
    "atr1h_pct": 2.61,
-   "vs_sma50h_pct": -0.46,
+   "vs_sma50h_pct": -0.45,
    "vs_sma200h_pct": -19.07,
-   "volume_24h_vs_avg": 1.23,
-   "pct_below_7d_high": 47.05
+   "volume_24h_vs_avg": 1.19,
+   "pct_below_7d_high": 47.04
   },
   "AMZN": {
    "price": 254.679993,
@@ -87,7 +87,7 @@
    "atr1h_pct": 1.33,
    "vs_sma50h_pct": -1.05,
    "vs_sma200h_pct": -7.36,
-   "volume_24h_vs_avg": 0.89,
+   "volume_24h_vs_avg": 0.81,
    "pct_below_7d_high": 18.77
   },
   "META": {
@@ -111,7 +111,7 @@
    "atr1h_pct": 1.7,
    "vs_sma50h_pct": 5.61,
    "vs_sma200h_pct": 4.18,
-   "volume_24h_vs_avg": 1.04,
+   "volume_24h_vs_avg": 0.89,
    "pct_below_7d_high": 3.65
   },
   "AMD": {
@@ -248,36 +248,36 @@
   }
  },
  "news": [
-  "Michael Burry still sees 2 stocks worth betting against",
-  "Nvidia Stock Has Swung 5% or More in a Single Day 5 Times in November. Here's How Big a Position I Think Makes Sense.",
-  "Amazon takes its car store abroad for the first time in 2027",
-  "Apple Is Beating the Rest of the \"Magnificent Seven\" in 2026. Can It Do It Again in 2027?",
-  "Nvidia Stock Is Still Down 38% From Its Peak Despite Jensen Huang's Return. History Suggests a $10,000 Investment Today Will Be Worth This Much by Year-End 2027.",
-  "Vanguard's Growth ETF Has 3 Stocks Making Up More Than a Third of It. Only 1 Has Held Up in the Tech Sell-Off.",
-  "OpenAI says a spy handed Apple secret plans for AI devices that could 'outcompete' the iPhone maker on its 'own turf'",
-  "3 Reasons I Might Buy More Nvidia in December",
-  "2027 smartphone market outlook: Apple to outperform as shipments fall 5%",
-  "Zero To Sixty: Tesla Cybercab Fleet Tops 1,000 In Texas, Lucid Starts Fully Driverless Tests And Chinese EV Maker Posts Stronger Margins",
-  "Plot Twist: Nvidia’s Vera Rubin Gets 2-6.5x GB300’s Tokens per Dollar. Amazon’s Trainium Edge Was Against the Old Chip",
-  "SpaceX Stock Is Trading Below Its $135 IPO Price. History Says What Other Giant IPOs Did From There.",
-  "BEACN Announces Financial Results for the Third Quarter of 2026",
-  "Are recent outages bad for software?",
-  "Here's Why Anthropic Stock Rallied on Friday -- and Why Wall Street Analysts Say It's Still a Buy Right Now",
-  "Anthropic's Best Customers Spend 20 Times More Than the Rest. That's Why I'm Buying the Stock.",
-  "U.S. Black Friday online sales set to exceed $13 billion, Adobe predicts",
-  "Why Monte Rosa Therapeutics Stock Slumped Today",
-  "e.l.f. Beauty vs. Wendy's: Which Consumer Goods Stock Is a Better Buy for 2027?",
+  "Nvidia Faces Yet Another Risk. Here's What It Means for Investors.",
+  "Apple’s COO Has Now Filed to Sell $39 Million of Stock in 3 Days",
+  "Amazon may owe you money. Some Arizonans need to act soon",
+  "Dan Ives Calls Nvidia’s China and Asia Exposure a “Containable 15% to 20%” of Revenue. Huang Faces Congress Next Week",
+  "History Says What Tesla Stock Does After Its Annual Meeting. This Year's Is Dec. 3.",
+  "Jensen Huang Returns To Nvidia, Musk Says 'The Mistake Has Been Corrected,' And Trump Weighs In: Mag 7 Voices This Week",
+  "The Best 3 Dividend-Raising Stocks to Own Until 2030",
+  "Caterpillar Soars 10% in a Week as Jensen Huang’s Return Revives the AI Trade. Is It Still a Buy?",
+  "Oklo vs. NuScale Power: Which Nuclear Stock Will Rise 100% First?",
+  "Bad News for Anthropic: OpenAI Nearly Matches Claude Opus 5.5 at “Under a Fifth of the Cost,” per SemiAnalysis",
+  "Stocks are chasing a rare buy signal as markets brace for a potential Fed hike: Chart of the Day",
+  "Here's What $1,000 Invested in Anthropic Could Be Worth by 2030",
+  "The Stock Market Just Dropped Into a Correction. History Is Crystal Clear About What Happens Next.",
+  "Gavin Baker Got “Much Better Versions” of His Claude Code Builds From Grok Bot. Warning for Anthropic",
+  "$1,000 Invested in Berkshire Hathaway Stock 10 Years Ago Is Worth About $3,650. Where Will It Be in 2036?",
+  "Beyond the Market Volatility: Why Longbridge Group CEO and Co-Founder Nowa Zhu Believes the Next Wave of AI Demand Is So Difficult to Predict",
+  "I Looked at Tilray, Canopy Growth, and Green Thumb. Here's the Only One I'd Buy",
+  "The Dow Jones Just Had Its Best Week Since October 2022",
+  "Ripple's Stablecoin Is Surging in Popularity. So Why Has the Price of XRP Dipped Below $1?",
+  "Working and Claiming Social Security in 2027? 2 Ways You Could Lose Some of Your Checks.",
+  "Prediction: Here's the Netflix Stock Price I Expect at the End of 2030",
+  "3 AI Chip Equipment Stocks To Watch Beyond ASML",
+  "OpenAI’s 457 MW TensorWave Deal Could Be Worth Up To $9.1B, Say Analysts: What It Means For AMD Stock",
+  "Coinbase CEO Brian Armstrong Scales Back Bitcoin Prediction, Still Sees Nearly 7x Upside By 2030",
   "Palantir Technologies (PLTR) Signed A Poland Defense Software Agreement",
   "Palantir's new military AI deal has a surprising catch",
   "Black Friday Push Could Be A Big Moment For Costco Stock (COST)",
   "Biotech Dealmaker: Sanofi’s $41B Insmed Buyout Anchors Holiday Week As Lilly Continues Buying Spree",
-  "Dutch Trade Minister: “The US Is Not the Boss of Veldhoven.” That’s Good News for ASML’s China Sales",
-  "Billionaire Andreas Halvorsen’s Viking Opened an $818 Million Mastercard Stake While Cutting Its Visa Shares 32.6%",
-  "US Fintech Weekly: Payment Networks Rally Into Black Friday As Wedbush Backs Brokerages",
-  "Novo Nordisk Stock And Other GLP 1 Leaders Worth Watching Now",
-  "Is ASML Holding (ENXTAM:ASML) Undervalued As Dutch Lawmakers Push Back On US Chip Curbs?",
-  "Anthropic vs. Coinbase: One Stock Is Overhyped, One Is Oversold, Says Top Investor",
-  "Costco (COST) Rises Yet Lags Behind Market: Some Facts Worth Knowing"
+  "SemiAnalysis’s Dylan Patel Thinks Anthropic Could “Beat the $300 Billion” Run Rate by 2027’s End. Here’s What That’s Worth",
+  "DraftKings Sinks 14% in a Month on Predictions Spending, but Its CEO Sees “No Discernible Impact” on the Sportsbook"
  ],
  "portfolio": {
   "cash": 750.02,
@@ -291,7 +291,7 @@
     "weight_pct": 15.1,
     "stop": 1063.00776,
     "tp": 1130.3968000000002,
-    "held_h": 61.9
+    "held_h": 69.9
    },
    {
     "symbol": "AAPL",
@@ -301,7 +301,7 @@
     "weight_pct": 10.2,
     "stop": 340.660125,
     "tp": 365.11777499999994,
-    "held_h": 61.9
+    "held_h": 69.9
    }
   ],
   "max_positions": 3,
