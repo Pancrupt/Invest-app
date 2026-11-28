@@ -1,8 +1,8 @@
 {
  "market": "stocks",
  "title": "Акции США",
- "generated_at": 1795884179,
- "generated_at_iso": "2026-11-28 16:42 UTC",
+ "generated_at": 1795884271,
+ "generated_at_iso": "2026-11-28 16:44 UTC",
  "session_open": false,
  "benchmark": "SPY",
  "features": {
@@ -248,6 +248,7 @@
   }
  },
  "news": [
+  "Billionaire Rob Citrone’s Discovery Capital More Than Doubled Its Amazon Stake to $114 Million",
   "Elon Musk’s SpaceX Could Fall Below $100 on Tesla Merger, Former Goldman Sachs CIO Warn",
   "The Big Long? Michael Burry Closes Nasdaq-100 Short, Says His Portfolio Is Now Almost Entirely Long",
   "History Says the Smartest Investing Move Is Also the Easiest. Here's Why.",
@@ -255,7 +256,6 @@
   "Stellantis vs. Tesla: Which Automaker Giant Stock Is a Better Buy for 2027?",
   "Prediction: Palantir and Nvidia Will Be Worth This Much by Year-end 2027 (Hint: Only 1 Is a Buy)",
   "Dell Stock Shrugged Off the Nvidia Shipment Pause Reports and Jumped 6.7%",
-  "Satya Nadella: “If Amazon Doesn’t, Shop Will.” Shopify Just Gained 15% in a Week. Time to Buy?",
   "Fantastic News for SpaceX Stock Investors!",
   "Carnival's Comeback From Pandemic Debt Is Nearly Complete",
   "This Dividend King Has Raised Its Payout 54 Straight Years. It's My Top Pick for December.",

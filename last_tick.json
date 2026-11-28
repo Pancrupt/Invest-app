@@ -1,5 +1,5 @@
 {
- "ts": 1795884179,
+ "ts": 1795884271,
  "markets": {
   "crypto": {
    "session_open": true,
@@ -7,19 +7,17 @@
    "books": {
     "ai": {
      "log": [],
-     "ts": 1795884179,
+     "ts": 1795884271,
      "equity": 998.6,
-     "bench_hold": 1012.85,
-     "basket_hold": 1031.02
+     "bench_hold": 1012.78,
+     "basket_hold": 1031.28
     },
     "rules": {
-     "log": [
-      "LTC: стоп-лосс (-2.79%)"
-     ],
-     "ts": 1795884179,
+     "log": [],
+     "ts": 1795884271,
      "equity": 982.28,
-     "bench_hold": 1012.85,
-     "basket_hold": 1031.02
+     "bench_hold": 1012.78,
+     "basket_hold": 1031.28
     }
    }
   },
@@ -28,10 +26,8 @@
    "errors": [],
    "books": {
     "ai": {
-     "log": [
-      "AAPL: вышел срок удержания (+2.37%)"
-     ],
-     "ts": 1795884179,
+     "log": [],
+     "ts": 1795884271,
      "equity": 1003.61,
      "bench_hold": 1012.17,
      "basket_hold": 1018.16
@@ -40,7 +36,7 @@
      "log": [
       "TSLA: рынок закрыт"
      ],
-     "ts": 1795884179,
+     "ts": 1795884271,
      "equity": 1003.29,
      "bench_hold": 1012.17,
      "basket_hold": 1018.16
