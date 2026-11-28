@@ -1,8 +1,8 @@
 {
  "market": "stocks",
  "title": "Акции США",
- "generated_at": 1795869936,
- "generated_at_iso": "2026-11-28 12:45 UTC",
+ "generated_at": 1795870334,
+ "generated_at_iso": "2026-11-28 12:52 UTC",
  "session_open": false,
  "benchmark": "SPY",
  "features": {
@@ -291,7 +291,7 @@
     "weight_pct": 15.1,
     "stop": 1063.00776,
     "tp": 1130.3968000000002,
-    "held_h": 69.9
+    "held_h": 70.0
    },
    {
     "symbol": "AAPL",
@@ -301,7 +301,7 @@
     "weight_pct": 10.2,
     "stop": 340.660125,
     "tp": 365.11777499999994,
-    "held_h": 69.9
+    "held_h": 70.0
    }
   ],
   "max_positions": 3,
