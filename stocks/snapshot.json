@@ -1,8 +1,8 @@
 {
  "market": "stocks",
  "title": "Акции США",
- "generated_at": 1795869832,
- "generated_at_iso": "2026-11-28 12:43 UTC",
+ "generated_at": 1795869936,
+ "generated_at_iso": "2026-11-28 12:45 UTC",
  "session_open": false,
  "benchmark": "SPY",
  "features": {
@@ -15,7 +15,7 @@
    "atr1h_pct": 0.84,
    "vs_sma50h_pct": 1.26,
    "vs_sma200h_pct": -2.71,
-   "volume_24h_vs_avg": 1.26,
+   "volume_24h_vs_avg": 1.13,
    "pct_below_7d_high": 6.51
   },
   "QQQ": {
@@ -27,7 +27,7 @@
    "atr1h_pct": 1.2,
    "vs_sma50h_pct": 1.1,
    "vs_sma200h_pct": -4.65,
-   "volume_24h_vs_avg": 1.07,
+   "volume_24h_vs_avg": 1.08,
    "pct_below_7d_high": 11.79
   },
   "AAPL": {
@@ -50,21 +50,21 @@
    "rsi14_1h": 46.8,
    "atr1h_pct": 1.12,
    "vs_sma50h_pct": -0.7,
-   "vs_sma200h_pct": -5.22,
+   "vs_sma200h_pct": -5.23,
    "volume_24h_vs_avg": 0.77,
    "pct_below_7d_high": 13.22
   },
   "NVDA": {
-   "price": 149.610001,
+   "price": 149.600006,
    "ret_1h_pct": 0.17,
    "ret_24h_pct": -11.99,
    "ret_7d_pct": -29.31,
    "rsi14_1h": 43.3,
    "atr1h_pct": 2.61,
-   "vs_sma50h_pct": -0.45,
+   "vs_sma50h_pct": -0.46,
    "vs_sma200h_pct": -19.07,
-   "volume_24h_vs_avg": 1.19,
-   "pct_below_7d_high": 47.04
+   "volume_24h_vs_avg": 1.23,
+   "pct_below_7d_high": 47.05
   },
   "AMZN": {
    "price": 254.679993,
@@ -87,7 +87,7 @@
    "atr1h_pct": 1.33,
    "vs_sma50h_pct": -1.05,
    "vs_sma200h_pct": -7.36,
-   "volume_24h_vs_avg": 0.81,
+   "volume_24h_vs_avg": 0.89,
    "pct_below_7d_high": 18.77
   },
   "META": {
@@ -111,7 +111,7 @@
    "atr1h_pct": 1.7,
    "vs_sma50h_pct": 5.61,
    "vs_sma200h_pct": 4.18,
-   "volume_24h_vs_avg": 0.89,
+   "volume_24h_vs_avg": 1.04,
    "pct_below_7d_high": 3.65
   },
   "AMD": {
