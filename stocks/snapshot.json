@@ -1,8 +1,8 @@
 {
  "market": "stocks",
  "title": "Акции США",
- "generated_at": 1795835575,
- "generated_at_iso": "2026-11-28 03:12 UTC",
+ "generated_at": 1795840996,
+ "generated_at_iso": "2026-11-28 04:43 UTC",
  "session_open": false,
  "benchmark": "SPY",
  "features": {
@@ -248,6 +248,9 @@
   }
  },
  "news": [
+  "Michael Burry still sees 2 stocks worth betting against",
+  "Nvidia Stock Has Swung 5% or More in a Single Day 5 Times in November. Here's How Big a Position I Think Makes Sense.",
+  "Amazon takes its car store abroad for the first time in 2027",
   "Apple Is Beating the Rest of the \"Magnificent Seven\" in 2026. Can It Do It Again in 2027?",
   "Nvidia Stock Is Still Down 38% From Its Peak Despite Jensen Huang's Return. History Suggests a $10,000 Investment Today Will Be Worth This Much by Year-End 2027.",
   "Vanguard's Growth ETF Has 3 Stocks Making Up More Than a Third of It. Only 1 Has Held Up in the Tech Sell-Off.",
@@ -256,18 +259,14 @@
   "2027 smartphone market outlook: Apple to outperform as shipments fall 5%",
   "Zero To Sixty: Tesla Cybercab Fleet Tops 1,000 In Texas, Lucid Starts Fully Driverless Tests And Chinese EV Maker Posts Stronger Margins",
   "Plot Twist: Nvidia’s Vera Rubin Gets 2-6.5x GB300’s Tokens per Dollar. Amazon’s Trainium Edge Was Against the Old Chip",
-  "Amazon Hits Its Lowest P/E Ever. Jim Cramer Predicts It Will “Prove to Be the Winner”",
-  "Billionaire Chase Coleman’s Tiger Global Raised Its Cerebras Stake 48% to $790 Million",
-  "S&P 500, Nasdaq End Best Week In Over A Year As AI Optimism Makes Comeback — VZ, ANT, ADBE, TSLA In Focus",
+  "BEACN Announces Financial Results for the Third Quarter of 2026",
+  "Are recent outages bad for software?",
   "Here's Why Anthropic Stock Rallied on Friday -- and Why Wall Street Analysts Say It's Still a Buy Right Now",
   "Anthropic's Best Customers Spend 20 Times More Than the Rest. That's Why I'm Buying the Stock.",
   "U.S. Black Friday online sales set to exceed $13 billion, Adobe predicts",
   "Why Monte Rosa Therapeutics Stock Slumped Today",
   "e.l.f. Beauty vs. Wendy's: Which Consumer Goods Stock Is a Better Buy for 2027?",
   "Meta’s (META) Muse Could Unlock a New Revenue Stream",
-  "Texas Is Racing to Approve SpaceX’s $24 Billion Starbase Data Center Before Its New Governor Can Halt It",
-  "What Amazon.com (AMZN)'s UK Car Marketplace Launch Means For Shareholders",
-  "Warning for Alphabet Investors: MScience Data Show Q4 Search Revenue Tracking Below Consensus",
   "Palantir Technologies (PLTR) Signed A Poland Defense Software Agreement",
   "Palantir's new military AI deal has a surprising catch",
   "Black Friday Push Could Be A Big Moment For Costco Stock (COST)",
@@ -277,7 +276,8 @@
   "US Fintech Weekly: Payment Networks Rally Into Black Friday As Wedbush Backs Brokerages",
   "Novo Nordisk Stock And Other GLP 1 Leaders Worth Watching Now",
   "Is ASML Holding (ENXTAM:ASML) Undervalued As Dutch Lawmakers Push Back On US Chip Curbs?",
-  "Anthropic vs. Coinbase: One Stock Is Overhyped, One Is Oversold, Says Top Investor"
+  "Anthropic vs. Coinbase: One Stock Is Overhyped, One Is Oversold, Says Top Investor",
+  "Costco (COST) Rises Yet Lags Behind Market: Some Facts Worth Knowing"
  ],
  "portfolio": {
   "cash": 750.02,
@@ -291,7 +291,7 @@
     "weight_pct": 15.1,
     "stop": 1063.00776,
     "tp": 1130.3968000000002,
-    "held_h": 60.4
+    "held_h": 61.9
    },
    {
     "symbol": "AAPL",
@@ -301,7 +301,7 @@
     "weight_pct": 10.2,
     "stop": 340.660125,
     "tp": 365.11777499999994,
-    "held_h": 60.4
+    "held_h": 61.9
    }
   ],
   "max_positions": 3,
