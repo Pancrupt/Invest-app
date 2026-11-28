@@ -1,5 +1,5 @@
 {
- "ts": 1795840996,
+ "ts": 1795841088,
  "markets": {
   "crypto": {
    "session_open": true,
@@ -7,17 +7,17 @@
    "books": {
     "ai": {
      "log": [],
-     "ts": 1795840996,
+     "ts": 1795841088,
      "equity": 998.6,
-     "bench_hold": 1022.55,
-     "basket_hold": 1050.22
+     "bench_hold": 1022.42,
+     "basket_hold": 1049.52
     },
     "rules": {
      "log": [],
-     "ts": 1795840996,
-     "equity": 988.1,
-     "bench_hold": 1022.55,
-     "basket_hold": 1050.22
+     "ts": 1795841088,
+     "equity": 987.97,
+     "bench_hold": 1022.42,
+     "basket_hold": 1049.52
     }
    }
   },
@@ -27,7 +27,7 @@
    "books": {
     "ai": {
      "log": [],
-     "ts": 1795840996,
+     "ts": 1795841088,
      "equity": 1003.76,
      "bench_hold": 1012.17,
      "basket_hold": 1018.16
@@ -36,7 +36,7 @@
      "log": [
       "TSLA: рынок закрыт"
      ],
-     "ts": 1795840996,
+     "ts": 1795841088,
      "equity": 1003.29,
      "bench_hold": 1012.17,
      "basket_hold": 1018.16
